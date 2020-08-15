@@ -23,7 +23,10 @@ public class TargetController : MonoBehaviour
 
     void Move()
     {
-        Vector3 direction = (goPlayer.transform.position - transform.position).normalized;
-        rbTarget.AddForce(force * Time.deltaTime * direction);
+        if (goPlayer)
+        {
+            Vector3 direction = (goPlayer.transform.position - transform.position).normalized;
+            rbTarget.AddForce(force * Time.deltaTime * direction);
+        }
     }
 }

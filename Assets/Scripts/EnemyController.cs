@@ -23,7 +23,10 @@ public class EnemyController : MonoBehaviour
 
     void Move()
     {
-        Vector3 direction = (goTarget.transform.position - transform.position).normalized;
-        rbEnemy.AddForce(force * Time.deltaTime * direction);
+        if (goTarget)
+        {
+            Vector3 direction = (goTarget.transform.position - transform.position).normalized;
+            rbEnemy.AddForce(force * Time.deltaTime * direction);
+        }
     }
 }
