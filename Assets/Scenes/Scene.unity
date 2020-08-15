@@ -372,7 +372,7 @@ GameObject:
   - component: {fileID: 1131107144}
   m_Layer: 0
   m_Name: Enemy
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -462,6 +462,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d81812deae29b499d824b73672c14da0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sObjective: Target
 --- !u!54 &1131107143
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -490,6 +491,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00c92a3e862bd40ddab9e6a16111166b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bOnGround: 1
 --- !u!1 &1204193565
 GameObject:
   m_ObjectHideFlags: 0
@@ -507,7 +509,7 @@ GameObject:
   - component: {fileID: 1204193572}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -625,6 +627,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00c92a3e862bd40ddab9e6a16111166b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bOnGround: 1
 --- !u!1 &1755632510
 GameObject:
   m_ObjectHideFlags: 0
@@ -642,7 +645,7 @@ GameObject:
   - component: {fileID: 1755632517}
   m_Layer: 0
   m_Name: Target
-  m_TagString: Untagged
+  m_TagString: Target
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -659,6 +662,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6f67df833e5c4125b50970910332729, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sObjective: Player
+  v3DirectionRand: {x: 0, y: 0, z: 0}
 --- !u!54 &1755632512
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -760,3 +765,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00c92a3e862bd40ddab9e6a16111166b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bOnGround: 1

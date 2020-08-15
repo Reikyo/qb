@@ -4,9 +4,11 @@ using UnityEngine;
 
 public class TargetController : MonoBehaviour
 {
-    private float force = 500.0f;
+    public float fForce = 500f;
     private Rigidbody rbTarget;
     private GameObject goPlayer;
+    public string sObjective = "Player";
+    public Vector3 v3DirectionRand;
 
     // Start is called before the first frame update
     void Start()
@@ -18,15 +20,23 @@ public class TargetController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Move();
+        if (GetComponent<DestroyOutOfBounds>().bOnGround)
+        {
+            Move();
+        }
     }
 
-    void Move()
+    private void Move()
     {
-        if (goPlayer)
+        if ((sObjective == "Player") && goPlayer && goPlayer.GetComponent<DestroyOutOfBounds>().bOnGround)
         {
-            Vector3 direction = (goPlayer.transform.position - transform.position).normalized;
-            rbTarget.AddForce(force * Time.deltaTime * direction);
+            Vector3 v3Direction = (goPlayer.transform.position - transform.position).normalized;
+            rbTarget.AddForce(fForce * Time.deltaTime * v3Direction);
+        }
+        else if (sObjective == "Self destruct")
+        {
+            Vector3 v3Direction = (v3DirectionRand - transform.position).normalized;
+            rbTarget.AddForce(fForce * Time.deltaTime * v3Direction);
         }
     }
 }
