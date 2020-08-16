@@ -8,6 +8,7 @@ public class PlayerController : MonoBehaviour
     private Rigidbody rbPlayer;
     private GameObject goEnemy;
     private GameObject goTarget;
+    private int iNumPowerUp = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -51,7 +52,8 @@ public class PlayerController : MonoBehaviour
     {
         if (other.gameObject.CompareTag("PowerUp"))
         {
-            Destroy(other);
+            Destroy(other.gameObject);
+            iNumPowerUp += 1;
         }
     }
 }
