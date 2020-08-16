@@ -9,6 +9,7 @@ public class PlayerController : MonoBehaviour
     private Rigidbody rbPlayer;
     private GameObject goEnemy;
     private GameObject goTarget;
+    private List<string> slistChangeTargetObjective = new List<string>() {"None", "Random"};
     private int iNumPowerUp = 0;
 
     // Start is called before the first frame update
@@ -42,7 +43,7 @@ public class PlayerController : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Target"))
         {
-            if (goTarget.GetComponent<TargetController>().sObjective == "Random")
+            if (slistChangeTargetObjective.Contains(goTarget.GetComponent<TargetController>().sObjective))
             {
                 goTarget.GetComponent<TargetController>().sObjective = "Player";
                 // goTarget.GetComponent<TargetController>().fForce = 500f;

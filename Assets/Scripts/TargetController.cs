@@ -33,19 +33,22 @@ public class TargetController : MonoBehaviour
     {
         if ((sObjective == "Player") && goPlayer && goPlayer.GetComponent<DestroyOutOfBounds>().bOnGround)
         {
-            Vector3 v3Direction = (goPlayer.transform.position - transform.position).normalized;
+            Vector3 v3Objective = goPlayer.transform.position;
+            Vector3 v3Direction = (v3Objective - transform.position).normalized;
             // rbTarget.AddForce(fForce * Time.deltaTime * v3Direction);
             transform.Translate(fSpeed * Time.deltaTime * v3Direction);
         }
         else if (sObjective == "Random")
         {
-            Vector3 v3Direction = (v3DirectionRand - transform.position).normalized;
+            Vector3 v3Objective = v3DirectionRand;
+            Vector3 v3Direction = (v3Objective - transform.position).normalized;
             // rbTarget.AddForce(fForce * Time.deltaTime * v3Direction);
             transform.Translate(fSpeed * Time.deltaTime * v3Direction);
         }
         else if (sObjective == "SafeZone")
         {
-            Vector3 v3Direction = (goSafeZone.transform.position - transform.position).normalized;
+            Vector3 v3Objective = new Vector3(goSafeZone.transform.position.x, 1f, goSafeZone.transform.position.z);
+            Vector3 v3Direction = (v3Objective - transform.position).normalized;
             // rbTarget.AddForce(fForce * Time.deltaTime * v3Direction);
             transform.Translate(fSpeed * Time.deltaTime * v3Direction);
         }
