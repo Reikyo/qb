@@ -39,7 +39,7 @@ public class PlayerController : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Target"))
         {
-            if (goTarget.GetComponent<TargetController>().sObjective != "Player")
+            if (goTarget.GetComponent<TargetController>().sObjective == "Random")
             {
                 goTarget.GetComponent<TargetController>().sObjective = "Player";
                 goTarget.GetComponent<TargetController>().fForce = 500f;

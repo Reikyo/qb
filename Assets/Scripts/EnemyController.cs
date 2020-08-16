@@ -48,7 +48,7 @@ public class EnemyController : MonoBehaviour
             Vector2 v2DirectionRand = Random.insideUnitCircle.normalized * 100f;
             Vector3 v3DirectionRand = new Vector3(v2DirectionRand.x, 1f, v2DirectionRand.y);
             goTarget.GetComponent<TargetController>().v3DirectionRand = v3DirectionRand;
-            goTarget.GetComponent<TargetController>().sObjective = "Self destruct";
+            goTarget.GetComponent<TargetController>().sObjective = "Random";
             goTarget.GetComponent<TargetController>().fForce = 300f;
             sObjective = "Player";
         }
