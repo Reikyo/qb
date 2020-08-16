@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class TargetController : MonoBehaviour
 {
-    public float fForce = 500f;
+    // public float fForce = 500f;
+    public float fSpeed = 5f;
     private Rigidbody rbTarget;
     private GameObject goPlayer;
     private GameObject goSafeZone;
@@ -33,17 +34,20 @@ public class TargetController : MonoBehaviour
         if ((sObjective == "Player") && goPlayer && goPlayer.GetComponent<DestroyOutOfBounds>().bOnGround)
         {
             Vector3 v3Direction = (goPlayer.transform.position - transform.position).normalized;
-            rbTarget.AddForce(fForce * Time.deltaTime * v3Direction);
+            // rbTarget.AddForce(fForce * Time.deltaTime * v3Direction);
+            transform.Translate(fSpeed * Time.deltaTime * v3Direction);
         }
         else if (sObjective == "Random")
         {
             Vector3 v3Direction = (v3DirectionRand - transform.position).normalized;
-            rbTarget.AddForce(fForce * Time.deltaTime * v3Direction);
+            // rbTarget.AddForce(fForce * Time.deltaTime * v3Direction);
+            transform.Translate(fSpeed * Time.deltaTime * v3Direction);
         }
         else if (sObjective == "SafeZone")
         {
             Vector3 v3Direction = (goSafeZone.transform.position - transform.position).normalized;
-            rbTarget.AddForce(fForce * Time.deltaTime * v3Direction);
+            // rbTarget.AddForce(fForce * Time.deltaTime * v3Direction);
+            transform.Translate(fSpeed * Time.deltaTime * v3Direction);
         }
     }
 

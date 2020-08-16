@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class EnemyController : MonoBehaviour
 {
-    private float fForce = 500f;
+    // private float fForce = 500f;
+    private float fSpeed = 5f;
     private Rigidbody rbEnemy;
     private GameObject goPlayer;
     private GameObject goTarget;
@@ -32,12 +33,14 @@ public class EnemyController : MonoBehaviour
         if ((sObjective == "Target") && goTarget && goTarget.GetComponent<DestroyOutOfBounds>().bOnGround)
         {
             Vector3 v3Direction = (goTarget.transform.position - transform.position).normalized;
-            rbEnemy.AddForce(fForce * Time.deltaTime * v3Direction);
+            // rbEnemy.AddForce(fForce * Time.deltaTime * v3Direction);
+            transform.Translate(fSpeed * Time.deltaTime * v3Direction);
         }
         else if ((sObjective == "Player") && goPlayer && goPlayer.GetComponent<DestroyOutOfBounds>().bOnGround)
         {
             Vector3 v3Direction = (goPlayer.transform.position - transform.position).normalized;
-            rbEnemy.AddForce(fForce * Time.deltaTime * v3Direction);
+            // rbEnemy.AddForce(fForce * Time.deltaTime * v3Direction);
+            transform.Translate(fSpeed * Time.deltaTime * v3Direction);
         }
     }
 
@@ -49,7 +52,8 @@ public class EnemyController : MonoBehaviour
             Vector3 v3DirectionRand = new Vector3(v2DirectionRand.x, 1f, v2DirectionRand.y);
             goTarget.GetComponent<TargetController>().v3DirectionRand = v3DirectionRand;
             goTarget.GetComponent<TargetController>().sObjective = "Random";
-            goTarget.GetComponent<TargetController>().fForce = 300f;
+            // goTarget.GetComponent<TargetController>().fForce = 300f;
+            goTarget.GetComponent<TargetController>().fSpeed = 3f;
             sObjective = "Player";
         }
     }

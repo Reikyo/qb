@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    private float fForce = 1000f;
+    // private float fForce = 1000f;
+    private float fSpeed = 10f;
     private Rigidbody rbPlayer;
     private GameObject goEnemy;
     private GameObject goTarget;
@@ -31,8 +32,10 @@ public class PlayerController : MonoBehaviour
     {
         float inputHorz = Input.GetAxis("Horizontal");
         float inputVert = Input.GetAxis("Vertical");
-        rbPlayer.AddForce(inputHorz * fForce * Time.deltaTime * Vector3.right);
-        rbPlayer.AddForce(inputVert * fForce * Time.deltaTime * Vector3.forward);
+        // rbPlayer.AddForce(inputHorz * fForce * Time.deltaTime * Vector3.right);
+        // rbPlayer.AddForce(inputVert * fForce * Time.deltaTime * Vector3.forward);
+        transform.Translate(inputHorz * fSpeed * Time.deltaTime * Vector3.right);
+        transform.Translate(inputVert * fSpeed * Time.deltaTime * Vector3.forward);
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -42,7 +45,8 @@ public class PlayerController : MonoBehaviour
             if (goTarget.GetComponent<TargetController>().sObjective == "Random")
             {
                 goTarget.GetComponent<TargetController>().sObjective = "Player";
-                goTarget.GetComponent<TargetController>().fForce = 500f;
+                // goTarget.GetComponent<TargetController>().fForce = 500f;
+                goTarget.GetComponent<TargetController>().fSpeed = 5f;
                 goEnemy.GetComponent<EnemyController>().sObjective = "Target";
             }
         }
