@@ -4,57 +4,77 @@ using UnityEngine;
 
 public class EnemyController : MonoBehaviour
 {
-    public bool bOnGround = true;
+    public bool bInPlay = true;
+    public bool bActive = true;
     // private float fForce = 500f;
     private float fSpeed = 6f;
     private Rigidbody rbEnemy;
-    private GameObject goPlayer;
     private GameObject goTarget;
-    public string sObjective = "Target";
+    private GameObject goPlayer;
+    public string sObjective;
 
     // Start is called before the first frame update
     void Start()
     {
         rbEnemy = GetComponent<Rigidbody>();
-        goPlayer = GameObject.Find("Player");
         goTarget = GameObject.Find("Target");
+        goPlayer = GameObject.Find("Player");
+
+        if (goTarget)
+        {
+            sObjective = "Target";
+        }
+        else if (goPlayer)
+        {
+            sObjective = "Player";
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (bOnGround)
+        if (bInPlay && bActive)
         {
-            Move();
+            if ((sObjective == "Target") && goTarget && goTarget.GetComponent<TargetController>().bInPlay)
+            {
+                // Vector3 v3DirectionMove = (goTarget.transform.position - transform.position).normalized;
+                // transform.Translate(fSpeed * Time.deltaTime * v3DirectionMove, Space.World);
+                Move(goTarget.transform.position);
+            }
+            else if ((sObjective == "Player") && goPlayer && goPlayer.GetComponent<PlayerController>().bInPlay)
+            {
+                // Vector3 v3DirectionMove = (goPlayer.transform.position - transform.position).normalized;
+                // transform.Translate(fSpeed * Time.deltaTime * v3DirectionMove, Space.World);
+                Move(goPlayer.transform.position);
+            }
+            else
+            {
+                bActive = false;
+            }
         }
     }
 
-    private void Move()
+    private void Move(Vector3 v3PositionObjective)
     {
-        if ((sObjective == "Target") && goTarget && goTarget.GetComponent<TargetController>().bOnGround)
-        {
-            Vector3 v3Direction = (goTarget.transform.position - transform.position).normalized;
-            // rbEnemy.AddForce(fForce * Time.deltaTime * v3Direction);
-            transform.Translate(fSpeed * Time.deltaTime * v3Direction);
-        }
-        else if ((sObjective == "Player") && goPlayer && goPlayer.GetComponent<PlayerController>().bOnGround)
-        {
-            Vector3 v3Direction = (goPlayer.transform.position - transform.position).normalized;
-            // rbEnemy.AddForce(fForce * Time.deltaTime * v3Direction);
-            transform.Translate(fSpeed * Time.deltaTime * v3Direction);
-        }
+        Vector3 v3DirectionMove = (v3PositionObjective - transform.position).normalized;
+        transform.position = Vector3.MoveTowards(transform.position, v3PositionObjective, fSpeed * Time.deltaTime);
+
+        Vector3 v3DirectionLook = Vector3.RotateTowards(transform.forward, v3DirectionMove, fSpeed * Time.deltaTime, 0f);
+        transform.rotation = Quaternion.LookRotation(v3DirectionLook);
+
+        Debug.DrawRay(transform.position, v3DirectionMove * 10f, Color.red);
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Target"))
+        if (bActive && collision.gameObject.CompareTag("Target"))
         {
             Vector2 v2DirectionRand = Random.insideUnitCircle.normalized * 100f;
-            Vector3 v3DirectionRand = new Vector3(v2DirectionRand.x, 1f, v2DirectionRand.y);
+            Vector3 v3DirectionRand = new Vector3(v2DirectionRand.x, goTarget.transform.position.y, v2DirectionRand.y);
             goTarget.GetComponent<TargetController>().v3DirectionRand = v3DirectionRand;
             goTarget.GetComponent<TargetController>().sObjective = "Random";
             // goTarget.GetComponent<TargetController>().fForce = 300f;
-            goTarget.GetComponent<TargetController>().fSpeed = 3f;
+            goTarget.GetComponent<TargetController>().fSpeed = 2f;
             sObjective = "Player";
         }
     }
@@ -63,7 +83,7 @@ public class EnemyController : MonoBehaviour
     {
         if (other.gameObject.CompareTag("OffGroundTrigger"))
         {
-            bOnGround = false;
+            bInPlay = false;
         }
     }
 }
