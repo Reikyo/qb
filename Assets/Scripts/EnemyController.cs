@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class EnemyController : MonoBehaviour
 {
+    public bool bOnGround = true;
     // private float fForce = 500f;
     private float fSpeed = 6f;
     private Rigidbody rbEnemy;
@@ -22,7 +23,7 @@ public class EnemyController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (GetComponent<DestroyOutOfBounds>().bOnGround)
+        if (bOnGround)
         {
             Move();
         }
@@ -30,13 +31,13 @@ public class EnemyController : MonoBehaviour
 
     private void Move()
     {
-        if ((sObjective == "Target") && goTarget && goTarget.GetComponent<DestroyOutOfBounds>().bOnGround)
+        if ((sObjective == "Target") && goTarget && goTarget.GetComponent<TargetController>().bOnGround)
         {
             Vector3 v3Direction = (goTarget.transform.position - transform.position).normalized;
             // rbEnemy.AddForce(fForce * Time.deltaTime * v3Direction);
             transform.Translate(fSpeed * Time.deltaTime * v3Direction);
         }
-        else if ((sObjective == "Player") && goPlayer && goPlayer.GetComponent<DestroyOutOfBounds>().bOnGround)
+        else if ((sObjective == "Player") && goPlayer && goPlayer.GetComponent<PlayerController>().bOnGround)
         {
             Vector3 v3Direction = (goPlayer.transform.position - transform.position).normalized;
             // rbEnemy.AddForce(fForce * Time.deltaTime * v3Direction);
@@ -55,6 +56,14 @@ public class EnemyController : MonoBehaviour
             // goTarget.GetComponent<TargetController>().fForce = 300f;
             goTarget.GetComponent<TargetController>().fSpeed = 3f;
             sObjective = "Player";
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("OffGroundTrigger"))
+        {
+            bOnGround = false;
         }
     }
 }

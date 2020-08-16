@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    public bool bOnGround = true;
     // private float fForce = 1000f;
     private float fSpeed = 10f;
     private Rigidbody rbPlayer;
@@ -23,7 +24,7 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (GetComponent<DestroyOutOfBounds>().bOnGround)
+        if (bOnGround)
         {
             Move();
         }
@@ -55,7 +56,12 @@ public class PlayerController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("PowerUp"))
+        if (other.gameObject.CompareTag("OffGroundTrigger"))
+        {
+            bOnGround = false;
+            Debug.Log("Game over");
+        }
+        else if (other.gameObject.CompareTag("PowerUp"))
         {
             Destroy(other.gameObject);
             iNumPowerUp += 1;

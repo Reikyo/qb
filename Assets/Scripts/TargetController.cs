@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class TargetController : MonoBehaviour
 {
+    public bool bOnGround = true;
     // public float fForce = 500f;
     public float fSpeed = 5f;
     private Rigidbody rbTarget;
@@ -23,7 +24,7 @@ public class TargetController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (GetComponent<DestroyOutOfBounds>().bOnGround)
+        if (bOnGround)
         {
             Move();
         }
@@ -31,7 +32,7 @@ public class TargetController : MonoBehaviour
 
     private void Move()
     {
-        if ((sObjective == "Player") && goPlayer && goPlayer.GetComponent<DestroyOutOfBounds>().bOnGround)
+        if ((sObjective == "Player") && goPlayer && goPlayer.GetComponent<PlayerController>().bOnGround)
         {
             Vector3 v3Objective = goPlayer.transform.position;
             Vector3 v3Direction = (v3Objective - transform.position).normalized;
@@ -56,7 +57,12 @@ public class TargetController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("SafeZone") && (sObjective == "Player"))
+        if (other.gameObject.CompareTag("OffGroundTrigger"))
+        {
+            bOnGround = false;
+            Debug.Log("Game over");
+        }
+        else if (other.gameObject.CompareTag("SafeZone") && (sObjective == "Player"))
         {
             Destroy(other);
             sObjective = "SafeZone";
