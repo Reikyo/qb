@@ -6,6 +6,7 @@ public class DestroyOutOfBounds : MonoBehaviour
 {
     public bool bOnGround = true;
     private float fZLimit = -100f;
+    private List<string> slistGameOver = new List<string>() {"Player", "Target"};
 
     void Update()
     {
@@ -18,6 +19,10 @@ public class DestroyOutOfBounds : MonoBehaviour
         if (transform.position.y < fZLimit)
         {
             Destroy(gameObject);
+            if (slistGameOver.Contains(gameObject.tag))
+            {
+                Debug.Log("Game over");
+            }
         }
     }
 }

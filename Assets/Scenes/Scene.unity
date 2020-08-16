@@ -862,7 +862,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fForce: 500
-  sObjective: Player
+  sObjective: None
   v3DirectionRand: {x: 0, y: 0, z: 0}
 --- !u!54 &1755632512
 Rigidbody:
