@@ -35,7 +35,7 @@ public class PlayerController : MonoBehaviour
 
             Move(transform.position + ((inputHorz * Vector3.right) + (inputVert * Vector3.forward)).normalized);
 
-            if (Input.GetKeyDown(KeyCode.Space))
+            if ((iNumPowerUp > 0) && Input.GetKeyDown(KeyCode.Space))
             {
                 Instantiate(goProjectile, transform.position + transform.forward, transform.rotation);
             }
