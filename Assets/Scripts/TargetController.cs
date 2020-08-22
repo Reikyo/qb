@@ -19,9 +19,9 @@ public class TargetController : MonoBehaviour
     void Start()
     {
         rbTarget = GetComponent<Rigidbody>();
-        goPlayer = GameObject.Find("Player");
-        goEnemy = GameObject.Find("Enemy");
-        goSafeZone = GameObject.Find("SafeZone");
+        goPlayer = GameObject.FindWithTag("Player");
+        goEnemy = GameObject.FindWithTag("Enemy");
+        goSafeZone = GameObject.FindWithTag("SafeZone");
         sObjective = "None";
     }
 

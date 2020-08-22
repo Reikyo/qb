@@ -17,8 +17,8 @@ public class EnemyController : MonoBehaviour
     void Start()
     {
         rbEnemy = GetComponent<Rigidbody>();
-        goTarget = GameObject.Find("Target");
-        goPlayer = GameObject.Find("Player");
+        goTarget = GameObject.FindWithTag("Target");
+        goPlayer = GameObject.FindWithTag("Player");
 
         if (goTarget)
         {

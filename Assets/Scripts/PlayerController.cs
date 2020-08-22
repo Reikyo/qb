@@ -18,8 +18,8 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         rbPlayer = GetComponent<Rigidbody>();
-        goEnemy = GameObject.Find("Enemy");
-        goTarget = GameObject.Find("Target");
+        goEnemy = GameObject.FindWithTag("Enemy");
+        goTarget = GameObject.FindWithTag("Target");
     }
 
     // Update is called once per frame
