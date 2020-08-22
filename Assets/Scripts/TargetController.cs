@@ -70,13 +70,13 @@ public class TargetController : MonoBehaviour
         if (other.gameObject.CompareTag("OffGroundTrigger"))
         {
             bInPlay = false;
-            goGameManager.GetComponent<GameManager>().bActive = false;
+            goGameManager.GetComponent<GameManager>().GameOver();
             Debug.Log("Game over");
         }
         else if (other.gameObject.CompareTag("SafeZone") && (sObjective == "Player"))
         {
             Destroy(other);
-            goGameManager.GetComponent<GameManager>().bActive = false;
+            goGameManager.GetComponent<GameManager>().GameOver();
             sObjective = "SafeZone";
             Debug.Log("Level cleared");
         }

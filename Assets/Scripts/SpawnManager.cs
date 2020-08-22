@@ -16,10 +16,7 @@ public class SpawnManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        foreach (GameObject go in new List<GameObject>() {goPlayer, goEnemy, goTarget, goPowerUp, goSafeZone})
-        {
-            Instantiate(go, new Vector3(Random.Range(-fXLimitSpawn, fXLimitSpawn), go.transform.position.y, Random.Range(-fZLimitSpawn, fZLimitSpawn)), go.transform.rotation);
-        }
+
     }
 
     // Update is called once per frame
@@ -27,4 +24,20 @@ public class SpawnManager : MonoBehaviour
     {
 
     }
+
+    public void GameStart()
+    {
+        foreach (GameObject go in new List<GameObject>() {goPlayer, goEnemy, goTarget, goPowerUp, goSafeZone})
+        {
+            Instantiate(go, new Vector3(Random.Range(-fXLimitSpawn, fXLimitSpawn), go.transform.position.y, Random.Range(-fZLimitSpawn, fZLimitSpawn)), go.transform.rotation);
+        }
+    }
+
+    // public void GameOver()
+    // {
+    //     foreach (GameObject go in new List<GameObject>() {goPlayer, goEnemy, goTarget, goPowerUp, goSafeZone})
+    //     {
+    //         Destroy(go.gameObject);
+    //     }
+    // }
 }
