@@ -9,8 +9,8 @@ public class TargetController : MonoBehaviour
     // public float fForce = 500f;
     public float fSpeed = 5f;
     private Rigidbody rbTarget;
+    private GameObject goGameManager;
     private GameObject goPlayer;
-    private GameObject goEnemy;
     private GameObject goSafeZone;
     public string sObjective;
     public Vector3 v3DirectionRand;
@@ -19,8 +19,8 @@ public class TargetController : MonoBehaviour
     void Start()
     {
         rbTarget = GetComponent<Rigidbody>();
+        goGameManager = GameObject.Find("Game Manager");
         goPlayer = GameObject.FindWithTag("Player");
-        goEnemy = GameObject.FindWithTag("Enemy");
         goSafeZone = GameObject.FindWithTag("SafeZone");
         sObjective = "None";
     }
@@ -70,12 +70,13 @@ public class TargetController : MonoBehaviour
         if (other.gameObject.CompareTag("OffGroundTrigger"))
         {
             bInPlay = false;
+            goGameManager.GetComponent<GameManager>().bActive = false;
             Debug.Log("Game over");
         }
         else if (other.gameObject.CompareTag("SafeZone") && (sObjective == "Player"))
         {
             Destroy(other);
-            goEnemy.GetComponent<EnemyController>().bActive = false;
+            goGameManager.GetComponent<GameManager>().bActive = false;
             sObjective = "SafeZone";
             Debug.Log("Level cleared");
         }

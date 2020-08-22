@@ -10,15 +10,15 @@ public class SpawnManager : MonoBehaviour
     public GameObject goPowerUp;
     public GameObject goSafeZone;
 
-    private float fXExtent = 20f;
-    private float fZExtent = 20f;
+    private float fXLimitSpawn = 20f;
+    private float fZLimitSpawn = 20f;
 
     // Start is called before the first frame update
     void Start()
     {
         foreach (GameObject go in new List<GameObject>() {goPlayer, goEnemy, goTarget, goPowerUp, goSafeZone})
         {
-            Instantiate(go, new Vector3(Random.Range(-fXExtent, fXExtent), go.transform.position.y, Random.Range(-fZExtent, fZExtent)), go.transform.rotation);
+            Instantiate(go, new Vector3(Random.Range(-fXLimitSpawn, fXLimitSpawn), go.transform.position.y, Random.Range(-fZLimitSpawn, fZLimitSpawn)), go.transform.rotation);
         }
     }
 

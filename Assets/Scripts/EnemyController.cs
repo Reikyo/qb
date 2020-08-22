@@ -8,7 +8,9 @@ public class EnemyController : MonoBehaviour
     public bool bActive = true;
     // private float fForce = 500f;
     private float fSpeed = 6f;
+    private float fWaitTime = 5f;
     private Rigidbody rbEnemy;
+    private GameObject goGameManager;
     private GameObject goTarget;
     private GameObject goPlayer;
     public string sObjective;
@@ -17,6 +19,7 @@ public class EnemyController : MonoBehaviour
     void Start()
     {
         rbEnemy = GetComponent<Rigidbody>();
+        goGameManager = GameObject.Find("Game Manager");
         goTarget = GameObject.FindWithTag("Target");
         goPlayer = GameObject.FindWithTag("Player");
 
@@ -28,12 +31,16 @@ public class EnemyController : MonoBehaviour
         {
             sObjective = "Player";
         }
+        else
+        {
+            sObjective = "None";
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (bInPlay && bActive)
+        if (bInPlay && bActive && goGameManager.GetComponent<GameManager>().bActive)
         {
             if ((sObjective == "Target") && goTarget && goTarget.GetComponent<TargetController>().bInPlay)
             {
@@ -52,6 +59,23 @@ public class EnemyController : MonoBehaviour
                 bActive = false;
             }
         }
+    }
+
+    public void WaitStart()
+    {
+        if (bActive)
+        {
+            StartCoroutine(Wait());
+        }
+    }
+
+    IEnumerator Wait()
+    {
+        // Debug.Log("Wait start");
+        bActive = false;
+        yield return new WaitForSeconds(fWaitTime);
+        bActive = true;
+        // Debug.Log("Wait end");
     }
 
     private void Move(Vector3 v3PositionObjective)

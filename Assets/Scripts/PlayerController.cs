@@ -9,6 +9,7 @@ public class PlayerController : MonoBehaviour
     // private float fForce = 1000f;
     private float fSpeed = 10f;
     private Rigidbody rbPlayer;
+    private GameObject goGameManager;
     private GameObject goEnemy;
     private GameObject goTarget;
     public GameObject goProjectile;
@@ -19,6 +20,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         rbPlayer = GetComponent<Rigidbody>();
+        goGameManager = GameObject.Find("Game Manager");
         goEnemy = GameObject.FindWithTag("Enemy");
         goTarget = GameObject.FindWithTag("Target");
     }
@@ -80,6 +82,7 @@ public class PlayerController : MonoBehaviour
         if (other.gameObject.CompareTag("OffGroundTrigger"))
         {
             bInPlay = false;
+            goGameManager.GetComponent<GameManager>().bActive = false;
             Debug.Log("Game over");
         }
         else if (other.gameObject.CompareTag("PowerUp"))
