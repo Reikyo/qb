@@ -9,6 +9,7 @@ TagManager:
   - PowerUp
   - SafeZone
   - OffGroundTrigger
+  - Projectile
   layers:
   - Default
   - TransparentFX

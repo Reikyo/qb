@@ -11,6 +11,7 @@ public class PlayerController : MonoBehaviour
     private Rigidbody rbPlayer;
     private GameObject goEnemy;
     private GameObject goTarget;
+    public GameObject goProjectile;
     private List<string> slistChangeTargetObjective = new List<string>() {"None", "Random"};
     private int iNumPowerUp = 0;
 
@@ -31,6 +32,11 @@ public class PlayerController : MonoBehaviour
             float inputVert = Input.GetAxis("Vertical");
 
             Move(transform.position + ((inputHorz * Vector3.right) + (inputVert * Vector3.forward)).normalized);
+
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                Instantiate(goProjectile, transform.position + transform.forward, transform.rotation);
+            }
         }
     }
 

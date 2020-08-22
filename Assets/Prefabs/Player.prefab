@@ -126,6 +126,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bInPlay: 1
   bActive: 1
+  goProjectile: {fileID: 3262308912846389460, guid: 7ef6ed067bb4141f99938800b9352366,
+    type: 3}
 --- !u!114 &7604230776194160926
 MonoBehaviour:
   m_ObjectHideFlags: 0
