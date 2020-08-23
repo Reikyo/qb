@@ -67,18 +67,18 @@ public class TargetController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("OffGroundTrigger"))
+        if (other.gameObject.CompareTag("OffGroundTrigger") && goGameManager.GetComponent<GameManager>().bActive)
         {
             bInPlay = false;
             goGameManager.GetComponent<GameManager>().GameOver();
-            Debug.Log("Game over");
+            // Debug.Log("Game over");
         }
         else if (other.gameObject.CompareTag("SafeZone") && (sObjective == "Player"))
         {
             Destroy(other);
-            goGameManager.GetComponent<GameManager>().GameOver();
+            goGameManager.GetComponent<GameManager>().LevelCleared();
             sObjective = "SafeZone";
-            Debug.Log("Level cleared");
+            // Debug.Log("Level cleared");
         }
     }
 }

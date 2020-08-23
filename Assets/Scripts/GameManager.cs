@@ -1,22 +1,25 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using UnityEngine.UI;
+// using UnityEngine.SceneManagement;
+// using UnityEngine.UI;
 // using TMPro;
 
 public class GameManager : MonoBehaviour
 {
-    private GameObject goTitleScreen;
-    private GameObject goSpawnManager;
-    public Button butStart;
+    public GameObject goScreenTitle;
+    public GameObject goScreenLevelCleared;
+    public GameObject goScreenGameOver;
+    public GameObject goSpawnManager;
+    // public Button butStart;
+    // public Button butNextLevel;
+    // public Button butTryAgain;
     public bool bActive = false;
 
     // Start is called before the first frame update
     void Start()
     {
-        goTitleScreen = GameObject.Find("Title Screen");
-        goSpawnManager = GameObject.Find("Spawn Manager");
+
     }
 
     // Update is called once per frame
@@ -25,18 +28,41 @@ public class GameManager : MonoBehaviour
 
     }
 
-    public void GameStart()
+    public void GameStart(string screen)
     {
-        goTitleScreen.SetActive(false);
-        goSpawnManager.GetComponent<SpawnManager>().GameStart();
+        if (screen == "Screen: Title")
+        {
+            goScreenTitle.SetActive(false);
+        }
+        else if (screen == "Screen: Level Cleared")
+        {
+            goScreenLevelCleared.SetActive(false);
+            goSpawnManager.GetComponent<SpawnManager>().Destroy();
+        }
+        else if (screen == "Screen: Game Over")
+        {
+            goScreenGameOver.SetActive(false);
+            goSpawnManager.GetComponent<SpawnManager>().Destroy();
+        }
+        goSpawnManager.GetComponent<SpawnManager>().Instantiate();
         bActive = true;
+    }
+
+    public void LevelCleared()
+    {
+        goScreenLevelCleared.SetActive(true);
+        bActive = false;
     }
 
     public void GameOver()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-        // goTitleScreen.SetActive(true);
-        // goSpawnManager.GetComponent<SpawnManager>().GameOver();
-        // bActive = false;
+        goScreenGameOver.SetActive(true);
+        bActive = false;
     }
+
+    // public void LoadScene()
+    // {
+    //     SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    //     GameStart();
+    // }
 }

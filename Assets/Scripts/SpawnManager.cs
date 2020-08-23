@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class SpawnManager : MonoBehaviour
 {
-    public GameObject goPlayer;
-    public GameObject goEnemy;
-    public GameObject goTarget;
-    public GameObject goPowerUp;
-    public GameObject goSafeZone;
+    public GameObject goPrefabPlayer;
+    public GameObject goPrefabEnemy;
+    public GameObject goPrefabTarget;
+    public GameObject goPrefabPowerUp;
+    public GameObject goPrefabSafeZone;
 
     private float fXLimitSpawn = 20f;
     private float fZLimitSpawn = 20f;
@@ -25,19 +25,24 @@ public class SpawnManager : MonoBehaviour
 
     }
 
-    public void GameStart()
+    public void Instantiate()
     {
-        foreach (GameObject go in new List<GameObject>() {goPlayer, goEnemy, goTarget, goPowerUp, goSafeZone})
+        foreach (GameObject goPrefab in new List<GameObject>() {goPrefabPlayer, goPrefabEnemy, goPrefabTarget, goPrefabPowerUp, goPrefabSafeZone})
         {
-            Instantiate(go, new Vector3(Random.Range(-fXLimitSpawn, fXLimitSpawn), go.transform.position.y, Random.Range(-fZLimitSpawn, fZLimitSpawn)), go.transform.rotation);
+            Instantiate(goPrefab, new Vector3(Random.Range(-fXLimitSpawn, fXLimitSpawn), goPrefab.transform.position.y, Random.Range(-fZLimitSpawn, fZLimitSpawn)), goPrefab.transform.rotation);
         }
     }
 
-    // public void GameOver()
-    // {
-    //     foreach (GameObject go in new List<GameObject>() {goPlayer, goEnemy, goTarget, goPowerUp, goSafeZone})
-    //     {
-    //         Destroy(go.gameObject);
-    //     }
-    // }
+    public void Destroy()
+    {
+        foreach (string sTag in new List<string>() {"Player", "Enemy", "Target", "PowerUp", "SafeZone"})
+        {
+            GameObject go = GameObject.FindWithTag(sTag);
+            if (go)
+            {
+                go.SetActive(false); // We must deactivate all game objects or they will not be found by the FindWithTag method on reload
+                Destroy(go);
+            }
+        }
+    }
 }

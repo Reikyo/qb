@@ -28,7 +28,7 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (bInPlay && bActive)
+        if (bInPlay && bActive && goGameManager.GetComponent<GameManager>().bActive)
         {
             float inputHorz = Input.GetAxis("Horizontal");
             float inputVert = Input.GetAxis("Vertical");
@@ -79,11 +79,11 @@ public class PlayerController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("OffGroundTrigger"))
+        if (other.gameObject.CompareTag("OffGroundTrigger") && goGameManager.GetComponent<GameManager>().bActive)
         {
             bInPlay = false;
             goGameManager.GetComponent<GameManager>().GameOver();
-            Debug.Log("Game over");
+            // Debug.Log("Game over");
         }
         else if (other.gameObject.CompareTag("PowerUp"))
         {
