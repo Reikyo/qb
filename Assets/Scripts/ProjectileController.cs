@@ -18,12 +18,12 @@ public class ProjectileController : MonoBehaviour
         transform.Translate(fSpeed * Time.deltaTime * Vector3.forward);
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider other)
     {
-        if (collision.gameObject.CompareTag("Enemy"))
+        if (other.gameObject.CompareTag("Enemy"))
         {
             // Debug.Log("Hit");
-            collision.gameObject.GetComponent<EnemyController>().WaitStart();
+            other.gameObject.GetComponent<EnemyController>().WaitStart();
             Destroy(gameObject);
         }
     }
