@@ -14,6 +14,7 @@ public class EnemyController : MonoBehaviour
     private GameObject goTarget;
     private GameObject goPlayer;
     public string sObjective;
+    public ParticleSystem psInactive;
 
     // Start is called before the first frame update
     void Start()
@@ -73,7 +74,11 @@ public class EnemyController : MonoBehaviour
     {
         // Debug.Log("Wait start");
         bActive = false;
+        psInactive.Play();
         yield return new WaitForSeconds(fWaitTime);
+        psInactive.Stop();
+        // psInactive.Clear();
+        yield return new WaitForSeconds(7f);
         bActive = true;
         // Debug.Log("Wait end");
     }
