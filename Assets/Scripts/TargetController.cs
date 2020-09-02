@@ -1,3 +1,4 @@
+using System;
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,6 +9,7 @@ public class TargetController : MonoBehaviour
     public bool bActive = true;
     // public float fForce = 500f;
     public float fSpeed = 5f;
+    private float fDistPlayerStop = 2f;
     private Rigidbody rbTarget;
     private GameObject goGameManager;
     private GameObject goPlayer;
@@ -30,7 +32,7 @@ public class TargetController : MonoBehaviour
     {
         if (bInPlay && bActive)
         {
-            if ((sObjective == "Player") && goPlayer && goPlayer.GetComponent<PlayerController>().bInPlay)
+            if ((sObjective == "Player") && goPlayer && goPlayer.GetComponent<PlayerController>().bInPlay && (Math.Abs((goPlayer.transform.position - transform.position).magnitude) > fDistPlayerStop))
             {
                 // Vector3 v3Objective = goPlayer.transform.position;
                 // Vector3 v3Direction = (v3Objective - transform.position).normalized;
