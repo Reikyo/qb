@@ -1,3 +1,4 @@
+using System;
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,6 +10,8 @@ public class PlayerController : MonoBehaviour
     // private float fForce = 1000f;
     private float fSpeed = 10f;
     private Rigidbody rbPlayer;
+    // private Animator anPlayer;
+    public Animator[] anPlayerChildren;
     private GameObject goGameManager;
     private GameObject goEnemy;
     private GameObject goTarget;
@@ -20,6 +23,8 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         rbPlayer = GetComponent<Rigidbody>();
+        // anPlayer = GetComponent<Animator>();
+        // anPlayerChildren = GetComponentsInChildren<Animator>(); // n.b. This only gets the component of the first child in the tree
         goGameManager = GameObject.Find("Game Manager");
         goEnemy = GameObject.FindWithTag("Enemy");
         goTarget = GameObject.FindWithTag("Target");
@@ -33,7 +38,23 @@ public class PlayerController : MonoBehaviour
             float inputHorz = Input.GetAxis("Horizontal");
             float inputVert = Input.GetAxis("Vertical");
 
-            Move(transform.position + ((inputHorz * Vector3.right) + (inputVert * Vector3.forward)).normalized);
+            if (Math.Abs(inputHorz) + Math.Abs(inputVert) > 0f)
+            {
+                foreach (Animator anPlayerChild in anPlayerChildren)
+                {
+                    anPlayerChild.SetFloat("fSpeed", 1f);
+                }
+                // anPlayer.SetFloat("Speed_f", 1f);
+                Move(transform.position + ((inputHorz * Vector3.right) + (inputVert * Vector3.forward)).normalized);
+            }
+            else
+            {
+                foreach (Animator anPlayerChild in anPlayerChildren)
+                {
+                    anPlayerChild.SetFloat("fSpeed", 0f);
+                }
+                // anPlayer.SetFloat("Speed_f", 0f);
+            }
 
             if ((iNumPowerUp > 0) && Input.GetKeyDown(KeyCode.Space))
             {

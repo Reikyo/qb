@@ -597,7 +597,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 0f96879309da145e09d0db33ab560632, type: 2}
+  - {fileID: 2100000, guid: 936aa99100ff34321bb5a36015d6b799, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -734,7 +734,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: abd9a27ff3c9b4ac581f506694ee90c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  goPrefabPlayer: {fileID: 7604230776194160935, guid: 2eeeeac8adb0d41b1822fd57f9b8d97f,
+  goPrefabPlayer: {fileID: 4565725773773171793, guid: 8915947d6eda34b20b505542ef5ee83c,
     type: 3}
   goPrefabEnemy: {fileID: 4384975971741588731, guid: 8174ea1660cfd4ae2a5d531fb4f276db,
     type: 3}
@@ -1615,7 +1615,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: -100}
-  m_SizeDelta: {x: 160, y: 80}
+  m_SizeDelta: {x: 150, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1050084528
 MonoBehaviour:
@@ -1945,7 +1945,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: -100}
-  m_SizeDelta: {x: 160, y: 80}
+  m_SizeDelta: {x: 150, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1515140864
 MonoBehaviour:
@@ -2070,7 +2070,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: -100}
-  m_SizeDelta: {x: 160, y: 80}
+  m_SizeDelta: {x: 150, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1599348682
 MonoBehaviour:
