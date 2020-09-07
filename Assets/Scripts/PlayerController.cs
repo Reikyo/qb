@@ -61,6 +61,13 @@ public class PlayerController : MonoBehaviour
                 Instantiate(goProjectile, transform.position + transform.forward, transform.rotation);
             }
         }
+        else
+        {
+            foreach (Animator anPlayerChild in anPlayerChildren)
+            {
+                anPlayerChild.SetFloat("fSpeed", 0f);
+            }
+        }
     }
 
     private void Move(Vector3 v3PositionObjective)

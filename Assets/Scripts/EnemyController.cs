@@ -10,6 +10,7 @@ public class EnemyController : MonoBehaviour
     private float fSpeed = 6f;
     private float fWaitTime = 5f;
     private Rigidbody rbEnemy;
+    private Animator anEnemy;
     private GameObject goGameManager;
     private GameObject goTarget;
     private GameObject goPlayer;
@@ -20,6 +21,7 @@ public class EnemyController : MonoBehaviour
     void Start()
     {
         rbEnemy = GetComponent<Rigidbody>();
+        anEnemy = GetComponent<Animator>();
         goGameManager = GameObject.Find("Game Manager");
         goTarget = GameObject.FindWithTag("Target");
         goPlayer = GameObject.FindWithTag("Player");
@@ -58,7 +60,16 @@ public class EnemyController : MonoBehaviour
             else
             {
                 bActive = false;
+                anEnemy.SetBool("bWalkForward", false);
+                anEnemy.ResetTrigger("tAttack1");
+                anEnemy.ResetTrigger("tAttack2");
             }
+        }
+        else if (anEnemy.GetBool("bWalkForward") && (!bInPlay || !goGameManager.GetComponent<GameManager>().bActive))
+        {
+            anEnemy.SetBool("bWalkForward", false);
+            anEnemy.ResetTrigger("tAttack1");
+            anEnemy.ResetTrigger("tAttack2");
         }
     }
 
@@ -72,15 +83,16 @@ public class EnemyController : MonoBehaviour
 
     IEnumerator Wait()
     {
-        // Debug.Log("Wait start");
         bActive = false;
+        anEnemy.SetBool("bSleep", true);
+        anEnemy.ResetTrigger("tAttack1");
+        anEnemy.ResetTrigger("tAttack2");
         psInactive.Play();
         yield return new WaitForSeconds(fWaitTime);
         psInactive.Stop();
-        // psInactive.Clear();
         yield return new WaitForSeconds(7f);
+        anEnemy.SetBool("bSleep", false);
         bActive = true;
-        // Debug.Log("Wait end");
     }
 
     private void Move(Vector3 v3PositionObjective)
@@ -98,6 +110,7 @@ public class EnemyController : MonoBehaviour
     {
         if (bActive && collision.gameObject.CompareTag("Target"))
         {
+            anEnemy.SetTrigger("tAttack1");
             Vector2 v2DirectionRand = Random.insideUnitCircle.normalized * 100f;
             Vector3 v3DirectionRand = new Vector3(v2DirectionRand.x, goTarget.transform.position.y, v2DirectionRand.y);
             goTarget.GetComponent<TargetController>().v3DirectionRand = v3DirectionRand;
@@ -105,6 +118,10 @@ public class EnemyController : MonoBehaviour
             // goTarget.GetComponent<TargetController>().fForce = 300f;
             goTarget.GetComponent<TargetController>().fSpeed = 2f;
             sObjective = "Player";
+        }
+        else if (bActive && collision.gameObject.CompareTag("Player"))
+        {
+            anEnemy.SetTrigger("tAttack2");
         }
     }
 

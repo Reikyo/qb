@@ -9,7 +9,7 @@ public class TargetController : MonoBehaviour
     public bool bActive = true;
     // public float fForce = 500f;
     public float fSpeed = 5f;
-    private float fDistPlayerStop = 2f;
+    private float fDistPlayerStop = 5f;
     private Rigidbody rbTarget;
     private GameObject goGameManager;
     private GameObject goPlayer;

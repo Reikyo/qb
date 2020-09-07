@@ -734,11 +734,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: abd9a27ff3c9b4ac581f506694ee90c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  goPrefabPlayer: {fileID: 4565725773773171793, guid: 8915947d6eda34b20b505542ef5ee83c,
+  goPrefabPlayer: {fileID: 3392472054826394281, guid: 31ff2d51937784c159e46cd7c8b6c19c,
     type: 3}
-  goPrefabEnemy: {fileID: 4384975971741588731, guid: 8174ea1660cfd4ae2a5d531fb4f276db,
+  goPrefabEnemy: {fileID: 8840784545660533351, guid: 1b84f8cfac1624a5c946b3409af794eb,
     type: 3}
-  goPrefabTarget: {fileID: 45439194775337888, guid: 118fe7d325f8b4a2a9bc223222bcf7e0,
+  goPrefabTarget: {fileID: 8205446895056310267, guid: 35c7ffdb826134ed99ef78a7912483ec,
     type: 3}
   goPrefabPowerUp: {fileID: 1018675173185206068, guid: d97787738d3404876b6f2f032b566af0,
     type: 3}
