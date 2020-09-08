@@ -73,14 +73,12 @@ public class TargetController : MonoBehaviour
         {
             bInPlay = false;
             goGameManager.GetComponent<GameManager>().GameOver();
-            // Debug.Log("Game over");
         }
         else if (other.gameObject.CompareTag("SafeZone") && (sObjective == "Player"))
         {
             Destroy(other);
             goGameManager.GetComponent<GameManager>().LevelCleared();
             sObjective = "SafeZone";
-            // Debug.Log("Level cleared");
         }
     }
 }

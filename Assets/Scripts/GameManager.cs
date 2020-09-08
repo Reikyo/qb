@@ -20,11 +20,17 @@ public class GameManager : MonoBehaviour
     private int iLevel;
     public TextMeshProUGUI guiLevel;
 
+    private AudioSource sfxsrcGameManager;
+    public AudioClip sfxclpButton;
+    public AudioClip sfxclpLevelCleared;
+    public AudioClip sfxclpGameOver;
+
     // Start is called before the first frame update
     void Start()
     {
         iLevel = 0;
         guiLevel.text = iLevel.ToString();
+        sfxsrcGameManager = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -35,6 +41,7 @@ public class GameManager : MonoBehaviour
 
     public void GameStart(string screen)
     {
+        sfxsrcGameManager.PlayOneShot(sfxclpButton);
         if (screen == "Screen: Title")
         {
             goScreenTitle.SetActive(false);
@@ -60,12 +67,14 @@ public class GameManager : MonoBehaviour
     {
         goScreenLevelCleared.SetActive(true);
         bActive = false;
+        sfxsrcGameManager.PlayOneShot(sfxclpLevelCleared);
     }
 
     public void GameOver()
     {
         goScreenGameOver.SetActive(true);
         bActive = false;
+        sfxsrcGameManager.PlayOneShot(sfxclpGameOver);
     }
 
     // public void LoadScene()

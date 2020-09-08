@@ -16,12 +16,18 @@ public class EnemyController : MonoBehaviour
     private GameObject goPlayer;
     public string sObjective;
     public ParticleSystem psInactive;
+    private AudioSource sfxsrcEnemy;
+    public AudioClip sfxclpEnemyAttack1;
+    public AudioClip sfxclpEnemyAttack2;
+    public AudioClip sfxclpEnemySleep;
+    public AudioClip sfxclpTargetObjectiveRandom;
 
     // Start is called before the first frame update
     void Start()
     {
         rbEnemy = GetComponent<Rigidbody>();
         anEnemy = GetComponent<Animator>();
+        sfxsrcEnemy = GetComponent<AudioSource>();
         goGameManager = GameObject.Find("Game Manager");
         goTarget = GameObject.FindWithTag("Target");
         goPlayer = GameObject.FindWithTag("Player");
@@ -87,6 +93,7 @@ public class EnemyController : MonoBehaviour
         anEnemy.SetBool("bSleep", true);
         anEnemy.ResetTrigger("tAttack1");
         anEnemy.ResetTrigger("tAttack2");
+        sfxsrcEnemy.PlayOneShot(sfxclpEnemySleep);
         psInactive.Play();
         yield return new WaitForSeconds(fWaitTime);
         psInactive.Stop();
@@ -111,6 +118,8 @@ public class EnemyController : MonoBehaviour
         if (bActive && collision.gameObject.CompareTag("Target"))
         {
             anEnemy.SetTrigger("tAttack1");
+            sfxsrcEnemy.PlayOneShot(sfxclpEnemyAttack1);
+            sfxsrcEnemy.PlayOneShot(sfxclpTargetObjectiveRandom);
             Vector2 v2DirectionRand = Random.insideUnitCircle.normalized * 100f;
             Vector3 v3DirectionRand = new Vector3(v2DirectionRand.x, goTarget.transform.position.y, v2DirectionRand.y);
             goTarget.GetComponent<TargetController>().v3DirectionRand = v3DirectionRand;
@@ -122,6 +131,7 @@ public class EnemyController : MonoBehaviour
         else if (bActive && collision.gameObject.CompareTag("Player"))
         {
             anEnemy.SetTrigger("tAttack2");
+            sfxsrcEnemy.PlayOneShot(sfxclpEnemyAttack2);
         }
     }
 

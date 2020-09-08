@@ -19,10 +19,14 @@ public class PlayerController : MonoBehaviour
     private List<string> slistChangeTargetObjective = new List<string>() {"None", "Random"};
     private int iNumPowerUp = 0;
 
+    private AudioSource sfxsrcPlayer;
+    public AudioClip sfxclpTargetObjectivePlayer;
+
     // Start is called before the first frame update
     void Start()
     {
         rbPlayer = GetComponent<Rigidbody>();
+        sfxsrcPlayer = GetComponent<AudioSource>();
         // anPlayer = GetComponent<Animator>();
         // anPlayerChildren = GetComponentsInChildren<Animator>(); // n.b. This only gets the component of the first child in the tree
         goGameManager = GameObject.Find("Game Manager");
@@ -97,6 +101,7 @@ public class PlayerController : MonoBehaviour
         {
             if (slistChangeTargetObjective.Contains(goTarget.GetComponent<TargetController>().sObjective))
             {
+                sfxsrcPlayer.PlayOneShot(sfxclpTargetObjectivePlayer);
                 goTarget.GetComponent<TargetController>().sObjective = "Player";
                 // goTarget.GetComponent<TargetController>().fForce = 500f;
                 goTarget.GetComponent<TargetController>().fSpeed = 5f;
