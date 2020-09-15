@@ -26,5 +26,9 @@ public class ProjectileController : MonoBehaviour
             other.gameObject.GetComponent<EnemyController>().WaitStart();
             Destroy(gameObject);
         }
+        else if (other.gameObject.CompareTag("Obstacle"))
+        {
+            Destroy(gameObject);
+        }
     }
 }

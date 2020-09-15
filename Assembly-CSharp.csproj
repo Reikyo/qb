@@ -63,6 +63,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Asset Store\Characters\Razgrizzz Demon\RobotSphere\Assets\Scripts\RobotFreeAnim.cs" />
+    <Compile Include="Assets\Scripts\CubeController.cs" />
     <Compile Include="Assets\Scripts\DestroyOutOfBounds.cs" />
     <Compile Include="Assets\Scripts\EnemyController.cs" />
     <Compile Include="Assets\Scripts\GameManager.cs" />
@@ -103,10 +105,12 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexShakeB.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexZoom.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\WarpTextExample.cs" />
+    <None Include="Assets\Asset Store\Environment\Scrollbie Studio\Minimalist Free v2.4.2\Shaders\Minimalist Sky.shader" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Surface-Mobile.shader" />
     <None Include="Assets\TextMesh Pro\Resources\LineBreaking Leading Characters.txt" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMPro_Properties.cginc" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_Bitmap-Custom-Atlas.shader" />
+    <None Include="Assets\Asset Store\Environment\Scrollbie Studio\Minimalist Free v2.4.2\Documentation\Readme.txt" />
     <None Include="Assets\TextMesh Pro\Examples &amp; Extras\Fonts\Oswald-Bold - OFL.txt" />
     <None Include="Assets\TextMesh Pro\Resources\LineBreaking Following Characters.txt" />
     <None Include="Assets\TextMesh Pro\Sprites\EmojiOne Attribution.txt" />
@@ -119,9 +123,11 @@
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMPro_Surface.cginc" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Mobile Overlay.shader" />
     <None Include="Assets\Asset Store\Characters\JJ Studio\Casual Tiny Slime Character - NPC Pack\Readme.txt" />
+    <None Include="Assets\Asset Store\Environment\Scrollbie Studio\Minimalist Free v2.4.2\Shaders\BuiltInRenderPipeline\Minimalist Standard.shader" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_Bitmap.shader" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMPro.cginc" />
     <None Include="Assets\Asset Store\Characters\JJ Studio\Oriental Fantasy Character - Berserker Grade 0\Readme.txt" />
+    <None Include="Assets\Asset Store\Environment\Scrollbie Studio\Minimalist Free v2.4.2\Shaders\BuiltInRenderPipeline\Minimalist Standard LocalSpace.shader" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF.shader" />
     <None Include="Assets\Asset Store\Characters\Bitgem\Micro-Dragon-Fino\Animations\_micro_dragon_animations.txt" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Mobile.shader" />

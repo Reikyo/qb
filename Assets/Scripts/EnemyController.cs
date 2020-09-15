@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class EnemyController : MonoBehaviour
 {
@@ -11,6 +12,7 @@ public class EnemyController : MonoBehaviour
     private float fWaitTime = 5f;
     private Rigidbody rbEnemy;
     private Animator anEnemy;
+    private NavMeshAgent navEnemy;
     private GameObject goGameManager;
     private GameObject goTarget;
     private GameObject goPlayer;
@@ -27,6 +29,7 @@ public class EnemyController : MonoBehaviour
     {
         rbEnemy = GetComponent<Rigidbody>();
         anEnemy = GetComponent<Animator>();
+        navEnemy = GetComponent<NavMeshAgent>();
         sfxsrcEnemy = GetComponent<AudioSource>();
         goGameManager = GameObject.Find("Game Manager");
         goTarget = GameObject.FindWithTag("Target");
@@ -55,17 +58,20 @@ public class EnemyController : MonoBehaviour
             {
                 // Vector3 v3DirectionMove = (goTarget.transform.position - transform.position).normalized;
                 // transform.Translate(fSpeed * Time.deltaTime * v3DirectionMove, Space.World);
-                Move(goTarget.transform.position);
+                // Move(goTarget.transform.position);
+                navEnemy.destination = goTarget.transform.position;
             }
             else if ((sObjective == "Player") && goPlayer && goPlayer.GetComponent<PlayerController>().bInPlay)
             {
                 // Vector3 v3DirectionMove = (goPlayer.transform.position - transform.position).normalized;
                 // transform.Translate(fSpeed * Time.deltaTime * v3DirectionMove, Space.World);
-                Move(goPlayer.transform.position);
+                // Move(goPlayer.transform.position);
+                navEnemy.destination = goPlayer.transform.position;
             }
             else
             {
                 bActive = false;
+                navEnemy.destination = transform.position;
                 anEnemy.SetBool("bWalkForward", false);
                 anEnemy.ResetTrigger("tAttack1");
                 anEnemy.ResetTrigger("tAttack2");
@@ -73,6 +79,7 @@ public class EnemyController : MonoBehaviour
         }
         else if (anEnemy.GetBool("bWalkForward") && (!bInPlay || !goGameManager.GetComponent<GameManager>().bActive))
         {
+            navEnemy.destination = transform.position;
             anEnemy.SetBool("bWalkForward", false);
             anEnemy.ResetTrigger("tAttack1");
             anEnemy.ResetTrigger("tAttack2");
@@ -90,6 +97,7 @@ public class EnemyController : MonoBehaviour
     IEnumerator Wait()
     {
         bActive = false;
+        navEnemy.destination = transform.position;
         anEnemy.SetBool("bSleep", true);
         anEnemy.ResetTrigger("tAttack1");
         anEnemy.ResetTrigger("tAttack2");

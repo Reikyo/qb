@@ -10,6 +10,7 @@ TagManager:
   - SafeZone
   - OffGroundTrigger
   - Projectile
+  - Obstacle
   layers:
   - Default
   - TransparentFX

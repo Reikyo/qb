@@ -62,7 +62,7 @@ public class PlayerController : MonoBehaviour
 
             if ((iNumPowerUp > 0) && Input.GetKeyDown(KeyCode.Space))
             {
-                Instantiate(goProjectile, transform.position + transform.forward, transform.rotation);
+                Instantiate(goProjectile, goProjectile.transform.position + transform.position + transform.forward, transform.rotation);
             }
         }
         else

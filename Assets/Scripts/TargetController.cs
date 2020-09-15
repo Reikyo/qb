@@ -2,6 +2,7 @@ using System;
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class TargetController : MonoBehaviour
 {
@@ -11,6 +12,7 @@ public class TargetController : MonoBehaviour
     public float fSpeed = 5f;
     private float fDistPlayerStop = 5f;
     private Rigidbody rbTarget;
+    private NavMeshAgent navTarget;
     private GameObject goGameManager;
     private GameObject goPlayer;
     private GameObject goSafeZone;
@@ -21,6 +23,7 @@ public class TargetController : MonoBehaviour
     void Start()
     {
         rbTarget = GetComponent<Rigidbody>();
+        navTarget = GetComponent<NavMeshAgent>();
         goGameManager = GameObject.Find("Game Manager");
         goPlayer = GameObject.FindWithTag("Player");
         goSafeZone = GameObject.FindWithTag("SafeZone");
@@ -37,21 +40,28 @@ public class TargetController : MonoBehaviour
                 // Vector3 v3Objective = goPlayer.transform.position;
                 // Vector3 v3Direction = (v3Objective - transform.position).normalized;
                 // transform.Translate(fSpeed * Time.deltaTime * v3Direction, Space.World);
-                Move(goPlayer.transform.position);
+                // Move(goPlayer.transform.position);
+                navTarget.destination = goPlayer.transform.position;
             }
             else if (sObjective == "Random")
             {
                 // Vector3 v3Objective = v3DirectionRand;
                 // Vector3 v3Direction = (v3Objective - transform.position).normalized;
                 // transform.Translate(fSpeed * Time.deltaTime * v3Direction, Space.World);
-                Move(transform.position + v3DirectionRand);
+                // Move(transform.position + v3DirectionRand);
+                navTarget.destination = new Vector3(-50f, transform.position.y, -50f);
             }
             else if (sObjective == "SafeZone")
             {
                 // Vector3 v3Objective = new Vector3(goSafeZone.transform.position.x, 1f, goSafeZone.transform.position.z);
                 // Vector3 v3Direction = (v3Objective - transform.position).normalized;
                 // transform.Translate(fSpeed * Time.deltaTime * v3Direction, Space.World);
-                Move(new Vector3(goSafeZone.transform.position.x, transform.position.y, goSafeZone.transform.position.z));
+                // Move(new Vector3(goSafeZone.transform.position.x, transform.position.y, goSafeZone.transform.position.z));
+                navTarget.destination = new Vector3(goSafeZone.transform.position.x, transform.position.y, goSafeZone.transform.position.z);
+            }
+            else
+            {
+                navTarget.destination = transform.position;
             }
         }
     }
