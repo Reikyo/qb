@@ -29,7 +29,7 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        iLevel = 0;
+        iLevel = 1;
         guiLevel.text = iLevel.ToString();
         sfxsrcGameManager = GetComponent<AudioSource>();
     }
@@ -55,7 +55,8 @@ public class GameManager : MonoBehaviour
             guiLevel.text = iLevel.ToString();
             goScreenLevelCleared.SetActive(false);
             goSpawnManager.GetComponent<SpawnManager>().Destroy();
-            goCube.GetComponent<CubeController>().fNextLevelStart = goCube.GetComponent<CubeController>().transform.eulerAngles.z + 90f;
+            goCube.GetComponent<CubeController>().bNextLevelStart = true;
+            goCube.GetComponent<CubeController>().fNextLevelStartCondition = goCube.GetComponent<CubeController>().transform.eulerAngles.z + 90f;
         }
         else if (screen == "Screen: Game Over")
         {

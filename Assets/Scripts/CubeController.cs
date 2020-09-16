@@ -16,11 +16,14 @@ public class CubeController : MonoBehaviour
     private float fSpeedZ;
     private float fAngularSpeed;
     public bool bGameStart = false;
-    private int iGameStarted = 0;
-    public float fNextLevelStart = 0f;
-    private bool bNextLevelStarted = false;
+    private int iGameStartCondition = 0;
+    public bool bNextLevelStart = false;
+    public float fNextLevelStartCondition = 0f;
+    private bool bLevelStarted = false;
     public GameObject goSpawnManager;
     public GameObject[] goObstacles;
+
+    // ------------------------------------------------------------------------------------------------
 
     // Start is called before the first frame update
     void Start()
@@ -32,9 +35,14 @@ public class CubeController : MonoBehaviour
         transform.eulerAngles = new Vector3(237.5f, 0f, 0f);
     }
 
+    // ------------------------------------------------------------------------------------------------
+
     // Update is called once per frame
     void Update()
     {
+
+        // ------------------------------------------------------------------------------------------------
+
         if (bGameStart)
         {
             if (transform.position.y < -25f)
@@ -43,7 +51,7 @@ public class CubeController : MonoBehaviour
             }
             else
             {
-                iGameStarted += 1;
+                iGameStartCondition += 1;
             }
             if (transform.position.z > 0f)
             {
@@ -51,7 +59,7 @@ public class CubeController : MonoBehaviour
             }
             else
             {
-                iGameStarted += 1;
+                iGameStartCondition += 1;
             }
             if (transform.rotation.x > 0f)
             {
@@ -59,46 +67,60 @@ public class CubeController : MonoBehaviour
             }
             else
             {
-                iGameStarted += 1;
+                iGameStartCondition += 1;
             }
-        }
-        if (iGameStarted == 3)
-        {
-            bGameStart = false;
-            iGameStarted = 0;
-            transform.position = new Vector3(0f, -25f, 0f);
-            transform.eulerAngles = new Vector3(0f, 0f, 0f);
-            foreach (GameObject goObstacle in goObstacles)
+            if (iGameStartCondition == 3)
             {
-                goObstacle.SetActive(true);
+                transform.position = new Vector3(0f, -25f, 0f);
+                transform.eulerAngles = new Vector3(0f, 0f, 0f);
+                bGameStart = false;
+                bLevelStarted = true;
             }
-            goSpawnManager.GetComponent<SpawnManager>().Instantiate();
         }
-        if (fNextLevelStart > 0f)
+
+        // ------------------------------------------------------------------------------------------------
+
+        if (bNextLevelStart)
         {
             foreach (GameObject goObstacle in goObstacles)
             {
                 goObstacle.SetActive(false);
             }
-            if (transform.eulerAngles.z < fNextLevelStart)
+            if (transform.eulerAngles.z < (fNextLevelStartCondition - (fAngularSpeed * Time.deltaTime)))
             {
                 transform.Rotate(0f, 0f, fAngularSpeed * Time.deltaTime, Space.World);
             }
             else
             {
-                transform.eulerAngles = new Vector3(0f, 0f, 90f);
-                fNextLevelStart = 0f;
-                bNextLevelStarted = true;
+                transform.eulerAngles = new Vector3(0f, 0f, fNextLevelStartCondition);
+                bNextLevelStart = false;
+                bLevelStarted = true;
             }
         }
-        if (bNextLevelStarted)
+
+        // ------------------------------------------------------------------------------------------------
+
+        if (bLevelStarted)
         {
-            bNextLevelStarted = false;
-            foreach (GameObject goObstacle in goObstacles)
-            {
-                goObstacle.SetActive(true);
-            }
-            goSpawnManager.GetComponent<SpawnManager>().Instantiate();
+            bLevelStarted = false;
+            GameStart();
         }
+
+        // ------------------------------------------------------------------------------------------------
+
     }
+
+    // ------------------------------------------------------------------------------------------------
+
+    private void GameStart()
+    {
+        foreach (GameObject goObstacle in goObstacles)
+        {
+            goObstacle.SetActive(true);
+        }
+        goSpawnManager.GetComponent<SpawnManager>().Instantiate();
+    }
+
+    // ------------------------------------------------------------------------------------------------
+
 }
