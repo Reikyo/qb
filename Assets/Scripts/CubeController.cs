@@ -16,7 +16,9 @@ public class CubeController : MonoBehaviour
     private float fSpeedZ;
     private float fAngularSpeed;
     public bool bGameStart = false;
-    private int iGameStart = 0;
+    private int iGameStarted = 0;
+    public float fNextLevelStart = 0f;
+    private bool bNextLevelStarted = false;
     public GameObject goSpawnManager;
     public GameObject[] goObstacles;
 
@@ -41,7 +43,7 @@ public class CubeController : MonoBehaviour
             }
             else
             {
-                iGameStart += 1;
+                iGameStarted += 1;
             }
             if (transform.position.z > 0f)
             {
@@ -49,7 +51,7 @@ public class CubeController : MonoBehaviour
             }
             else
             {
-                iGameStart += 1;
+                iGameStarted += 1;
             }
             if (transform.rotation.x > 0f)
             {
@@ -57,19 +59,44 @@ public class CubeController : MonoBehaviour
             }
             else
             {
-                iGameStart += 1;
+                iGameStarted += 1;
             }
         }
-        if (iGameStart == 3)
+        if (iGameStarted == 3)
         {
             bGameStart = false;
-            iGameStart = 0;
+            iGameStarted = 0;
             transform.position = new Vector3(0f, -25f, 0f);
             transform.eulerAngles = new Vector3(0f, 0f, 0f);
             foreach (GameObject goObstacle in goObstacles)
             {
                 goObstacle.SetActive(true);
-                // Instantiate(goObstacle, goObstacle.transform.position, goObstacle.transform.rotation);
+            }
+            goSpawnManager.GetComponent<SpawnManager>().Instantiate();
+        }
+        if (fNextLevelStart > 0f)
+        {
+            foreach (GameObject goObstacle in goObstacles)
+            {
+                goObstacle.SetActive(false);
+            }
+            if (transform.eulerAngles.z < fNextLevelStart)
+            {
+                transform.Rotate(0f, 0f, fAngularSpeed * Time.deltaTime, Space.World);
+            }
+            else
+            {
+                transform.eulerAngles = new Vector3(0f, 0f, 90f);
+                fNextLevelStart = 0f;
+                bNextLevelStarted = true;
+            }
+        }
+        if (bNextLevelStarted)
+        {
+            bNextLevelStarted = false;
+            foreach (GameObject goObstacle in goObstacles)
+            {
+                goObstacle.SetActive(true);
             }
             goSpawnManager.GetComponent<SpawnManager>().Instantiate();
         }

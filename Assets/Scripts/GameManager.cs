@@ -55,7 +55,7 @@ public class GameManager : MonoBehaviour
             guiLevel.text = iLevel.ToString();
             goScreenLevelCleared.SetActive(false);
             goSpawnManager.GetComponent<SpawnManager>().Destroy();
-            goSpawnManager.GetComponent<SpawnManager>().Instantiate();
+            goCube.GetComponent<CubeController>().fNextLevelStart = goCube.GetComponent<CubeController>().transform.eulerAngles.z + 90f;
         }
         else if (screen == "Screen: Game Over")
         {
