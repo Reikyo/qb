@@ -11,7 +11,7 @@ public class EnemyController : MonoBehaviour
     private float fSpeed = 6f;
     private float fWaitTime = 5f;
     private Rigidbody rbEnemy;
-    private Animator anEnemy;
+    // private Animator anEnemy;
     private NavMeshAgent navEnemy;
     private GameObject goGameManager;
     private GameObject goTarget;
@@ -28,7 +28,7 @@ public class EnemyController : MonoBehaviour
     void Start()
     {
         rbEnemy = GetComponent<Rigidbody>();
-        anEnemy = GetComponent<Animator>();
+        // anEnemy = GetComponent<Animator>();
         navEnemy = GetComponent<NavMeshAgent>();
         sfxsrcEnemy = GetComponent<AudioSource>();
         goGameManager = GameObject.Find("Game Manager");
@@ -72,17 +72,18 @@ public class EnemyController : MonoBehaviour
             {
                 bActive = false;
                 navEnemy.destination = transform.position;
-                anEnemy.SetBool("bWalkForward", false);
-                anEnemy.ResetTrigger("tAttack1");
-                anEnemy.ResetTrigger("tAttack2");
+                // anEnemy.SetBool("bWalkForward", false);
+                // anEnemy.ResetTrigger("tAttack1");
+                // anEnemy.ResetTrigger("tAttack2");
             }
         }
-        else if (anEnemy.GetBool("bWalkForward") && (!bInPlay || !goGameManager.GetComponent<GameManager>().bActive))
+        // else if (anEnemy.GetBool("bWalkForward") && (!bInPlay || !goGameManager.GetComponent<GameManager>().bActive))
+        else if (!bInPlay || !goGameManager.GetComponent<GameManager>().bActive)
         {
             navEnemy.destination = transform.position;
-            anEnemy.SetBool("bWalkForward", false);
-            anEnemy.ResetTrigger("tAttack1");
-            anEnemy.ResetTrigger("tAttack2");
+            // anEnemy.SetBool("bWalkForward", false);
+            // anEnemy.ResetTrigger("tAttack1");
+            // anEnemy.ResetTrigger("tAttack2");
         }
     }
 
@@ -98,15 +99,15 @@ public class EnemyController : MonoBehaviour
     {
         bActive = false;
         navEnemy.destination = transform.position;
-        anEnemy.SetBool("bSleep", true);
-        anEnemy.ResetTrigger("tAttack1");
-        anEnemy.ResetTrigger("tAttack2");
+        // anEnemy.SetBool("bSleep", true);
+        // anEnemy.ResetTrigger("tAttack1");
+        // anEnemy.ResetTrigger("tAttack2");
         sfxsrcEnemy.PlayOneShot(sfxclpEnemySleep);
         psInactive.Play();
         yield return new WaitForSeconds(fWaitTime);
         psInactive.Stop();
         yield return new WaitForSeconds(7f);
-        anEnemy.SetBool("bSleep", false);
+        // anEnemy.SetBool("bSleep", false);
         bActive = true;
     }
 
@@ -125,7 +126,7 @@ public class EnemyController : MonoBehaviour
     {
         if (bActive && collision.gameObject.CompareTag("Target"))
         {
-            anEnemy.SetTrigger("tAttack1");
+            // anEnemy.SetTrigger("tAttack1");
             sfxsrcEnemy.PlayOneShot(sfxclpEnemyAttack1);
             sfxsrcEnemy.PlayOneShot(sfxclpTargetObjectiveRandom);
             Vector2 v2DirectionRand = Random.insideUnitCircle.normalized * 100f;
@@ -138,7 +139,7 @@ public class EnemyController : MonoBehaviour
         }
         else if (bActive && collision.gameObject.CompareTag("Player"))
         {
-            anEnemy.SetTrigger("tAttack2");
+            // anEnemy.SetTrigger("tAttack2");
             sfxsrcEnemy.PlayOneShot(sfxclpEnemyAttack2);
         }
     }

@@ -97,7 +97,7 @@ NavMeshSettings:
   m_BuildSettings:
     serializedVersion: 2
     agentTypeID: 0
-    agentRadius: 2
+    agentRadius: 1
     agentHeight: 2
     agentSlope: 45
     agentClimb: 0.4
@@ -105,7 +105,7 @@ NavMeshSettings:
     maxJumpAcrossDistance: 0
     minRegionArea: 2
     manualCellSize: 0
-    cellSize: 0.6666667
+    cellSize: 0.33333334
     manualTileSize: 0
     tileSize: 256
     accuratePlacement: 0
@@ -471,7 +471,7 @@ Transform:
   m_LocalScale: {x: 100, y: 1, z: 100}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 16
+  m_RootOrder: 15
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &370076739
 GameObject:
@@ -719,7 +719,7 @@ Transform:
   m_LocalScale: {x: 20, y: 1, z: 20}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 15
+  m_RootOrder: 14
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &469806230
 GameObject:
@@ -1315,11 +1315,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: abd9a27ff3c9b4ac581f506694ee90c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  goPrefabPlayer: {fileID: 3392472054826394281, guid: 31ff2d51937784c159e46cd7c8b6c19c,
+  goPrefabPlayer: {fileID: 1771335333213938881, guid: aea832b32a5bc47f3b8b7af04aab5d75,
     type: 3}
-  goPrefabEnemy: {fileID: 8840784545660533351, guid: 1b84f8cfac1624a5c946b3409af794eb,
+  goPrefabEnemy: {fileID: 5372751787709200270, guid: df3f9b85964824ffcb8b4cf85ea7026d,
     type: 3}
-  goPrefabTarget: {fileID: 8205446895056310267, guid: 35c7ffdb826134ed99ef78a7912483ec,
+  goPrefabTarget: {fileID: 6939492379494027690, guid: fe104c7959e8b42e997a1f83a209f23c,
     type: 3}
   goPrefabPowerUp: {fileID: 1018675173185206068, guid: d97787738d3404876b6f2f032b566af0,
     type: 3}
@@ -2720,7 +2720,7 @@ MonoBehaviour:
   m_fontSizeBase: 200
   m_fontWeight: 400
   m_enableAutoSizing: 0
-  m_fontSizeMin: 18
+  m_fontSizeMin: 72
   m_fontSizeMax: 72
   m_fontStyle: 8
   m_textAlignment: 514
@@ -3391,7 +3391,7 @@ Transform:
   m_LocalScale: {x: 50, y: 50, z: 50}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 14
+  m_RootOrder: 16
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1242118827
 MonoBehaviour:
