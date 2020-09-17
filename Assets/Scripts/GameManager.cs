@@ -47,7 +47,7 @@ public class GameManager : MonoBehaviour
         {
             goScreenTitle.SetActive(false);
             goScreenHUD.SetActive(true);
-            goCube.GetComponent<CubeController>().bGameStart = true;
+            goCube.GetComponent<CubeController>().FirstLevelStart();
         }
         else if (screen == "Screen: Level Cleared")
         {
@@ -55,8 +55,7 @@ public class GameManager : MonoBehaviour
             guiLevel.text = iLevel.ToString();
             goScreenLevelCleared.SetActive(false);
             goSpawnManager.GetComponent<SpawnManager>().Destroy();
-            goCube.GetComponent<CubeController>().bNextLevelStart = true;
-            goCube.GetComponent<CubeController>().fNextLevelStartCondition = goCube.GetComponent<CubeController>().transform.eulerAngles.z + 90f;
+            goCube.GetComponent<CubeController>().NextLevelStart();
         }
         else if (screen == "Screen: Game Over")
         {

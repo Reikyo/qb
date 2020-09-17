@@ -64,6 +64,12 @@ public class PlayerController : MonoBehaviour
             {
                 Instantiate(goProjectile, transform.position + transform.forward, transform.rotation);
             }
+
+            // Temporarily allow level to be cleared for testing purposes:
+            if (Input.GetKeyDown(KeyCode.L))
+            {
+                goGameManager.GetComponent<GameManager>().LevelCleared();
+            }
         }
         else
         {
