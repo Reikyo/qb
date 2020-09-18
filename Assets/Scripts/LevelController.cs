@@ -54,7 +54,8 @@ public class LevelController : MonoBehaviour
             {
                 bLevelPositionZ = Translate("z", fLevelStartMetresPerFrameZ, transform.position.z, v3LevelPosition.z, bLevelPositionZ);
             }
-            if (bLevelPositionY && bLevelPositionZ)
+            if (bLevelPositionY
+            &&  bLevelPositionZ)
             {
                 bLevelPositionY = false;
                 bLevelPositionZ = false;
@@ -75,7 +76,8 @@ public class LevelController : MonoBehaviour
             {
                 bLevelPositionZ = Translate("z", -fLevelStartMetresPerFrameZ, transform.position.z, v3InstantiatePosition.z, bLevelPositionZ);
             }
-            if (bLevelPositionY && bLevelPositionZ)
+            if (bLevelPositionY
+            &&  bLevelPositionZ)
             {
                 bLevelPositionY = false;
                 bLevelPositionZ = false;
@@ -91,7 +93,13 @@ public class LevelController : MonoBehaviour
 
     // ------------------------------------------------------------------------------------------------
 
-    private bool Translate(string sAxis, float fMetresPerFrame, float fCurrentPosition, float fTargetPosition, bool bTargetPosition)
+    private bool Translate(
+        string sAxis,
+        float fMetresPerFrame,
+        float fCurrentPosition,
+        float fTargetPosition,
+        bool bTargetPosition
+    )
     {
         if (((fMetresPerFrame > 0f) && (fTargetPosition > (fCurrentPosition + fMetresPerFrame)))
         ||  ((fMetresPerFrame < 0f) && (fTargetPosition < (fCurrentPosition + fMetresPerFrame))))

@@ -24,6 +24,8 @@ public class EnemyController : MonoBehaviour
     public AudioClip sfxclpEnemySleep;
     public AudioClip sfxclpTargetObjectiveRandom;
 
+    // ------------------------------------------------------------------------------------------------
+
     // Start is called before the first frame update
     void Start()
     {
@@ -49,19 +51,27 @@ public class EnemyController : MonoBehaviour
         }
     }
 
+    // ------------------------------------------------------------------------------------------------
+
     // Update is called once per frame
     void Update()
     {
-        if (bInPlay && bActive && goGameManager.GetComponent<GameManager>().bActive)
+        if (bInPlay
+        &&  bActive
+        &&  goGameManager.GetComponent<GameManager>().bActive)
         {
-            if ((sObjective == "Target") && goTarget && goTarget.GetComponent<TargetController>().bInPlay)
+            if ((sObjective == "Target")
+            &&  goTarget
+            &&  goTarget.GetComponent<TargetController>().bInPlay)
             {
                 // Vector3 v3DirectionMove = (goTarget.transform.position - transform.position).normalized;
                 // transform.Translate(fSpeed * Time.deltaTime * v3DirectionMove, Space.World);
                 // Move(goTarget.transform.position);
                 navEnemy.destination = goTarget.transform.position;
             }
-            else if ((sObjective == "Player") && goPlayer && goPlayer.GetComponent<PlayerController>().bInPlay)
+            else if ((sObjective == "Player")
+            && goPlayer
+            && goPlayer.GetComponent<PlayerController>().bInPlay)
             {
                 // Vector3 v3DirectionMove = (goPlayer.transform.position - transform.position).normalized;
                 // transform.Translate(fSpeed * Time.deltaTime * v3DirectionMove, Space.World);
@@ -87,6 +97,8 @@ public class EnemyController : MonoBehaviour
         }
     }
 
+    // ------------------------------------------------------------------------------------------------
+
     public void WaitStart()
     {
         if (bActive)
@@ -94,6 +106,8 @@ public class EnemyController : MonoBehaviour
             StartCoroutine(Wait());
         }
     }
+
+    // ------------------------------------------------------------------------------------------------
 
     IEnumerator Wait()
     {
@@ -111,6 +125,8 @@ public class EnemyController : MonoBehaviour
         bActive = true;
     }
 
+    // ------------------------------------------------------------------------------------------------
+
     private void Move(Vector3 v3PositionObjective)
     {
         Vector3 v3DirectionMove = (v3PositionObjective - transform.position).normalized;
@@ -121,6 +137,8 @@ public class EnemyController : MonoBehaviour
 
         Debug.DrawRay(transform.position, v3DirectionMove * 10f, Color.red);
     }
+
+    // ------------------------------------------------------------------------------------------------
 
     private void OnCollisionEnter(Collision collision)
     {
@@ -144,6 +162,8 @@ public class EnemyController : MonoBehaviour
         }
     }
 
+    // ------------------------------------------------------------------------------------------------
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("OffGroundTrigger"))
@@ -151,4 +171,7 @@ public class EnemyController : MonoBehaviour
             bInPlay = false;
         }
     }
+
+    // ------------------------------------------------------------------------------------------------
+
 }

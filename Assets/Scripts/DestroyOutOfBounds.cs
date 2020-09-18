@@ -8,6 +8,8 @@ public class DestroyOutOfBounds : MonoBehaviour
     private float fXZLimitExist = 50f;
     private float fYLimitExist = -100f;
 
+    // ------------------------------------------------------------------------------------------------
+
     void Update()
     {
         if (Math.Abs(transform.position.x) >= fXZLimitExist
@@ -17,4 +19,7 @@ public class DestroyOutOfBounds : MonoBehaviour
             Destroy(gameObject);
         }
     }
+
+    // ------------------------------------------------------------------------------------------------
+
 }

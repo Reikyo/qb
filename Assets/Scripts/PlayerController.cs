@@ -22,6 +22,8 @@ public class PlayerController : MonoBehaviour
     private AudioSource sfxsrcPlayer;
     public AudioClip sfxclpTargetObjectivePlayer;
 
+    // ------------------------------------------------------------------------------------------------
+
     // Start is called before the first frame update
     void Start()
     {
@@ -33,6 +35,8 @@ public class PlayerController : MonoBehaviour
         goEnemy = GameObject.FindWithTag("Enemy");
         goTarget = GameObject.FindWithTag("Target");
     }
+
+    // ------------------------------------------------------------------------------------------------
 
     // Update is called once per frame
     void Update()
@@ -80,6 +84,8 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    // ------------------------------------------------------------------------------------------------
+
     private void Move(Vector3 v3PositionObjective)
     {
         // Version 1 (slippy)
@@ -101,6 +107,8 @@ public class PlayerController : MonoBehaviour
         Debug.DrawRay(transform.position, v3DirectionMove * 10f, Color.blue);
     }
 
+    // ------------------------------------------------------------------------------------------------
+
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("Target"))
@@ -116,6 +124,8 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    // ------------------------------------------------------------------------------------------------
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("OffGroundTrigger") && goGameManager.GetComponent<GameManager>().bActive)
@@ -129,4 +139,7 @@ public class PlayerController : MonoBehaviour
             iNumPowerUp += 1;
         }
     }
+
+    // ------------------------------------------------------------------------------------------------
+
 }

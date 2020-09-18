@@ -13,17 +13,23 @@ public class SpawnManager : MonoBehaviour
     private float fXLimitSpawn = 20f;
     private float fZLimitSpawn = 20f;
 
+    // ------------------------------------------------------------------------------------------------
+
     // Start is called before the first frame update
     void Start()
     {
 
     }
 
+    // ------------------------------------------------------------------------------------------------
+
     // Update is called once per frame
     void Update()
     {
 
     }
+
+    // ------------------------------------------------------------------------------------------------
 
     public void Instantiate()
     {
@@ -40,6 +46,8 @@ public class SpawnManager : MonoBehaviour
         Instantiate(goPrefabSafeZone, new Vector3(20f, goPrefabSafeZone.transform.position.y, 20f), goPrefabSafeZone.transform.rotation);
     }
 
+    // ------------------------------------------------------------------------------------------------
+
     public void Destroy()
     {
         foreach (string sTag in new List<string>() {"Player", "Enemy", "Target", "PowerUp", "SafeZone"})
@@ -52,4 +60,7 @@ public class SpawnManager : MonoBehaviour
             }
         }
     }
+
+    // ------------------------------------------------------------------------------------------------
+
 }

@@ -26,6 +26,8 @@ public class GameManager : MonoBehaviour
     public AudioClip sfxclpLevelCleared;
     public AudioClip sfxclpLevelFailed;
 
+    // ------------------------------------------------------------------------------------------------
+
     // Start is called before the first frame update
     void Start()
     {
@@ -34,11 +36,15 @@ public class GameManager : MonoBehaviour
         sfxsrcGameManager = GetComponent<AudioSource>();
     }
 
+    // ------------------------------------------------------------------------------------------------
+
     // Update is called once per frame
     void Update()
     {
 
     }
+
+    // ------------------------------------------------------------------------------------------------
 
     public void GameStart(string screen)
     {
@@ -55,6 +61,11 @@ public class GameManager : MonoBehaviour
             guiLevel.text = iLevel.ToString();
             goScreenLevelCleared.SetActive(false);
             goCube.GetComponent<CubeController>().NextLevelStart();
+            // Destroy characters and items
+            // Remove objects
+            // Rotate cube
+            // Insert objects
+            // Instantiate characters and items
         }
         else if (screen == "Screen: Level Failed")
         {
@@ -65,12 +76,16 @@ public class GameManager : MonoBehaviour
         bActive = true;
     }
 
+    // ------------------------------------------------------------------------------------------------
+
     public void LevelCleared()
     {
         goScreenLevelCleared.SetActive(true);
         bActive = false;
         sfxsrcGameManager.PlayOneShot(sfxclpLevelCleared);
     }
+
+    // ------------------------------------------------------------------------------------------------
 
     public void LevelFailed()
     {
@@ -79,9 +94,14 @@ public class GameManager : MonoBehaviour
         sfxsrcGameManager.PlayOneShot(sfxclpLevelFailed);
     }
 
+    // ------------------------------------------------------------------------------------------------
+
     // public void LoadScene()
     // {
     //     SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     //     GameStart();
     // }
+
+    // ------------------------------------------------------------------------------------------------
+
 }

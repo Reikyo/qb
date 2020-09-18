@@ -19,6 +19,8 @@ public class TargetController : MonoBehaviour
     public string sObjective;
     public Vector3 v3DirectionRand;
 
+    // ------------------------------------------------------------------------------------------------
+
     // Start is called before the first frame update
     void Start()
     {
@@ -30,12 +32,17 @@ public class TargetController : MonoBehaviour
         sObjective = "None";
     }
 
+    // ------------------------------------------------------------------------------------------------
+
     // Update is called once per frame
     void Update()
     {
         if (bInPlay && bActive)
         {
-            if ((sObjective == "Player") && goPlayer && goPlayer.GetComponent<PlayerController>().bInPlay && (Math.Abs((goPlayer.transform.position - transform.position).magnitude) > fDistPlayerStop))
+            if ((sObjective == "Player")
+            &&  goPlayer
+            &&  goPlayer.GetComponent<PlayerController>().bInPlay
+            &&  (Math.Abs((goPlayer.transform.position - transform.position).magnitude) > fDistPlayerStop))
             {
                 // Vector3 v3Objective = goPlayer.transform.position;
                 // Vector3 v3Direction = (v3Objective - transform.position).normalized;
@@ -66,6 +73,8 @@ public class TargetController : MonoBehaviour
         }
     }
 
+    // ------------------------------------------------------------------------------------------------
+
     private void Move(Vector3 v3PositionObjective)
     {
         Vector3 v3DirectionMove = (v3PositionObjective - transform.position).normalized;
@@ -76,6 +85,8 @@ public class TargetController : MonoBehaviour
 
         Debug.DrawRay(transform.position, v3DirectionMove * 10f, Color.yellow);
     }
+
+    // ------------------------------------------------------------------------------------------------
 
     private void OnTriggerEnter(Collider other)
     {
@@ -91,4 +102,7 @@ public class TargetController : MonoBehaviour
             sObjective = "SafeZone";
         }
     }
+
+    // ------------------------------------------------------------------------------------------------
+
 }

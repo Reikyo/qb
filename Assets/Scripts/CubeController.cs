@@ -32,6 +32,8 @@ public class CubeController : MonoBehaviour
     private bool bFirstLevelPositionY = false;
     private bool bFirstLevelPositionZ = false;
     private bool bFirstLevelEulerAngleX = false;
+    private bool bNextLevelEulerAngleX = false;
+    private bool bNextLevelEulerAngleZ = false;
 
     private string sNextLevelStartRotationAxis = "z";
 
@@ -69,48 +71,23 @@ public class CubeController : MonoBehaviour
         {
             if (!bFirstLevelPositionY)
             {
-                if (((fFirstLevelStartMetresPerFrameY > 0f) && (v3FirstLevelPosition.y > (transform.position.y + fFirstLevelStartMetresPerFrameY)))
-                ||  ((fFirstLevelStartMetresPerFrameY < 0f) && (v3FirstLevelPosition.y < (transform.position.y + fFirstLevelStartMetresPerFrameY))))
-                {
-                    transform.Translate(0f, fFirstLevelStartMetresPerFrameY, 0f, Space.World);
-                }
-                else
-                {
-                    transform.Translate(0f, v3FirstLevelPosition.y - transform.position.y, 0f, Space.World);
-                    bFirstLevelPositionY = true;
-                }
+                bFirstLevelPositionY = Translate("y", fFirstLevelStartMetresPerFrameY, transform.position.y, v3FirstLevelPosition.y, bFirstLevelPositionY);
             }
             if (!bFirstLevelPositionZ)
             {
-                if (((fFirstLevelStartMetresPerFrameZ > 0f) && (v3FirstLevelPosition.z > (transform.position.z + fFirstLevelStartMetresPerFrameZ)))
-                ||  ((fFirstLevelStartMetresPerFrameZ < 0f) && (v3FirstLevelPosition.z < (transform.position.z + fFirstLevelStartMetresPerFrameZ))))
-                {
-                    transform.Translate(0f, 0f, fFirstLevelStartMetresPerFrameZ, Space.World);
-                }
-                else
-                {
-                    transform.Translate(0f, 0f, v3FirstLevelPosition.z - transform.position.z, Space.World);
-                    bFirstLevelPositionZ = true;
-                }
+                bFirstLevelPositionZ = Translate("z", fFirstLevelStartMetresPerFrameZ, transform.position.z, v3FirstLevelPosition.z, bFirstLevelPositionZ);
             }
             if (!bFirstLevelEulerAngleX)
             {
-                if (((fFirstLevelStartDegreesPerFrame > 0f) && (v3FirstLevelEulerAngles.x > (v3EulerAngles.x + fFirstLevelStartDegreesPerFrame)))
-                ||  ((fFirstLevelStartDegreesPerFrame < 0f) && (v3FirstLevelEulerAngles.x < (v3EulerAngles.x + fFirstLevelStartDegreesPerFrame))))
-                {
-                    transform.Rotate(fFirstLevelStartDegreesPerFrame, 0f, 0f, Space.World);
-                    v3EulerAngles.x += fFirstLevelStartDegreesPerFrame;
-                }
-                else
-                {
-                    transform.Rotate(v3FirstLevelEulerAngles.x - v3EulerAngles.x, 0f, 0f, Space.World);
-                    v3EulerAngles.x = v3FirstLevelEulerAngles.x;
-                    bFirstLevelEulerAngleX = true;
-                }
+                bFirstLevelEulerAngleX = Rotate("x", fFirstLevelStartDegreesPerFrame, v3EulerAngles.x, v3FirstLevelEulerAngles.x, bFirstLevelEulerAngleX);
             }
-            if (bFirstLevelPositionY && bFirstLevelPositionZ && bFirstLevelEulerAngleX)
+            if (bFirstLevelPositionY
+            &&  bFirstLevelPositionZ
+            &&  bFirstLevelEulerAngleX)
             {
-                transform.eulerAngles = new Vector3(Mathf.Round(transform.eulerAngles.x), Mathf.Round(transform.eulerAngles.y), Mathf.Round(transform.eulerAngles.z));
+                bFirstLevelPositionY = false;
+                bFirstLevelPositionZ = false;
+                bFirstLevelEulerAngleX = false;
                 bFirstLevelStart = false;
                 Activate();
             }
@@ -122,40 +99,32 @@ public class CubeController : MonoBehaviour
         {
             if (sNextLevelStartRotationAxis == "z")
             {
-                if (((fNextLevelStartDegreesPerFrame > 0f) && (v3NextLevelEulerAngles.z > (v3EulerAngles.z + fNextLevelStartDegreesPerFrame)))
-                ||  ((fNextLevelStartDegreesPerFrame < 0f) && (v3NextLevelEulerAngles.z < (v3EulerAngles.z + fNextLevelStartDegreesPerFrame))))
+                if (!bNextLevelEulerAngleZ)
                 {
-                    transform.Rotate(0f, 0f, fNextLevelStartDegreesPerFrame, Space.World);
-                    v3EulerAngles.z += fNextLevelStartDegreesPerFrame;
+                    bNextLevelEulerAngleZ = Rotate("z", fNextLevelStartDegreesPerFrame, v3EulerAngles.z, v3NextLevelEulerAngles.z, bNextLevelEulerAngleZ);
                 }
-                else
+                if (bNextLevelEulerAngleZ)
                 {
-                    transform.Rotate(0f, 0f, v3NextLevelEulerAngles.z - v3EulerAngles.z, Space.World);
-                    transform.eulerAngles = new Vector3(Mathf.Round(transform.eulerAngles.x), Mathf.Round(transform.eulerAngles.y), Mathf.Round(transform.eulerAngles.z));
-                    v3EulerAngles.z = v3NextLevelEulerAngles.z;
                     sNextLevelStartRotationAxis = "x";
                     v3NextLevelEulerAngles.x += 90f;
                     v3NextLevelEulerAngles.x = Mathf.Round(v3NextLevelEulerAngles.x);
+                    bNextLevelEulerAngleZ = false;
                     bNextLevelStart = false;
                     Activate();
                 }
             }
             else if (sNextLevelStartRotationAxis == "x")
             {
-                if (((fNextLevelStartDegreesPerFrame > 0f) && (v3NextLevelEulerAngles.x > (v3EulerAngles.x + fNextLevelStartDegreesPerFrame)))
-                ||  ((fNextLevelStartDegreesPerFrame < 0f) && (v3NextLevelEulerAngles.x < (v3EulerAngles.x + fNextLevelStartDegreesPerFrame))))
+                if (!bNextLevelEulerAngleX)
                 {
-                    transform.Rotate(fNextLevelStartDegreesPerFrame, 0f, 0f, Space.World);
-                    v3EulerAngles.x += fNextLevelStartDegreesPerFrame;
+                    bNextLevelEulerAngleX = Rotate("x", fNextLevelStartDegreesPerFrame, v3EulerAngles.x, v3NextLevelEulerAngles.x, bNextLevelEulerAngleX);
                 }
-                else
+                if (bNextLevelEulerAngleX)
                 {
-                    transform.Rotate(v3NextLevelEulerAngles.x - v3EulerAngles.x, 0f, 0f, Space.World);
-                    transform.eulerAngles = new Vector3(Mathf.Round(transform.eulerAngles.x), Mathf.Round(transform.eulerAngles.y), Mathf.Round(transform.eulerAngles.z));
-                    v3EulerAngles.x = v3NextLevelEulerAngles.x;
                     sNextLevelStartRotationAxis = "z";
                     v3NextLevelEulerAngles.z += 90f;
                     v3NextLevelEulerAngles.z = Mathf.Round(v3NextLevelEulerAngles.z);
+                    bNextLevelEulerAngleX = false;
                     bNextLevelStart = false;
                     Activate();
                 }
@@ -164,6 +133,107 @@ public class CubeController : MonoBehaviour
 
         // ------------------------------------------------------------------------------------------------
 
+    }
+
+    // ------------------------------------------------------------------------------------------------
+
+    private bool Translate(
+        string sAxis,
+        float fMetresPerFrame,
+        float fCurrentPosition,
+        float fTargetPosition,
+        bool bTargetPosition
+    )
+    {
+        if (((fMetresPerFrame > 0f) && (fTargetPosition > (fCurrentPosition + fMetresPerFrame)))
+        ||  ((fMetresPerFrame < 0f) && (fTargetPosition < (fCurrentPosition + fMetresPerFrame))))
+        {
+            switch(sAxis)
+            {
+                case "x":
+                    transform.Translate(fMetresPerFrame, 0f, 0f, Space.World);
+                    break;
+                case "y":
+                    transform.Translate(0f, fMetresPerFrame, 0f, Space.World);
+                    break;
+                case "z":
+                    transform.Translate(0f, 0f, fMetresPerFrame, Space.World);
+                    break;
+            }
+        }
+        else
+        {
+            switch(sAxis)
+            {
+                case "x":
+                    transform.Translate(fTargetPosition - fCurrentPosition, 0f, 0f, Space.World);
+                    break;
+                case "y":
+                    transform.Translate(0f, fTargetPosition - fCurrentPosition, 0f, Space.World);
+                    break;
+                case "z":
+                    transform.Translate(0f, 0f, fTargetPosition - fCurrentPosition, Space.World);
+                    break;
+            }
+            bTargetPosition = true;
+        }
+        return(bTargetPosition);
+    }
+
+    // ------------------------------------------------------------------------------------------------
+
+    private bool Rotate(
+        string sAxis,
+        float fDegreesPerFrame,
+        float fCurrentRotation,
+        float fTargetRotation,
+        bool bTargetRotation
+    )
+    {
+        if (((fDegreesPerFrame > 0f) && (fTargetRotation > (fCurrentRotation + fDegreesPerFrame)))
+        ||  ((fDegreesPerFrame < 0f) && (fTargetRotation < (fCurrentRotation + fDegreesPerFrame))))
+        {
+            switch(sAxis)
+            {
+                case "x":
+                    transform.Rotate(fDegreesPerFrame, 0f, 0f, Space.World);
+                    v3EulerAngles.x += fDegreesPerFrame;
+                    break;
+                case "y":
+                    transform.Rotate(0f, fDegreesPerFrame, 0f, Space.World);
+                    v3EulerAngles.y += fDegreesPerFrame;
+                    break;
+                case "z":
+                    transform.Rotate(0f, 0f, fDegreesPerFrame, Space.World);
+                    v3EulerAngles.z += fDegreesPerFrame;
+                    break;
+            }
+        }
+        else
+        {
+            switch(sAxis)
+            {
+                case "x":
+                    transform.Rotate(fTargetRotation - fCurrentRotation, 0f, 0f, Space.World);
+                    v3EulerAngles.x = fTargetRotation;
+                    break;
+                case "y":
+                    transform.Rotate(0f, fTargetRotation - fCurrentRotation, 0f, Space.World);
+                    v3EulerAngles.y = fTargetRotation;
+                    break;
+                case "z":
+                    transform.Rotate(0f, 0f, fTargetRotation - fCurrentRotation, Space.World);
+                    v3EulerAngles.z = fTargetRotation;
+                    break;
+            }
+            transform.eulerAngles = new Vector3(
+                Mathf.Round(transform.eulerAngles.x),
+                Mathf.Round(transform.eulerAngles.y),
+                Mathf.Round(transform.eulerAngles.z)
+            );
+            bTargetRotation = true;
+        }
+        return(bTargetRotation);
     }
 
     // ------------------------------------------------------------------------------------------------
