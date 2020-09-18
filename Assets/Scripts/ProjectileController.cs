@@ -22,7 +22,6 @@ public class ProjectileController : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Enemy"))
         {
-            // Debug.Log("Hit");
             other.gameObject.GetComponent<EnemyController>().WaitStart();
             Destroy(gameObject);
         }

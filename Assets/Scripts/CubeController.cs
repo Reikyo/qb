@@ -5,12 +5,12 @@ using UnityEngine;
 
 public class CubeController : MonoBehaviour
 {
-    private Vector3 v3TitleScreenPosition = new Vector3(0f, -210f, 72f);
+    private Vector3 v3InstantiatePosition = new Vector3(0f, -210f, 72f);
     private Vector3 v3FirstLevelPosition = new Vector3(0f, -25f, 0f);
 
-    private Vector3 v3TitleScreenEulerAngles = new Vector3(237.5f, 0f, 0f);
+    private Vector3 v3InstantiateEulerAngles = new Vector3(237.5f, 0f, 0f);
     private Vector3 v3FirstLevelEulerAngles = new Vector3(0f, 0f, 0f);
-    private Vector3 v3NextLevelEulerAngles = new Vector3(0f, 0f, 0f);
+    private Vector3 v3NextLevelEulerAngles = new Vector3(0f, 0f, 90f);
     private Vector3 v3EulerAngles;
 
     private float fFirstLevelStartTime = 1f;
@@ -26,8 +26,8 @@ public class CubeController : MonoBehaviour
     private float fNextLevelStartDegreesPerSec;
     private float fNextLevelStartDegreesPerFrame;
 
-    private bool bFirstLevelStart = false;
-    private bool bNextLevelStart = false;
+    public bool bFirstLevelStart = false;
+    public bool bNextLevelStart = false;
 
     private bool bFirstLevelPositionY = false;
     private bool bFirstLevelPositionZ = false;
@@ -35,7 +35,6 @@ public class CubeController : MonoBehaviour
 
     private string sNextLevelStartRotationAxis = "z";
 
-    public GameObject goSpawnManager;
     public GameObject[] goObstacles;
 
     // ------------------------------------------------------------------------------------------------
@@ -43,19 +42,19 @@ public class CubeController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        fFirstLevelStartMetresPerSecY = (v3FirstLevelPosition.y - v3TitleScreenPosition.y) / fFirstLevelStartTime;
+        fFirstLevelStartMetresPerSecY = (v3FirstLevelPosition.y - v3InstantiatePosition.y) / fFirstLevelStartTime;
         fFirstLevelStartMetresPerFrameY = fFirstLevelStartMetresPerSecY * Time.deltaTime;
-        fFirstLevelStartMetresPerSecZ = (v3FirstLevelPosition.z - v3TitleScreenPosition.z) / fFirstLevelStartTime;
+        fFirstLevelStartMetresPerSecZ = (v3FirstLevelPosition.z - v3InstantiatePosition.z) / fFirstLevelStartTime;
         fFirstLevelStartMetresPerFrameZ = fFirstLevelStartMetresPerSecZ * Time.deltaTime;
 
-        fFirstLevelStartDegreesPerSec = (v3FirstLevelEulerAngles.x - v3TitleScreenEulerAngles.x) / fFirstLevelStartTime;
+        fFirstLevelStartDegreesPerSec = (v3FirstLevelEulerAngles.x - v3InstantiateEulerAngles.x) / fFirstLevelStartTime;
         fFirstLevelStartDegreesPerFrame = fFirstLevelStartDegreesPerSec * Time.deltaTime;
         fNextLevelStartDegreesPerSec = 90f / fNextLevelStartTime;
         fNextLevelStartDegreesPerFrame = fNextLevelStartDegreesPerSec * Time.deltaTime;
 
-        transform.position = v3TitleScreenPosition;
-        transform.eulerAngles = v3TitleScreenEulerAngles;
-        v3EulerAngles = v3TitleScreenEulerAngles;
+        transform.position = v3InstantiatePosition;
+        transform.eulerAngles = v3InstantiateEulerAngles;
+        v3EulerAngles = v3InstantiateEulerAngles;
     }
 
     // ------------------------------------------------------------------------------------------------
@@ -135,6 +134,8 @@ public class CubeController : MonoBehaviour
                     transform.eulerAngles = new Vector3(Mathf.Round(transform.eulerAngles.x), Mathf.Round(transform.eulerAngles.y), Mathf.Round(transform.eulerAngles.z));
                     v3EulerAngles.z = v3NextLevelEulerAngles.z;
                     sNextLevelStartRotationAxis = "x";
+                    v3NextLevelEulerAngles.x += 90f;
+                    v3NextLevelEulerAngles.x = Mathf.Round(v3NextLevelEulerAngles.x);
                     bNextLevelStart = false;
                     Activate();
                 }
@@ -153,6 +154,8 @@ public class CubeController : MonoBehaviour
                     transform.eulerAngles = new Vector3(Mathf.Round(transform.eulerAngles.x), Mathf.Round(transform.eulerAngles.y), Mathf.Round(transform.eulerAngles.z));
                     v3EulerAngles.x = v3NextLevelEulerAngles.x;
                     sNextLevelStartRotationAxis = "z";
+                    v3NextLevelEulerAngles.z += 90f;
+                    v3NextLevelEulerAngles.z = Mathf.Round(v3NextLevelEulerAngles.z);
                     bNextLevelStart = false;
                     Activate();
                 }
@@ -174,22 +177,9 @@ public class CubeController : MonoBehaviour
 
     public void NextLevelStart()
     {
-        bNextLevelStart = true;
-
         foreach (GameObject goObstacle in goObstacles)
         {
-            goObstacle.SetActive(false);
-        }
-
-        if (sNextLevelStartRotationAxis == "z")
-        {
-            v3NextLevelEulerAngles.z += 90f;
-            v3NextLevelEulerAngles.z = Mathf.Round(v3NextLevelEulerAngles.z);
-        }
-        else if (sNextLevelStartRotationAxis == "x")
-        {
-            v3NextLevelEulerAngles.x += 90f;
-            v3NextLevelEulerAngles.x = Mathf.Round(v3NextLevelEulerAngles.x);
+            goObstacle.GetComponent<LevelController>().LevelFinish();
         }
     }
 
@@ -199,9 +189,8 @@ public class CubeController : MonoBehaviour
     {
         foreach (GameObject goObstacle in goObstacles)
         {
-            goObstacle.SetActive(true);
+            goObstacle.GetComponent<LevelController>().LevelStart();
         }
-        goSpawnManager.GetComponent<SpawnManager>().Instantiate();
     }
 
     // ------------------------------------------------------------------------------------------------

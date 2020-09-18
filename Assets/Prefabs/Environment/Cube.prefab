@@ -975,8 +975,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6509780028161023077}
-  m_LocalRotation: {x: 0.003157968, y: 0.0036471973, z: -0.003236994, w: -0.99998313}
-  m_LocalPosition: {x: -0.625653, y: 4.591254, z: -1.2518269}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -25, z: 0}
   m_LocalScale: {x: 50, y: 50, z: 50}
   m_Children:
   - {fileID: 8432978110398566242}
@@ -1002,7 +1002,7 @@ Transform:
   - {fileID: 7278466430675639631}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: -0.36100003, y: -360.419, z: 0.372}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &6509780028161023082
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -1075,9 +1075,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   goSpawnManager: {fileID: 0}
   goObstacles:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 74300147257300268, guid: d2aa1da8e798345a5a00c86a287b6ee6, type: 3}
 --- !u!1 &6709851741219264996
 GameObject:
   m_ObjectHideFlags: 0

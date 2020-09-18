@@ -121,8 +121,7 @@ public class PlayerController : MonoBehaviour
         if (other.gameObject.CompareTag("OffGroundTrigger") && goGameManager.GetComponent<GameManager>().bActive)
         {
             bInPlay = false;
-            goGameManager.GetComponent<GameManager>().GameOver();
-            // Debug.Log("Game over");
+            goGameManager.GetComponent<GameManager>().LevelFailed();
         }
         else if (other.gameObject.CompareTag("PowerUp"))
         {

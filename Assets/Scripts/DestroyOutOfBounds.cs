@@ -10,7 +10,9 @@ public class DestroyOutOfBounds : MonoBehaviour
 
     void Update()
     {
-        if (Math.Abs(transform.position.x) >= fXZLimitExist || Math.Abs(transform.position.z) >= fXZLimitExist || transform.position.y <= fYLimitExist)
+        if (Math.Abs(transform.position.x) >= fXZLimitExist
+        ||  Math.Abs(transform.position.z) >= fXZLimitExist
+        ||  transform.position.y <= fYLimitExist)
         {
             Destroy(gameObject);
         }

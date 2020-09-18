@@ -9,7 +9,7 @@ public class GameManager : MonoBehaviour
 {
     public GameObject goScreenTitle;
     public GameObject goScreenLevelCleared;
-    public GameObject goScreenGameOver;
+    public GameObject goScreenLevelFailed;
     public GameObject goScreenHUD;
     public GameObject goSpawnManager;
     public GameObject goCube;
@@ -24,7 +24,7 @@ public class GameManager : MonoBehaviour
     private AudioSource sfxsrcGameManager;
     public AudioClip sfxclpButton;
     public AudioClip sfxclpLevelCleared;
-    public AudioClip sfxclpGameOver;
+    public AudioClip sfxclpLevelFailed;
 
     // Start is called before the first frame update
     void Start()
@@ -54,12 +54,11 @@ public class GameManager : MonoBehaviour
             iLevel += 1;
             guiLevel.text = iLevel.ToString();
             goScreenLevelCleared.SetActive(false);
-            goSpawnManager.GetComponent<SpawnManager>().Destroy();
             goCube.GetComponent<CubeController>().NextLevelStart();
         }
-        else if (screen == "Screen: Game Over")
+        else if (screen == "Screen: Level Failed")
         {
-            goScreenGameOver.SetActive(false);
+            goScreenLevelFailed.SetActive(false);
             goSpawnManager.GetComponent<SpawnManager>().Destroy();
             goSpawnManager.GetComponent<SpawnManager>().Instantiate();
         }
@@ -73,11 +72,11 @@ public class GameManager : MonoBehaviour
         sfxsrcGameManager.PlayOneShot(sfxclpLevelCleared);
     }
 
-    public void GameOver()
+    public void LevelFailed()
     {
-        goScreenGameOver.SetActive(true);
+        goScreenLevelFailed.SetActive(true);
         bActive = false;
-        sfxsrcGameManager.PlayOneShot(sfxclpGameOver);
+        sfxsrcGameManager.PlayOneShot(sfxclpLevelFailed);
     }
 
     // public void LoadScene()
