@@ -5,10 +5,12 @@ using UnityEngine;
 
 public class CubeController : MonoBehaviour
 {
-    private Vector3 v3InstantiatePosition = new Vector3(0f, -210f, 72f);
+    // private Vector3 v3InstantiatePosition = new Vector3(0f, -210f, 72f);
+    private Vector3 v3InstantiatePosition = new Vector3(0f, -240f, 22f);
     private Vector3 v3FirstLevelPosition = new Vector3(0f, -25f, 0f);
 
-    private Vector3 v3InstantiateEulerAngles = new Vector3(237.5f, 0f, 0f);
+    // private Vector3 v3InstantiateEulerAngles = new Vector3(237.5f, 0f, 0f);
+    private Vector3 v3InstantiateEulerAngles = new Vector3(253f, 0f, 0f);
     private Vector3 v3FirstLevelEulerAngles = new Vector3(0f, 0f, 0f);
     private Vector3 v3NextLevelEulerAngles = new Vector3(0f, 0f, 90f);
     private Vector3 v3EulerAngles;

@@ -35,6 +35,11 @@ public class ProjectileController : MonoBehaviour
         {
             Destroy(gameObject);
         }
+        else if (other.gameObject.CompareTag("ObstacleDestructible"))
+        {
+            other.gameObject.SetActive(false);
+            Destroy(gameObject);
+        }
     }
 
     // ------------------------------------------------------------------------------------------------
