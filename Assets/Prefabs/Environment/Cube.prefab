@@ -1073,9 +1073,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ad8e1afe93894eb48f0f00634dad13d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  goSpawnManager: {fileID: 0}
-  goObstacles:
-  - {fileID: 74300147257300268, guid: d2aa1da8e798345a5a00c86a287b6ee6, type: 3}
+  bFirstLevelStart: 0
+  bNextLevelStart: 0
+  goObstacles: []
 --- !u!1 &6709851741219264996
 GameObject:
   m_ObjectHideFlags: 0

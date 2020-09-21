@@ -31,8 +31,8 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        iLevel = 1;
-        guiLevel.text = iLevel.ToString();
+        iLevel = 0;
+        guiLevel.text = (iLevel + 1).ToString();
         sfxsrcGameManager = GetComponent<AudioSource>();
     }
 
@@ -41,7 +41,11 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        // Temporarily allow level to be cleared for testing purposes:
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            LevelCleared();
+        }
     }
 
     // ------------------------------------------------------------------------------------------------
@@ -58,7 +62,7 @@ public class GameManager : MonoBehaviour
         else if (screen == "Screen: Level Cleared")
         {
             iLevel += 1;
-            guiLevel.text = iLevel.ToString();
+            guiLevel.text = (iLevel + 1).ToString();
             goScreenLevelCleared.SetActive(false);
             goCube.GetComponent<CubeController>().NextLevelStart();
             // Destroy characters and items
@@ -70,8 +74,10 @@ public class GameManager : MonoBehaviour
         else if (screen == "Screen: Level Failed")
         {
             goScreenLevelFailed.SetActive(false);
-            goSpawnManager.GetComponent<SpawnManager>().Destroy();
-            goSpawnManager.GetComponent<SpawnManager>().Instantiate();
+            goCube.GetComponent<CubeController>().goLevels[iLevel].GetComponent<LevelController>().Deactivate();
+            goCube.GetComponent<CubeController>().goLevels[iLevel].GetComponent<LevelController>().Activate();
+            // goSpawnManager.GetComponent<SpawnManager>().Destroy();
+            // goSpawnManager.GetComponent<SpawnManager>().Instantiate();
         }
         bActive = true;
     }

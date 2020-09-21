@@ -10,8 +10,8 @@ public class SpawnManager : MonoBehaviour
     public GameObject goPrefabPowerUp;
     public GameObject goPrefabSafeZone;
 
-    private float fXLimitSpawn = 20f;
-    private float fZLimitSpawn = 20f;
+    // private float fXLimitSpawn = 20f;
+    // private float fZLimitSpawn = 20f;
 
     // ------------------------------------------------------------------------------------------------
 
@@ -31,7 +31,7 @@ public class SpawnManager : MonoBehaviour
 
     // ------------------------------------------------------------------------------------------------
 
-    public void Instantiate()
+    public void Instantiate(GameObject[] goSpawns, Vector3[] goSpawnPositions)
     {
         // Random instantiate locations for all characters and items:
         // foreach (GameObject goPrefab in new List<GameObject>() {goPrefabPlayer, goPrefabEnemy, goPrefabTarget, goPrefabPowerUp, goPrefabSafeZone})
@@ -44,6 +44,16 @@ public class SpawnManager : MonoBehaviour
         Instantiate(goPrefabTarget, new Vector3(0f, goPrefabTarget.transform.position.y, -20f), goPrefabTarget.transform.rotation);
         Instantiate(goPrefabPowerUp, new Vector3(-20f, goPrefabPowerUp.transform.position.y, 20f), goPrefabPowerUp.transform.rotation);
         Instantiate(goPrefabSafeZone, new Vector3(20f, goPrefabSafeZone.transform.position.y, 20f), goPrefabSafeZone.transform.rotation);
+
+        // for (int goSpawnsIdx=0; goSpawnsIdx<goSpawns.Length; goSpawnsIdx++)
+        // {
+        //     Instantiate(
+        //         goSpawns[goSpawnsIdx],
+        //         new Vector3(goSpawnPositions[goSpawnsIdx].x, goSpawns[goSpawnsIdx].transform.position.y, goSpawnPositions[goSpawnsIdx].z),
+        //         goSpawns[goSpawnsIdx].transform.rotation
+        //     );
+        // }
+
     }
 
     // ------------------------------------------------------------------------------------------------

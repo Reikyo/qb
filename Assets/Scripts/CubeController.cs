@@ -37,7 +37,8 @@ public class CubeController : MonoBehaviour
 
     private string sNextLevelStartRotationAxis = "z";
 
-    public GameObject[] goObstacles;
+    private int iLevel = 0;
+    public GameObject[] goLevels;
 
     // ------------------------------------------------------------------------------------------------
 
@@ -247,20 +248,15 @@ public class CubeController : MonoBehaviour
 
     public void NextLevelStart()
     {
-        foreach (GameObject goObstacle in goObstacles)
-        {
-            goObstacle.GetComponent<LevelController>().LevelFinish();
-        }
+        goLevels[iLevel].GetComponent<LevelController>().LevelFinish();
+        iLevel += 1;
     }
 
     // ------------------------------------------------------------------------------------------------
 
     private void Activate()
     {
-        foreach (GameObject goObstacle in goObstacles)
-        {
-            goObstacle.GetComponent<LevelController>().LevelStart();
-        }
+        goLevels[iLevel].GetComponent<LevelController>().LevelStart();
     }
 
     // ------------------------------------------------------------------------------------------------

@@ -15,7 +15,7 @@ public class TargetController : MonoBehaviour
     private NavMeshAgent navTarget;
     private GameObject goGameManager;
     private GameObject goPlayer;
-    private GameObject goSafeZone;
+    private GameObject goSafeZoneTarget;
     public string sObjective;
     public Vector3 v3DirectionRand;
 
@@ -28,14 +28,14 @@ public class TargetController : MonoBehaviour
         navTarget = GetComponent<NavMeshAgent>();
         goGameManager = GameObject.Find("Game Manager");
         goPlayer = GameObject.FindWithTag("Player");
-        goSafeZone = GameObject.FindWithTag("SafeZone");
+        goSafeZoneTarget = GameObject.FindWithTag("SafeZoneTarget");
         sObjective = "None";
     }
 
     // ------------------------------------------------------------------------------------------------
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         if (bInPlay && bActive)
         {
@@ -58,13 +58,13 @@ public class TargetController : MonoBehaviour
                 // Move(transform.position + v3DirectionRand);
                 navTarget.destination = new Vector3(-50f, transform.position.y, -50f);
             }
-            else if (sObjective == "SafeZone")
+            else if (sObjective == "SafeZoneTarget")
             {
-                // Vector3 v3Objective = new Vector3(goSafeZone.transform.position.x, 1f, goSafeZone.transform.position.z);
+                // Vector3 v3Objective = new Vector3(goSafeZoneTarget.transform.position.x, 1f, goSafeZoneTarget.transform.position.z);
                 // Vector3 v3Direction = (v3Objective - transform.position).normalized;
                 // transform.Translate(fSpeed * Time.deltaTime * v3Direction, Space.World);
-                // Move(new Vector3(goSafeZone.transform.position.x, transform.position.y, goSafeZone.transform.position.z));
-                navTarget.destination = new Vector3(goSafeZone.transform.position.x, transform.position.y, goSafeZone.transform.position.z);
+                // Move(new Vector3(goSafeZoneTarget.transform.position.x, transform.position.y, goSafeZoneTarget.transform.position.z));
+                navTarget.destination = new Vector3(goSafeZoneTarget.transform.position.x, transform.position.y, goSafeZoneTarget.transform.position.z);
             }
             else
             {
@@ -95,11 +95,11 @@ public class TargetController : MonoBehaviour
             bInPlay = false;
             goGameManager.GetComponent<GameManager>().LevelFailed();
         }
-        else if (other.gameObject.CompareTag("SafeZone") && (sObjective == "Player"))
+        else if (other.gameObject.CompareTag("SafeZoneTarget") && (sObjective == "Player"))
         {
             Destroy(other);
             goGameManager.GetComponent<GameManager>().LevelCleared();
-            sObjective = "SafeZone";
+            sObjective = "SafeZoneTarget";
         }
     }
 

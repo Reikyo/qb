@@ -39,9 +39,11 @@ public class PlayerController : MonoBehaviour
     // ------------------------------------------------------------------------------------------------
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
-        if (bInPlay && bActive && goGameManager.GetComponent<GameManager>().bActive)
+        if (bInPlay
+        &&  bActive
+        &&  goGameManager.GetComponent<GameManager>().bActive)
         {
             float inputHorz = Input.GetAxis("Horizontal");
             float inputVert = Input.GetAxis("Vertical");
@@ -67,12 +69,6 @@ public class PlayerController : MonoBehaviour
             if ((iNumPowerUp > 0) && Input.GetKeyDown(KeyCode.Space))
             {
                 Instantiate(goProjectile, transform.position + transform.forward, transform.rotation);
-            }
-
-            // Temporarily allow level to be cleared for testing purposes:
-            if (Input.GetKeyDown(KeyCode.L))
-            {
-                goGameManager.GetComponent<GameManager>().LevelCleared();
             }
         }
         else
@@ -132,6 +128,11 @@ public class PlayerController : MonoBehaviour
         {
             bInPlay = false;
             goGameManager.GetComponent<GameManager>().LevelFailed();
+        }
+        else if (other.gameObject.CompareTag("SafeZonePlayer"))
+        {
+            Destroy(other);
+            goGameManager.GetComponent<GameManager>().LevelCleared();
         }
         else if (other.gameObject.CompareTag("PowerUp"))
         {

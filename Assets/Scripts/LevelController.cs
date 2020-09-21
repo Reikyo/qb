@@ -20,8 +20,10 @@ public class LevelController : MonoBehaviour
     private bool bLevelPositionY = false;
     private bool bLevelPositionZ = false;
 
-    public GameObject goSpawnManager;
     public GameObject goCube;
+    public GameObject goSpawnManager;
+    public GameObject[] goSpawns;
+    public Vector3[] goSpawnPositions;
 
     // ------------------------------------------------------------------------------------------------
 
@@ -148,15 +150,44 @@ public class LevelController : MonoBehaviour
 
     public void LevelFinish()
     {
-        goSpawnManager.GetComponent<SpawnManager>().Destroy();
+        // goSpawnManager.GetComponent<SpawnManager>().Destroy();
+        Deactivate();
         bLevelFinish = true;
     }
 
     // ------------------------------------------------------------------------------------------------
 
-    private void Activate()
+    public void Activate()
     {
-        goSpawnManager.GetComponent<SpawnManager>().Instantiate();
+        // goSpawnManager.GetComponent<SpawnManager>().Instantiate(goSpawns, goSpawnPositions);
+
+        for (int goSpawnsIdx=0; goSpawnsIdx<goSpawns.Length; goSpawnsIdx++)
+        {
+            Instantiate(
+                goSpawns[goSpawnsIdx],
+                new Vector3(
+                    goSpawnPositions[goSpawnsIdx].x,
+                    goSpawns[goSpawnsIdx].transform.position.y,
+                    goSpawnPositions[goSpawnsIdx].z
+                ),
+                goSpawns[goSpawnsIdx].transform.rotation
+            );
+        }
+    }
+
+    // ------------------------------------------------------------------------------------------------
+
+    public void Deactivate()
+    {
+        foreach (string sTag in new List<string>() {"Player", "Enemy", "Target", "PowerUp", "SafeZonePlayer", "SafeZoneTarget"})
+        {
+            GameObject go = GameObject.FindWithTag(sTag);
+            if (go)
+            {
+                go.SetActive(false); // We must deactivate all game objects or they will not be found by the FindWithTag method on reload
+                Destroy(go);
+            }
+        }
     }
 
     // ------------------------------------------------------------------------------------------------
