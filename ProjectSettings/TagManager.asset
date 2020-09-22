@@ -7,10 +7,14 @@ TagManager:
   - Enemy
   - Target
   - PowerUp
-  - SafeZone
   - OffGroundTrigger
   - Projectile
   - Obstacle
+  - SafeZonePlayer
+  - SafeZoneTarget
+  - SafeZone
+  - ObstacleDestructible
+  - NavMesh
   layers:
   - Default
   - TransparentFX
@@ -21,8 +25,8 @@ TagManager:
   - 
   - 
   - PostProcessing
-  - 
-  - 
+  - Characters
+  - Temporary Items
   - 
   - 
   - 

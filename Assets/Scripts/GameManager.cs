@@ -11,8 +11,8 @@ public class GameManager : MonoBehaviour
     public GameObject goScreenLevelCleared;
     public GameObject goScreenLevelFailed;
     public GameObject goScreenHUD;
-    public GameObject goSpawnManager;
-    public GameObject goCube;
+    private GameObject goSpawnManager;
+    private GameObject goCube;
     // public Button butStart;
     // public Button butNextLevel;
     // public Button butTryAgain;
@@ -31,6 +31,9 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        goSpawnManager = GameObject.Find("Spawn Manager");
+        goCube = GameObject.Find("Cube");
+
         iLevel = 0;
         guiLevel.text = (iLevel + 1).ToString();
         sfxsrcGameManager = GetComponent<AudioSource>();

@@ -20,8 +20,8 @@ public class LevelController : MonoBehaviour
     private bool bLevelPositionY = false;
     private bool bLevelPositionZ = false;
 
-    public GameObject goCube;
-    public GameObject goSpawnManager;
+    private GameObject goCube;
+    private GameObject goSpawnManager;
     public GameObject[] goSpawns;
     public Vector3[] goSpawnPositions;
 
@@ -36,6 +36,9 @@ public class LevelController : MonoBehaviour
         fLevelStartMetresPerFrameZ = fLevelStartMetresPerSecZ * Time.deltaTime;
 
         transform.position = v3InstantiatePosition;
+
+        goSpawnManager = GameObject.Find("Spawn Manager");
+        goCube = GameObject.Find("Cube");
     }
 
     // ------------------------------------------------------------------------------------------------

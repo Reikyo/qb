@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1426521207}
   - component: {fileID: 1426521205}
   - component: {fileID: 1426521206}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: psInactive
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4710,7 +4710,7 @@ GameObject:
   - component: {fileID: 4384975971254430716}
   - component: {fileID: 4384975971254430719}
   - component: {fileID: 4384975971254430718}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Direction Indicator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4807,7 +4807,7 @@ GameObject:
   - component: {fileID: 4384975971741588732}
   - component: {fileID: 4384975971741588722}
   - component: {fileID: 195085283644516812}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Enemy_0
   m_TagString: Enemy
   m_Icon: {fileID: 0}

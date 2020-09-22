@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 45439193951510523}
   - component: {fileID: 45439193951510522}
   - component: {fileID: 45439193951510525}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Direction Indicator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -108,7 +108,7 @@ GameObject:
   - component: {fileID: 45439194775337889}
   - component: {fileID: 45439194775337819}
   - component: {fileID: 195800113061054290}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Target_0
   m_TagString: Target
   m_Icon: {fileID: 0}

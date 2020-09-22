@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3392472054440463186}
   - component: {fileID: 3392472054440463187}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: beginner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -94,7 +94,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3392472054629794281}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Box003
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -132,7 +132,7 @@ GameObject:
   - component: {fileID: 1973894940572124805}
   - component: {fileID: 5577120267780894314}
   - component: {fileID: 751293719902850139}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Player_1
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -339,7 +339,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3392472054860939338}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: movement
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -371,7 +371,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3392472055026096841}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: bottom_fx
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -402,7 +402,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3392472055175315167}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Box002
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -434,7 +434,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3392472055347582125}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: center_fx
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -464,7 +464,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3392472056002945734}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: top_fx
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -494,7 +494,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3392472056141963326}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Box001
   m_TagString: Untagged
   m_Icon: {fileID: 0}

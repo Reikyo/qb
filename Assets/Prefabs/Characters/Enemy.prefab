@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4241170662504429932}
   - component: {fileID: 5213883131595802482}
   - component: {fileID: 1172785258887525255}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: psInactive
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4715,7 +4715,7 @@ GameObject:
   - component: {fileID: 5372751787709200267}
   - component: {fileID: 5372751787709200268}
   - component: {fileID: 5372751787709200269}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Enemy
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -4976,7 +4976,7 @@ GameObject:
   - component: {fileID: 7328850245517391230}
   - component: {fileID: 5985959324607301566}
   - component: {fileID: 2319066678823852389}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Eye left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5067,7 +5067,7 @@ GameObject:
   - component: {fileID: 2858508582817458627}
   - component: {fileID: 9081661604271309469}
   - component: {fileID: 4071672248692599284}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Eye right
   m_TagString: Untagged
   m_Icon: {fileID: 0}
