@@ -7,6 +7,7 @@ public class PlayerController : MonoBehaviour
 {
     public bool bInPlay = true;
     public bool bActive = true;
+    public bool bSafe = false;
     // private float fForce = 1000f;
     private float fSpeed = 10f;
     private Rigidbody rbPlayer;
@@ -68,7 +69,7 @@ public class PlayerController : MonoBehaviour
 
             if ((iNumPowerUp > 0) && Input.GetKeyDown(KeyCode.Space))
             {
-                Instantiate(goProjectile, transform.position + transform.forward, transform.rotation);
+                Instantiate(goProjectile, transform.position, transform.rotation);
             }
         }
         else
@@ -131,8 +132,12 @@ public class PlayerController : MonoBehaviour
         }
         else if (other.gameObject.CompareTag("SafeZonePlayer"))
         {
-            Destroy(other);
-            goGameManager.GetComponent<GameManager>().LevelCleared();
+            if (!goTarget || goTarget.GetComponent<TargetController>().bSafe)
+            {
+                Destroy(other);
+                bSafe = true;
+                goGameManager.GetComponent<GameManager>().LevelCleared();
+            }
         }
         else if (other.gameObject.CompareTag("PowerUp"))
         {

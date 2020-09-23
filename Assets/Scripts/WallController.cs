@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class WallController : MonoBehaviour
 {
-    public float fStartPositionY;
+    private float fStartPositionY;
     private float fLowerPositionY = 2f;
     private float fUpperPositionY = 6f;
 

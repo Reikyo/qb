@@ -16,6 +16,9 @@ TagManager:
   - ObstacleDestructible
   - NavMesh
   - ObstacleMoveable
+  - Wall
+  - WallDestructible
+  - WallMoveable
   layers:
   - Default
   - TransparentFX
@@ -27,10 +30,10 @@ TagManager:
   - 
   - PostProcessing
   - Characters
-  - Temporary Items
-  - 
-  - 
-  - 
+  - ItemsTemporary
+  - Wall
+  - WallDestructible
+  - WallMoveable
   - 
   - 
   - 

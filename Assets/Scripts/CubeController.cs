@@ -260,7 +260,7 @@ public class CubeController : MonoBehaviour
     private void Activate()
     {
         goLevels[iLevel].GetComponent<LevelController>().LevelStart();
-        goWallsMoveable = GameObject.FindGameObjectsWithTag("ObstacleMoveable");
+        goWallsMoveable = GameObject.FindGameObjectsWithTag("WallMoveable");
         Debug.Log(goWallsMoveable.Length);
     }
 

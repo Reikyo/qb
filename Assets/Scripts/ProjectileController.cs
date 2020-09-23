@@ -19,7 +19,7 @@ public class ProjectileController : MonoBehaviour
     // ------------------------------------------------------------------------------------------------
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         transform.Translate(fSpeed * Time.deltaTime * Vector3.forward);
     }
@@ -33,16 +33,16 @@ public class ProjectileController : MonoBehaviour
             other.gameObject.GetComponent<EnemyController>().WaitStart();
             Destroy(gameObject);
         }
-        else if (other.gameObject.CompareTag("Obstacle"))
+        else if (other.gameObject.CompareTag("Wall"))
         {
             Destroy(gameObject);
         }
-        else if (other.gameObject.CompareTag("ObstacleDestructible"))
+        else if (other.gameObject.CompareTag("WallDestructible"))
         {
             other.gameObject.SetActive(false);
             Destroy(gameObject);
         }
-        else if (other.gameObject.CompareTag("ObstacleMoveable"))
+        else if (other.gameObject.CompareTag("WallMoveable"))
         {
             goCube.GetComponent<CubeController>().SwitchWallsMoveable();
             // other.gameObject.GetComponent<WallController>().bTargetPositionY = false;

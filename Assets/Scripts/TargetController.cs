@@ -8,6 +8,7 @@ public class TargetController : MonoBehaviour
 {
     public bool bInPlay = true;
     public bool bActive = true;
+    public bool bSafe = false;
     // public float fForce = 500f;
     public float fSpeed = 5f;
     private float fDistPlayerStop = 5f;
@@ -98,8 +99,12 @@ public class TargetController : MonoBehaviour
         else if (other.gameObject.CompareTag("SafeZoneTarget") && (sObjective == "Player"))
         {
             Destroy(other);
-            goGameManager.GetComponent<GameManager>().LevelCleared();
+            bSafe = true;
             sObjective = "SafeZoneTarget";
+            if (!GameObject.FindWithTag("SafeZonePlayer"))
+            {
+                goGameManager.GetComponent<GameManager>().LevelCleared();
+            }
         }
     }
 
