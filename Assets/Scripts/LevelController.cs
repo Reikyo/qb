@@ -30,12 +30,12 @@ public class LevelController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        transform.position = v3InstantiatePosition;
+
         fLevelStartMetresPerSecY = (v3LevelPosition.y - v3InstantiatePosition.y) / fLevelStartTime;
         fLevelStartMetresPerFrameY = fLevelStartMetresPerSecY * Time.deltaTime;
         fLevelStartMetresPerSecZ = (v3LevelPosition.z - v3InstantiatePosition.z) / fLevelStartTime;
         fLevelStartMetresPerFrameZ = fLevelStartMetresPerSecZ * Time.deltaTime;
-
-        transform.position = v3InstantiatePosition;
 
         goSpawnManager = GameObject.Find("Spawn Manager");
         goCube = GameObject.Find("Cube");

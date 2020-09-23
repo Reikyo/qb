@@ -41,12 +41,17 @@ public class CubeController : MonoBehaviour
 
     private int iLevel = 0;
     public GameObject[] goLevels;
+    private GameObject[] goWallsMoveable;
 
     // ------------------------------------------------------------------------------------------------
 
     // Start is called before the first frame update
     void Start()
     {
+        transform.position = v3InstantiatePosition;
+        transform.eulerAngles = v3InstantiateEulerAngles;
+        v3EulerAngles = v3InstantiateEulerAngles;
+
         fFirstLevelStartMetresPerSecY = (v3FirstLevelPosition.y - v3InstantiatePosition.y) / fFirstLevelStartTime;
         fFirstLevelStartMetresPerFrameY = fFirstLevelStartMetresPerSecY * Time.deltaTime;
         fFirstLevelStartMetresPerSecZ = (v3FirstLevelPosition.z - v3InstantiatePosition.z) / fFirstLevelStartTime;
@@ -56,10 +61,6 @@ public class CubeController : MonoBehaviour
         fFirstLevelStartDegreesPerFrame = fFirstLevelStartDegreesPerSec * Time.deltaTime;
         fNextLevelStartDegreesPerSec = 90f / fNextLevelStartTime;
         fNextLevelStartDegreesPerFrame = fNextLevelStartDegreesPerSec * Time.deltaTime;
-
-        transform.position = v3InstantiatePosition;
-        transform.eulerAngles = v3InstantiateEulerAngles;
-        v3EulerAngles = v3InstantiateEulerAngles;
     }
 
     // ------------------------------------------------------------------------------------------------
@@ -259,6 +260,18 @@ public class CubeController : MonoBehaviour
     private void Activate()
     {
         goLevels[iLevel].GetComponent<LevelController>().LevelStart();
+        goWallsMoveable = GameObject.FindGameObjectsWithTag("ObstacleMoveable");
+        Debug.Log(goWallsMoveable.Length);
+    }
+
+    // ------------------------------------------------------------------------------------------------
+
+    public void SwitchWallsMoveable()
+    {
+        foreach (GameObject goWallMoveable in goWallsMoveable)
+        {
+            goWallMoveable.GetComponent<WallController>().bTargetPositionY = false;
+        }
     }
 
     // ------------------------------------------------------------------------------------------------

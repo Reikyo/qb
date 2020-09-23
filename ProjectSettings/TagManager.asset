@@ -15,6 +15,7 @@ TagManager:
   - SafeZone
   - ObstacleDestructible
   - NavMesh
+  - ObstacleMoveable
   layers:
   - Default
   - TransparentFX

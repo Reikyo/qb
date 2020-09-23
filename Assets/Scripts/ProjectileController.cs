@@ -6,12 +6,14 @@ public class ProjectileController : MonoBehaviour
 {
     private float fSpeed = 50f;
 
+    private GameObject goCube;
+
     // ------------------------------------------------------------------------------------------------
 
     // Start is called before the first frame update
     void Start()
     {
-
+        goCube = GameObject.Find("Cube");
     }
 
     // ------------------------------------------------------------------------------------------------
@@ -38,6 +40,12 @@ public class ProjectileController : MonoBehaviour
         else if (other.gameObject.CompareTag("ObstacleDestructible"))
         {
             other.gameObject.SetActive(false);
+            Destroy(gameObject);
+        }
+        else if (other.gameObject.CompareTag("ObstacleMoveable"))
+        {
+            goCube.GetComponent<CubeController>().SwitchWallsMoveable();
+            // other.gameObject.GetComponent<WallController>().bTargetPositionY = false;
             Destroy(gameObject);
         }
     }
