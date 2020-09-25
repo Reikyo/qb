@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class WallController : MonoBehaviour
 {
-    private float fStartPositionY;
+    // private float fStartPositionY;
     private float fLowerPositionY = 2f;
     private float fUpperPositionY = 6f;
 
@@ -14,13 +14,14 @@ public class WallController : MonoBehaviour
     private float fMetresPerFrameY;
 
     public bool bTargetPositionY = true;
+    private bool bTranslateUp = true;
 
     // ------------------------------------------------------------------------------------------------
 
     // Start is called before the first frame update
     void Start()
     {
-        fStartPositionY = transform.position.y;
+        // fStartPositionY = transform.position.y;
 
         fMetresPerSecY = (fUpperPositionY - fLowerPositionY) / fTransitionTime;
         fMetresPerFrameY = fMetresPerSecY * Time.deltaTime;
@@ -33,12 +34,12 @@ public class WallController : MonoBehaviour
     {
         if (!bTargetPositionY)
         {
-            if (fStartPositionY < 4)
+            if (bTranslateUp)
             {
                 bTargetPositionY = Translate("y", fMetresPerFrameY, transform.position.y, fUpperPositionY, bTargetPositionY);
                 if (bTargetPositionY)
                 {
-                    fStartPositionY = fUpperPositionY;
+                    bTranslateUp = false;
                 }
             }
             else
@@ -46,7 +47,7 @@ public class WallController : MonoBehaviour
                 bTargetPositionY = Translate("y", -fMetresPerFrameY, transform.position.y, fLowerPositionY, bTargetPositionY);
                 if (bTargetPositionY)
                 {
-                    fStartPositionY = fLowerPositionY;
+                    bTranslateUp = true;
                 }
             }
         }

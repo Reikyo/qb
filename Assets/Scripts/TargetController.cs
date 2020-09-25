@@ -35,7 +35,7 @@ public class TargetController : MonoBehaviour
 
     // ------------------------------------------------------------------------------------------------
 
-    // Update is called once per frame
+    // FixedUpdate is called once per frame
     void FixedUpdate()
     {
         if (bInPlay && bActive)

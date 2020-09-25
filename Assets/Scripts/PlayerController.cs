@@ -2,6 +2,7 @@ using System;
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class PlayerController : MonoBehaviour
 {
@@ -17,6 +18,7 @@ public class PlayerController : MonoBehaviour
     private GameObject goEnemy;
     private GameObject goTarget;
     public GameObject goProjectile;
+    private TextMeshProUGUI guiProjectile;
     private List<string> slistChangeTargetObjective = new List<string>() {"None", "Random"};
     private int iNumPowerUp = 0;
 
@@ -35,11 +37,15 @@ public class PlayerController : MonoBehaviour
         goGameManager = GameObject.Find("Game Manager");
         goEnemy = GameObject.FindWithTag("Enemy");
         goTarget = GameObject.FindWithTag("Target");
+        guiProjectile = GameObject.Find("Value : Projectile").GetComponent<TextMeshProUGUI>();
+        guiProjectile.text = iNumPowerUp.ToString();
     }
 
     // ------------------------------------------------------------------------------------------------
 
-    // Update is called once per frame
+    // FixedUpdate is called once per frame
+    // Using FixedUpdate() rather than Update() is good for motion, as it restricts such things as
+    // different objects clipping into each other, and generally makes motion smoother.
     void FixedUpdate()
     {
         if (bInPlay
@@ -66,17 +72,34 @@ public class PlayerController : MonoBehaviour
                 }
                 // anPlayer.SetFloat("Speed_f", 0f);
             }
-
-            if ((iNumPowerUp > 0) && Input.GetKeyDown(KeyCode.Space))
-            {
-                Instantiate(goProjectile, transform.position, transform.rotation);
-            }
         }
         else
         {
             foreach (Animator anPlayerChild in anPlayerChildren)
             {
                 anPlayerChild.SetFloat("fSpeed", 0f);
+            }
+        }
+    }
+
+    // ------------------------------------------------------------------------------------------------
+
+    // Update is called once per frame
+    void Update()
+    {
+        if (bInPlay
+        &&  bActive
+        &&  goGameManager.GetComponent<GameManager>().bActive)
+        {
+            // For some reason, if projectiles are instantiated via FixedUpdate(), then typically more than one
+            // appear at any time, usually two or three. If instantiated via Update() then we get only one, as
+            // desired. No idea why, but it seems valid to have both Update() and FixedUpdate() and methods
+            // present, hence the current code block.
+            if ((iNumPowerUp > 0) && Input.GetKeyDown(KeyCode.Space))
+            {
+                Instantiate(goProjectile, transform.position, transform.rotation);
+                iNumPowerUp -=1;
+                guiProjectile.text = iNumPowerUp.ToString();
             }
         }
     }
@@ -116,7 +139,10 @@ public class PlayerController : MonoBehaviour
                 goTarget.GetComponent<TargetController>().sObjective = "Player";
                 // goTarget.GetComponent<TargetController>().fForce = 500f;
                 goTarget.GetComponent<TargetController>().fSpeed = 5f;
-                goEnemy.GetComponent<EnemyController>().sObjective = "Target";
+                if (goEnemy)
+                {
+                    goEnemy.GetComponent<EnemyController>().sObjective = "Target";
+                }
             }
         }
     }
@@ -142,7 +168,8 @@ public class PlayerController : MonoBehaviour
         else if (other.gameObject.CompareTag("PowerUp"))
         {
             Destroy(other.gameObject);
-            iNumPowerUp += 1;
+            iNumPowerUp += 20;
+            guiProjectile.text = iNumPowerUp.ToString();
         }
     }
 
