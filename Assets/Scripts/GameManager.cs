@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 // using UnityEngine.SceneManagement;
 // using UnityEngine.UI;
-using TMPro;
 
 public class GameManager : MonoBehaviour
 {
@@ -18,14 +17,20 @@ public class GameManager : MonoBehaviour
     // public Button butTryAgain;
     public bool bActive = false;
 
-    private int iLevel;
-    public TextMeshProUGUI guiLevel;
-
     private AudioSource sfxsrcGameManager;
+    private AudioClip sfxclpName;
     public AudioClip sfxclpButton;
     public AudioClip sfxclpLevelCleared;
     public AudioClip sfxclpLevelFailed;
-
+    public AudioClip sfxclpProjectile;
+    public AudioClip sfxclpWallDestructible;
+    public AudioClip sfxclpWallMoveable;
+    public AudioClip sfxclpTargetObjectivePlayer;
+    public AudioClip sfxclpTargetObjectiveRandom;
+    public AudioClip sfxclpEnemyAttack1;
+    public AudioClip sfxclpEnemyAttack2;
+    public AudioClip sfxclpEnemySleep;
+// 47, 14
     // ------------------------------------------------------------------------------------------------
 
     // Start is called before the first frame update
@@ -34,8 +39,6 @@ public class GameManager : MonoBehaviour
         goSpawnManager = GameObject.Find("Spawn Manager");
         goCube = GameObject.Find("Cube");
 
-        iLevel = 0;
-        guiLevel.text = (iLevel + 1).ToString();
         sfxsrcGameManager = GetComponent<AudioSource>();
     }
 
@@ -64,8 +67,6 @@ public class GameManager : MonoBehaviour
         }
         else if (screen == "Screen: Level Cleared")
         {
-            iLevel += 1;
-            guiLevel.text = (iLevel + 1).ToString();
             goScreenLevelCleared.SetActive(false);
             goCube.GetComponent<CubeController>().NextLevelStart();
             // Destroy characters and items
@@ -77,8 +78,7 @@ public class GameManager : MonoBehaviour
         else if (screen == "Screen: Level Failed")
         {
             goScreenLevelFailed.SetActive(false);
-            goCube.GetComponent<CubeController>().goLevels[iLevel].GetComponent<LevelController>().Deactivate();
-            goCube.GetComponent<CubeController>().goLevels[iLevel].GetComponent<LevelController>().Activate();
+            goCube.GetComponent<CubeController>().ThisLevelRestart();
             // goSpawnManager.GetComponent<SpawnManager>().Destroy();
             // goSpawnManager.GetComponent<SpawnManager>().Instantiate();
         }
@@ -89,8 +89,8 @@ public class GameManager : MonoBehaviour
 
     public void LevelCleared()
     {
-        goScreenLevelCleared.SetActive(true);
         bActive = false;
+        goScreenLevelCleared.SetActive(true);
         sfxsrcGameManager.PlayOneShot(sfxclpLevelCleared);
     }
 
@@ -98,8 +98,8 @@ public class GameManager : MonoBehaviour
 
     public void LevelFailed()
     {
-        goScreenLevelFailed.SetActive(true);
         bActive = false;
+        goScreenLevelFailed.SetActive(true);
         sfxsrcGameManager.PlayOneShot(sfxclpLevelFailed);
     }
 
@@ -110,6 +110,40 @@ public class GameManager : MonoBehaviour
     //     SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     //     GameStart();
     // }
+
+    // ------------------------------------------------------------------------------------------------
+
+    public void SfxclpPlay(string strSfxclpName)
+    {
+        switch(strSfxclpName)
+        {
+            case "Projectile":
+                sfxclpName = sfxclpProjectile;
+                break;
+            case "WallDestructible":
+                sfxclpName = sfxclpWallDestructible;
+                break;
+            case "WallMoveable":
+                sfxclpName = sfxclpWallMoveable;
+                break;
+            case "sfxclpTargetObjectivePlayer":
+                sfxclpName = sfxclpTargetObjectivePlayer;
+                break;
+            case "sfxclpTargetObjectiveRandom":
+                sfxclpName = sfxclpTargetObjectiveRandom;
+                break;
+            case "sfxclpEnemyAttack1":
+                sfxclpName = sfxclpEnemyAttack1;
+                break;
+            case "sfxclpEnemyAttack2":
+                sfxclpName = sfxclpEnemyAttack2;
+                break;
+            case "sfxclpEnemySleep":
+                sfxclpName = sfxclpEnemySleep;
+                break;
+        }
+        sfxsrcGameManager.PlayOneShot(sfxclpName);
+    }
 
     // ------------------------------------------------------------------------------------------------
 

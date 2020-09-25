@@ -2,6 +2,7 @@ using System;
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class CubeController : MonoBehaviour
 {
@@ -39,7 +40,9 @@ public class CubeController : MonoBehaviour
 
     private string sNextLevelStartRotationAxis = "z";
 
-    private int iLevel = 0;
+    private int iLevel = 2;
+    public TextMeshProUGUI guiLevel;
+    public TextMeshProUGUI guiNumProjectile;
     public GameObject[] goLevels;
     private GameObject[] goWallsMoveable;
 
@@ -257,8 +260,25 @@ public class CubeController : MonoBehaviour
 
     // ------------------------------------------------------------------------------------------------
 
+    public void ThisLevelRestart()
+    {
+        foreach(Transform trnChild in goLevels[iLevel].transform)
+        {
+            if (trnChild.tag == "WallDestructible")
+            {
+                trnChild.gameObject.SetActive(true);
+            }
+        }
+        goLevels[iLevel].GetComponent<LevelController>().Deactivate();
+        goLevels[iLevel].GetComponent<LevelController>().Activate();
+    }
+
+    // ------------------------------------------------------------------------------------------------
+
     private void Activate()
     {
+        guiLevel.text = (iLevel + 1).ToString();
+        guiNumProjectile.text = "0";
         goLevels[iLevel].GetComponent<LevelController>().LevelStart();
         goWallsMoveable = GameObject.FindGameObjectsWithTag("WallMoveable");
     }

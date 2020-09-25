@@ -6,6 +6,7 @@ public class ProjectileController : MonoBehaviour
 {
     private float fSpeed = 50f;
 
+    private GameObject goGameManager;
     private GameObject goCube;
 
     // ------------------------------------------------------------------------------------------------
@@ -13,7 +14,9 @@ public class ProjectileController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        goGameManager = GameObject.Find("Game Manager");
         goCube = GameObject.Find("Cube");
+        goGameManager.GetComponent<GameManager>().SfxclpPlay("Projectile");
     }
 
     // ------------------------------------------------------------------------------------------------
@@ -40,12 +43,13 @@ public class ProjectileController : MonoBehaviour
         else if (other.gameObject.CompareTag("WallDestructible"))
         {
             other.gameObject.SetActive(false);
+            goGameManager.GetComponent<GameManager>().SfxclpPlay("WallDestructible");
             Destroy(gameObject);
         }
         else if (other.gameObject.CompareTag("WallMoveable"))
         {
             goCube.GetComponent<CubeController>().SwitchWallsMoveable();
-            // other.gameObject.GetComponent<WallController>().bTargetPositionY = false;
+            goGameManager.GetComponent<GameManager>().SfxclpPlay("WallMoveable");
             Destroy(gameObject);
         }
     }

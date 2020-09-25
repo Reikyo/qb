@@ -18,11 +18,6 @@ public class EnemyController : MonoBehaviour
     private GameObject goPlayer;
     public string sObjective;
     public ParticleSystem psInactive;
-    private AudioSource sfxsrcEnemy;
-    public AudioClip sfxclpEnemyAttack1;
-    public AudioClip sfxclpEnemyAttack2;
-    public AudioClip sfxclpEnemySleep;
-    public AudioClip sfxclpTargetObjectiveRandom;
 
     // ------------------------------------------------------------------------------------------------
 
@@ -32,7 +27,6 @@ public class EnemyController : MonoBehaviour
         rbEnemy = GetComponent<Rigidbody>();
         // anEnemy = GetComponent<Animator>();
         navEnemy = GetComponent<NavMeshAgent>();
-        sfxsrcEnemy = GetComponent<AudioSource>();
         goGameManager = GameObject.Find("Game Manager");
         goTarget = GameObject.FindWithTag("Target");
         goPlayer = GameObject.FindWithTag("Player");
@@ -116,7 +110,7 @@ public class EnemyController : MonoBehaviour
         // anEnemy.SetBool("bSleep", true);
         // anEnemy.ResetTrigger("tAttack1");
         // anEnemy.ResetTrigger("tAttack2");
-        sfxsrcEnemy.PlayOneShot(sfxclpEnemySleep);
+        goGameManager.GetComponent<GameManager>().SfxclpPlay("sfxclpEnemySleep");
         psInactive.Play();
         yield return new WaitForSeconds(fWaitTime);
         psInactive.Stop();
@@ -145,8 +139,8 @@ public class EnemyController : MonoBehaviour
         if (bActive && collision.gameObject.CompareTag("Target"))
         {
             // anEnemy.SetTrigger("tAttack1");
-            sfxsrcEnemy.PlayOneShot(sfxclpEnemyAttack1);
-            sfxsrcEnemy.PlayOneShot(sfxclpTargetObjectiveRandom);
+            goGameManager.GetComponent<GameManager>().SfxclpPlay("sfxclpEnemyAttack1");
+            goGameManager.GetComponent<GameManager>().SfxclpPlay("sfxclpTargetObjectiveRandom");
             Vector2 v2DirectionRand = Random.insideUnitCircle.normalized * 100f;
             Vector3 v3DirectionRand = new Vector3(v2DirectionRand.x, goTarget.transform.position.y, v2DirectionRand.y);
             goTarget.GetComponent<TargetController>().v3DirectionRand = v3DirectionRand;
@@ -158,7 +152,7 @@ public class EnemyController : MonoBehaviour
         else if (bActive && collision.gameObject.CompareTag("Player"))
         {
             // anEnemy.SetTrigger("tAttack2");
-            sfxsrcEnemy.PlayOneShot(sfxclpEnemyAttack2);
+            goGameManager.GetComponent<GameManager>().SfxclpPlay("sfxclpEnemyAttack2");
         }
     }
 

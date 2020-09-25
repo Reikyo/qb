@@ -18,12 +18,9 @@ public class PlayerController : MonoBehaviour
     private GameObject goEnemy;
     private GameObject goTarget;
     public GameObject goProjectile;
-    private TextMeshProUGUI guiProjectile;
+    private int iNumProjectile = 0;
+    private TextMeshProUGUI guiNumProjectile;
     private List<string> slistChangeTargetObjective = new List<string>() {"None", "Random"};
-    private int iNumPowerUp = 0;
-
-    private AudioSource sfxsrcPlayer;
-    public AudioClip sfxclpTargetObjectivePlayer;
 
     // ------------------------------------------------------------------------------------------------
 
@@ -31,14 +28,13 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         rbPlayer = GetComponent<Rigidbody>();
-        sfxsrcPlayer = GetComponent<AudioSource>();
         // anPlayer = GetComponent<Animator>();
         // anPlayerChildren = GetComponentsInChildren<Animator>(); // n.b. This only gets the component of the first child in the tree
         goGameManager = GameObject.Find("Game Manager");
         goEnemy = GameObject.FindWithTag("Enemy");
         goTarget = GameObject.FindWithTag("Target");
-        guiProjectile = GameObject.Find("Value : Projectile").GetComponent<TextMeshProUGUI>();
-        guiProjectile.text = iNumPowerUp.ToString();
+        guiNumProjectile = GameObject.Find("Value : Num Projectile").GetComponent<TextMeshProUGUI>();
+        guiNumProjectile.text = iNumProjectile.ToString();
     }
 
     // ------------------------------------------------------------------------------------------------
@@ -95,11 +91,11 @@ public class PlayerController : MonoBehaviour
             // appear at any time, usually two or three. If instantiated via Update() then we get only one, as
             // desired. No idea why, but it seems valid to have both Update() and FixedUpdate() and methods
             // present, hence the current code block.
-            if ((iNumPowerUp > 0) && Input.GetKeyDown(KeyCode.Space))
+            if ((iNumProjectile > 0) && Input.GetKeyDown(KeyCode.Space))
             {
                 Instantiate(goProjectile, transform.position, transform.rotation);
-                iNumPowerUp -=1;
-                guiProjectile.text = iNumPowerUp.ToString();
+                iNumProjectile -=1;
+                guiNumProjectile.text = iNumProjectile.ToString();
             }
         }
     }
@@ -135,7 +131,7 @@ public class PlayerController : MonoBehaviour
         {
             if (slistChangeTargetObjective.Contains(goTarget.GetComponent<TargetController>().sObjective))
             {
-                sfxsrcPlayer.PlayOneShot(sfxclpTargetObjectivePlayer);
+                goGameManager.GetComponent<GameManager>().SfxclpPlay("sfxclpTargetObjectivePlayer");
                 goTarget.GetComponent<TargetController>().sObjective = "Player";
                 // goTarget.GetComponent<TargetController>().fForce = 500f;
                 goTarget.GetComponent<TargetController>().fSpeed = 5f;
@@ -168,8 +164,8 @@ public class PlayerController : MonoBehaviour
         else if (other.gameObject.CompareTag("PowerUp"))
         {
             Destroy(other.gameObject);
-            iNumPowerUp += 20;
-            guiProjectile.text = iNumPowerUp.ToString();
+            iNumProjectile += 20;
+            guiNumProjectile.text = iNumProjectile.ToString();
         }
     }
 
