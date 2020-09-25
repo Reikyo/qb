@@ -9,6 +9,7 @@ public class EnemyController : MonoBehaviour
     public bool bActive = true;
     // private float fForce = 500f;
     private float fSpeed = 6f;
+    private float fForcePush = 5f;
     private float fWaitTime = 5f;
     private Rigidbody rbEnemy;
     // private Animator anEnemy;
@@ -152,6 +153,7 @@ public class EnemyController : MonoBehaviour
         else if (bActive && collision.gameObject.CompareTag("Player"))
         {
             // anEnemy.SetTrigger("tAttack2");
+            collision.gameObject.GetComponent<Rigidbody>().AddForce(fForcePush * (collision.gameObject.transform.position - transform.position).normalized, ForceMode.Impulse);
             goGameManager.GetComponent<GameManager>().SfxclpPlay("sfxclpEnemyAttack2");
         }
     }

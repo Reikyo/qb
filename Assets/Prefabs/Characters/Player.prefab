@@ -227,8 +227,6 @@ MonoBehaviour:
   anPlayerChildren: []
   goProjectile: {fileID: 3262308912846389460, guid: 7ef6ed067bb4141f99938800b9352366,
     type: 3}
-  sfxclpTargetObjectivePlayer: {fileID: 8300000, guid: 657578e4be6b64dbf9b09deada272e55,
-    type: 3}
 --- !u!114 &8814479135158853996
 MonoBehaviour:
   m_ObjectHideFlags: 0

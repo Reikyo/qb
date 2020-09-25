@@ -11039,7 +11039,7 @@ GameObject:
   - component: {fileID: 1017159775}
   - component: {fileID: 1017159774}
   m_Layer: 5
-  m_Name: 'Label : Projectile'
+  m_Name: 'Label : Num Projectile'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -11797,7 +11797,7 @@ GameObject:
   - component: {fileID: 1091215720}
   - component: {fileID: 1091215719}
   m_Layer: 5
-  m_Name: 'Value : Projectile'
+  m_Name: 'Value : Num Projectile'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -15614,7 +15614,6 @@ MonoBehaviour:
   goScreenLevelFailed: {fileID: 137945756}
   goScreenHUD: {fileID: 567230794}
   bActive: 1
-  guiLevel: {fileID: 1494255436}
   sfxclpButton: {fileID: 8300000, guid: 32d4b1811dda14a6cb9e059ee8ad17d2, type: 3}
   sfxclpLevelCleared: {fileID: 8300000, guid: 52320e590bf774734a288886eba557ba, type: 3}
   sfxclpLevelFailed: {fileID: 8300000, guid: a0ca8964c08d54c5dbebf245bdc474ca, type: 3}
@@ -15627,7 +15626,7 @@ MonoBehaviour:
   sfxclpTargetObjectiveRandom: {fileID: 8300000, guid: 657578e4be6b64dbf9b09deada272e55,
     type: 3}
   sfxclpEnemyAttack1: {fileID: 8300000, guid: d46323e22e74e46baa241cbf48c85671, type: 3}
-  sfxclpEnemyAttack2: {fileID: 8300000, guid: b6428d4edb06344ba829da4edd9967c1, type: 3}
+  sfxclpEnemyAttack2: {fileID: 8300000, guid: 130a177e727814a2ea78a886ab72213d, type: 3}
   sfxclpEnemySleep: {fileID: 8300000, guid: dc6614beca09347ec9b258f12d154bdd, type: 3}
 --- !u!4 &1439565912
 Transform:
@@ -16200,7 +16199,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 0
+  m_text: 1
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: c1bcc2932298f41d7b09103f2ea81c93, type: 2}
   m_sharedMaterial: {fileID: 21731832211206070, guid: c1bcc2932298f41d7b09103f2ea81c93,
@@ -22577,6 +22576,16 @@ PrefabInstance:
       propertyPath: goLevels.Array.data[5]
       value: 
       objectReference: {fileID: 219961739}
+    - target: {fileID: 6509780028161023080, guid: 32d5ea8b0a00a4bd6ba731b74d7f6d84,
+        type: 3}
+      propertyPath: guiLevel
+      value: 
+      objectReference: {fileID: 1494255436}
+    - target: {fileID: 6509780028161023080, guid: 32d5ea8b0a00a4bd6ba731b74d7f6d84,
+        type: 3}
+      propertyPath: guiNumProjectile
+      value: 
+      objectReference: {fileID: 1091215719}
     - target: {fileID: 6509780028161023081, guid: 32d5ea8b0a00a4bd6ba731b74d7f6d84,
         type: 3}
       propertyPath: m_LocalPosition.x

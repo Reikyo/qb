@@ -30,7 +30,7 @@ public class GameManager : MonoBehaviour
     public AudioClip sfxclpEnemyAttack1;
     public AudioClip sfxclpEnemyAttack2;
     public AudioClip sfxclpEnemySleep;
-// 47, 14
+
     // ------------------------------------------------------------------------------------------------
 
     // Start is called before the first frame update

@@ -4925,11 +4925,6 @@ MonoBehaviour:
   bActive: 1
   sObjective: Target
   psInactive: {fileID: 5213883131595802482}
-  sfxclpEnemyAttack1: {fileID: 8300000, guid: d46323e22e74e46baa241cbf48c85671, type: 3}
-  sfxclpEnemyAttack2: {fileID: 8300000, guid: b6428d4edb06344ba829da4edd9967c1, type: 3}
-  sfxclpEnemySleep: {fileID: 8300000, guid: d8d04c6f80a1140db85ede568dab1f51, type: 3}
-  sfxclpTargetObjectiveRandom: {fileID: 8300000, guid: 5fdb13d3756c84fecac96f5a2d124370,
-    type: 3}
 --- !u!114 &5372751787709200268
 MonoBehaviour:
   m_ObjectHideFlags: 0

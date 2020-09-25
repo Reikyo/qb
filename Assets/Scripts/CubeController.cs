@@ -40,7 +40,7 @@ public class CubeController : MonoBehaviour
 
     private string sNextLevelStartRotationAxis = "z";
 
-    private int iLevel = 2;
+    private int iLevel = 0;
     public TextMeshProUGUI guiLevel;
     public TextMeshProUGUI guiNumProjectile;
     public GameObject[] goLevels;
@@ -264,7 +264,7 @@ public class CubeController : MonoBehaviour
     {
         foreach(Transform trnChild in goLevels[iLevel].transform)
         {
-            if (trnChild.tag == "WallDestructible")
+            if (trnChild.gameObject.CompareTag("WallDestructible"))
             {
                 trnChild.gameObject.SetActive(true);
             }
