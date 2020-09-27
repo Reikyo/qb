@@ -22,6 +22,7 @@ public class GameManager : MonoBehaviour
     public AudioClip sfxclpButton;
     public AudioClip sfxclpLevelCleared;
     public AudioClip sfxclpLevelFailed;
+    public AudioClip sfxclpPowerUp;
     public AudioClip sfxclpProjectile;
     public AudioClip sfxclpWallDestructible;
     public AudioClip sfxclpWallMoveable;
@@ -98,9 +99,12 @@ public class GameManager : MonoBehaviour
 
     public void LevelFailed()
     {
-        bActive = false;
-        goScreenLevelFailed.SetActive(true);
-        sfxsrcGameManager.PlayOneShot(sfxclpLevelFailed);
+        if (bActive)
+        {
+            bActive = false;
+            goScreenLevelFailed.SetActive(true);
+            sfxsrcGameManager.PlayOneShot(sfxclpLevelFailed);
+        }
     }
 
     // ------------------------------------------------------------------------------------------------
@@ -117,6 +121,9 @@ public class GameManager : MonoBehaviour
     {
         switch(strSfxclpName)
         {
+            case "sfxclpPowerUp":
+                sfxclpName = sfxclpPowerUp;
+                break;
             case "Projectile":
                 sfxclpName = sfxclpProjectile;
                 break;

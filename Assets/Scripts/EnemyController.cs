@@ -16,6 +16,7 @@ public class EnemyController : MonoBehaviour
     private NavMeshAgent navEnemy;
     private GameObject goGameManager;
     private GameObject goTarget;
+    private List<string> slistLeaveTargetObjective = new List<string>() {"Random", "SafeZoneTarget"};
     private GameObject goPlayer;
     public string sObjective;
     public ParticleSystem psInactive;
@@ -65,8 +66,8 @@ public class EnemyController : MonoBehaviour
                 navEnemy.destination = goTarget.transform.position;
             }
             else if ((sObjective == "Player")
-            && goPlayer
-            && goPlayer.GetComponent<PlayerController>().bInPlay)
+            &&  goPlayer
+            &&  goPlayer.GetComponent<PlayerController>().bInPlay)
             {
                 // Vector3 v3DirectionMove = (goPlayer.transform.position - transform.position).normalized;
                 // transform.Translate(fSpeed * Time.deltaTime * v3DirectionMove, Space.World);
@@ -76,16 +77,17 @@ public class EnemyController : MonoBehaviour
             else
             {
                 bActive = false;
-                navEnemy.destination = transform.position;
+                navEnemy.enabled = false;
                 // anEnemy.SetBool("bWalkForward", false);
                 // anEnemy.ResetTrigger("tAttack1");
                 // anEnemy.ResetTrigger("tAttack2");
             }
         }
         // else if (anEnemy.GetBool("bWalkForward") && (!bInPlay || !goGameManager.GetComponent<GameManager>().bActive))
-        else if (!bInPlay || !goGameManager.GetComponent<GameManager>().bActive)
+        else if (!goGameManager.GetComponent<GameManager>().bActive)
         {
-            navEnemy.destination = transform.position;
+            bActive = false;
+            navEnemy.enabled = false;
             // anEnemy.SetBool("bWalkForward", false);
             // anEnemy.ResetTrigger("tAttack1");
             // anEnemy.ResetTrigger("tAttack2");
@@ -94,7 +96,7 @@ public class EnemyController : MonoBehaviour
 
     // ------------------------------------------------------------------------------------------------
 
-    public void WaitStart()
+    public void StartWait()
     {
         if (bActive)
         {
@@ -107,7 +109,7 @@ public class EnemyController : MonoBehaviour
     IEnumerator Wait()
     {
         bActive = false;
-        navEnemy.destination = transform.position;
+        navEnemy.enabled = false;
         // anEnemy.SetBool("bSleep", true);
         // anEnemy.ResetTrigger("tAttack1");
         // anEnemy.ResetTrigger("tAttack2");
@@ -118,43 +120,42 @@ public class EnemyController : MonoBehaviour
         yield return new WaitForSeconds(7f);
         // anEnemy.SetBool("bSleep", false);
         bActive = true;
+        navEnemy.enabled = true;
     }
 
     // ------------------------------------------------------------------------------------------------
 
-    private void Move(Vector3 v3PositionObjective)
-    {
-        Vector3 v3DirectionMove = (v3PositionObjective - transform.position).normalized;
-        transform.position = Vector3.MoveTowards(transform.position, v3PositionObjective, fSpeed * Time.deltaTime);
-
-        Vector3 v3DirectionLook = Vector3.RotateTowards(transform.forward, v3DirectionMove, fSpeed * Time.deltaTime, 0f);
-        transform.rotation = Quaternion.LookRotation(v3DirectionLook);
-
-        Debug.DrawRay(transform.position, v3DirectionMove * 10f, Color.red);
-    }
+    // private void Move(Vector3 v3PositionObjective)
+    // {
+    //     Vector3 v3DirectionMove = (v3PositionObjective - transform.position).normalized;
+    //     Vector3 v3DirectionLook = Vector3.RotateTowards(transform.forward, v3DirectionMove, fSpeed * Time.deltaTime, 0f);
+    //
+    //     transform.position = Vector3.MoveTowards(transform.position, v3PositionObjective, fSpeed * Time.deltaTime);
+    //     transform.rotation = Quaternion.LookRotation(v3DirectionLook);
+    //
+    //     Debug.DrawRay(transform.position, v3DirectionMove * 10f, Color.red);
+    // }
 
     // ------------------------------------------------------------------------------------------------
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (bActive && collision.gameObject.CompareTag("Target"))
+        if (bActive
+        &&  collision.gameObject.CompareTag("Target")
+        &&  !slistLeaveTargetObjective.Contains(goTarget.GetComponent<TargetController>().sObjective))
         {
             // anEnemy.SetTrigger("tAttack1");
             goGameManager.GetComponent<GameManager>().SfxclpPlay("sfxclpEnemyAttack1");
             goGameManager.GetComponent<GameManager>().SfxclpPlay("sfxclpTargetObjectiveRandom");
-            Vector2 v2DirectionRand = Random.insideUnitCircle.normalized * 100f;
-            Vector3 v3DirectionRand = new Vector3(v2DirectionRand.x, goTarget.transform.position.y, v2DirectionRand.y);
-            goTarget.GetComponent<TargetController>().v3DirectionRand = v3DirectionRand;
-            goTarget.GetComponent<TargetController>().sObjective = "Random";
-            // goTarget.GetComponent<TargetController>().fForce = 300f;
-            goTarget.GetComponent<TargetController>().fSpeed = 2f;
+            goTarget.GetComponent<TargetController>().StartObjectiveRandom();
             sObjective = "Player";
         }
-        else if (bActive && collision.gameObject.CompareTag("Player"))
+        else if (bActive
+        &&  collision.gameObject.CompareTag("Player"))
         {
             // anEnemy.SetTrigger("tAttack2");
-            collision.gameObject.GetComponent<Rigidbody>().AddForce(fForcePush * (collision.gameObject.transform.position - transform.position).normalized, ForceMode.Impulse);
             goGameManager.GetComponent<GameManager>().SfxclpPlay("sfxclpEnemyAttack2");
+            collision.gameObject.GetComponent<Rigidbody>().AddForce(fForcePush * (collision.gameObject.transform.position - transform.position).normalized, ForceMode.Impulse);
         }
     }
 
@@ -165,6 +166,7 @@ public class EnemyController : MonoBehaviour
         if (other.gameObject.CompareTag("OffGroundTrigger"))
         {
             bInPlay = false;
+            navEnemy.enabled = false;
         }
     }
 

@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PowerUpController : MonoBehaviour
 {
+    public int iValue = 20;
+
     private float fDegreesPerSecond = 90f;
     private float fDegreesPerFrame;
 

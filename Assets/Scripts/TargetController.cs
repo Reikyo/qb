@@ -8,29 +8,35 @@ public class TargetController : MonoBehaviour
 {
     public bool bInPlay = true;
     public bool bActive = true;
-    public bool bSafe = false;
+    public bool bSafe;
     // public float fForce = 500f;
-    public float fSpeed = 5f;
-    private float fDistPlayerStop = 5f;
+    // public float fSpeed = 5f;
+    private float fSpeedRandom = 5f;
+    private float fDistPlayerStop = 3f;
     private Rigidbody rbTarget;
     private NavMeshAgent navTarget;
     private GameObject goGameManager;
     private GameObject goPlayer;
     private GameObject goSafeZoneTarget;
     public string sObjective;
-    public Vector3 v3DirectionRand;
+    private Vector2 v2DirectionRandom;
+    private Vector3 v3DirectionRandom;
+    private float fTimeSpentDoingCurrentDirectionRandom;
+    private float fTimeToSpendDoingCurrentDirectionRandom;
 
     // ------------------------------------------------------------------------------------------------
 
     // Start is called before the first frame update
     void Start()
     {
+        bSafe = !GameObject.FindWithTag("SafeZoneTarget");
         rbTarget = GetComponent<Rigidbody>();
         navTarget = GetComponent<NavMeshAgent>();
         goGameManager = GameObject.Find("Game Manager");
         goPlayer = GameObject.FindWithTag("Player");
         goSafeZoneTarget = GameObject.FindWithTag("SafeZoneTarget");
         sObjective = "None";
+        SetDirectionRandom();
     }
 
     // ------------------------------------------------------------------------------------------------
@@ -38,26 +44,40 @@ public class TargetController : MonoBehaviour
     // FixedUpdate is called once per frame
     void FixedUpdate()
     {
-        if (bInPlay && bActive)
+        // Game Manager bActive check intentionally left out here, so that target can still move further
+        // into the safe zone even after that action triggers the level clearing
+        if (bInPlay
+        &&  bActive)
         {
             if ((sObjective == "Player")
             &&  goPlayer
-            &&  goPlayer.GetComponent<PlayerController>().bInPlay
-            &&  (Math.Abs((goPlayer.transform.position - transform.position).magnitude) > fDistPlayerStop))
+            &&  goPlayer.GetComponent<PlayerController>().bInPlay)
             {
                 // Vector3 v3Objective = goPlayer.transform.position;
                 // Vector3 v3Direction = (v3Objective - transform.position).normalized;
                 // transform.Translate(fSpeed * Time.deltaTime * v3Direction, Space.World);
                 // Move(goPlayer.transform.position);
-                navTarget.destination = goPlayer.transform.position;
+
+                // This condition should remain here rather than be put into the parent condition, as the final
+                // "else" of this code block will otherwise immediately set bActive to false, as the player is too
+                // close when it collides with the target
+                if (Math.Abs((goPlayer.transform.position - transform.position).magnitude) > fDistPlayerStop)
+                {
+                    navTarget.destination = goPlayer.transform.position;
+                }
+                else
+                {
+                    navTarget.destination = transform.position;
+                }
             }
             else if (sObjective == "Random")
             {
-                // Vector3 v3Objective = v3DirectionRand;
-                // Vector3 v3Direction = (v3Objective - transform.position).normalized;
-                // transform.Translate(fSpeed * Time.deltaTime * v3Direction, Space.World);
-                // Move(transform.position + v3DirectionRand);
-                navTarget.destination = new Vector3(-50f, transform.position.y, -50f);
+                Move(transform.position + v3DirectionRandom);
+                fTimeSpentDoingCurrentDirectionRandom += Time.deltaTime;
+                if (fTimeSpentDoingCurrentDirectionRandom >= fTimeToSpendDoingCurrentDirectionRandom)
+                {
+                    SetDirectionRandom();
+                }
             }
             else if (sObjective == "SafeZoneTarget")
             {
@@ -65,11 +85,16 @@ public class TargetController : MonoBehaviour
                 // Vector3 v3Direction = (v3Objective - transform.position).normalized;
                 // transform.Translate(fSpeed * Time.deltaTime * v3Direction, Space.World);
                 // Move(new Vector3(goSafeZoneTarget.transform.position.x, transform.position.y, goSafeZoneTarget.transform.position.z));
-                navTarget.destination = new Vector3(goSafeZoneTarget.transform.position.x, transform.position.y, goSafeZoneTarget.transform.position.z);
+                navTarget.destination = new Vector3(
+                    goSafeZoneTarget.transform.position.x,
+                    transform.position.y,
+                    goSafeZoneTarget.transform.position.z
+                );
             }
             else
             {
-                navTarget.destination = transform.position;
+                bActive = false;
+                navTarget.enabled = false;
             }
         }
     }
@@ -79,9 +104,9 @@ public class TargetController : MonoBehaviour
     private void Move(Vector3 v3PositionObjective)
     {
         Vector3 v3DirectionMove = (v3PositionObjective - transform.position).normalized;
-        transform.position = Vector3.MoveTowards(transform.position, v3PositionObjective, fSpeed * Time.deltaTime);
+        Vector3 v3DirectionLook = Vector3.RotateTowards(transform.forward, v3DirectionMove, fSpeedRandom * Time.deltaTime, 0f);
 
-        Vector3 v3DirectionLook = Vector3.RotateTowards(transform.forward, v3DirectionMove, fSpeed * Time.deltaTime, 0f);
+        transform.position = Vector3.MoveTowards(transform.position, v3PositionObjective, fSpeedRandom * Time.deltaTime);
         transform.rotation = Quaternion.LookRotation(v3DirectionLook);
 
         Debug.DrawRay(transform.position, v3DirectionMove * 10f, Color.yellow);
@@ -89,19 +114,59 @@ public class TargetController : MonoBehaviour
 
     // ------------------------------------------------------------------------------------------------
 
+    private void SetDirectionRandom()
+    {
+        v2DirectionRandom = UnityEngine.Random.insideUnitCircle.normalized * 100f;
+        v3DirectionRandom = new Vector3(v2DirectionRandom.x, transform.position.y, v2DirectionRandom.y);
+        fTimeSpentDoingCurrentDirectionRandom = 0f;
+        fTimeToSpendDoingCurrentDirectionRandom = UnityEngine.Random.Range(0.5f, 2f);
+    }
+
+    // ------------------------------------------------------------------------------------------------
+
+    public void StartObjectivePlayer()
+    {
+        bActive = true;
+        sObjective = "Player";
+        navTarget.enabled = true;
+    }
+
+    // ------------------------------------------------------------------------------------------------
+
+    public void StartObjectiveRandom()
+    {
+        bActive = true;
+        sObjective = "Random";
+        navTarget.enabled = false;
+    }
+
+    // ------------------------------------------------------------------------------------------------
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (sObjective == "Random")
+        {
+            SetDirectionRandom();
+        }
+    }
+
+    // ------------------------------------------------------------------------------------------------
+
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("OffGroundTrigger") && goGameManager.GetComponent<GameManager>().bActive)
+        if (other.gameObject.CompareTag("OffGroundTrigger"))
         {
             bInPlay = false;
+            navTarget.enabled = false;
             goGameManager.GetComponent<GameManager>().LevelFailed();
         }
-        else if (other.gameObject.CompareTag("SafeZoneTarget") && (sObjective == "Player"))
+        else if (other.gameObject.CompareTag("SafeZoneTarget")
+        &&  (sObjective == "Player"))
         {
             Destroy(other);
             bSafe = true;
             sObjective = "SafeZoneTarget";
-            if (!GameObject.FindWithTag("SafeZonePlayer"))
+            if (goPlayer.GetComponent<PlayerController>().bSafe)
             {
                 goGameManager.GetComponent<GameManager>().LevelCleared();
             }

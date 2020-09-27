@@ -33,7 +33,7 @@ public class ProjectileController : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Enemy"))
         {
-            other.gameObject.GetComponent<EnemyController>().WaitStart();
+            other.gameObject.GetComponent<EnemyController>().StartWait();
             Destroy(gameObject);
         }
         else if (other.gameObject.CompareTag("Wall"))

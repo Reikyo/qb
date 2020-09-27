@@ -8,31 +8,32 @@ public class PlayerController : MonoBehaviour
 {
     public bool bInPlay = true;
     public bool bActive = true;
-    public bool bSafe = false;
+    public bool bSafe;
     // private float fForce = 1000f;
     private float fSpeed = 10f;
     private Rigidbody rbPlayer;
     // private Animator anPlayer;
     public Animator[] anPlayerChildren;
     private GameObject goGameManager;
-    private GameObject goEnemy;
     private GameObject goTarget;
+    private List<string> slistLeaveTargetObjective = new List<string>() {"Player", "SafeZoneTarget"};
+    private GameObject goEnemy;
     public GameObject goProjectile;
     private int iNumProjectile = 0;
     private TextMeshProUGUI guiNumProjectile;
-    private List<string> slistChangeTargetObjective = new List<string>() {"None", "Random"};
 
     // ------------------------------------------------------------------------------------------------
 
     // Start is called before the first frame update
     void Start()
     {
+        bSafe = !GameObject.FindWithTag("SafeZonePlayer");
         rbPlayer = GetComponent<Rigidbody>();
         // anPlayer = GetComponent<Animator>();
         // anPlayerChildren = GetComponentsInChildren<Animator>(); // n.b. This only gets the component of the first child in the tree
         goGameManager = GameObject.Find("Game Manager");
-        goEnemy = GameObject.FindWithTag("Enemy");
         goTarget = GameObject.FindWithTag("Target");
+        goEnemy = GameObject.FindWithTag("Enemy");
         guiNumProjectile = GameObject.Find("Value : Num Projectile").GetComponent<TextMeshProUGUI>();
         guiNumProjectile.text = iNumProjectile.ToString();
     }
@@ -53,6 +54,7 @@ public class PlayerController : MonoBehaviour
 
             if (Math.Abs(inputHorz) + Math.Abs(inputVert) > 0f)
             {
+                // Only needed if the character model has multiple animated parts
                 foreach (Animator anPlayerChild in anPlayerChildren)
                 {
                     anPlayerChild.SetFloat("fSpeed", 1f);
@@ -62,6 +64,7 @@ public class PlayerController : MonoBehaviour
             }
             else
             {
+                // Only needed if the character model has multiple animated parts
                 foreach (Animator anPlayerChild in anPlayerChildren)
                 {
                     anPlayerChild.SetFloat("fSpeed", 0f);
@@ -71,6 +74,7 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
+            // Only needed if the character model has multiple animated parts
             foreach (Animator anPlayerChild in anPlayerChildren)
             {
                 anPlayerChild.SetFloat("fSpeed", 0f);
@@ -89,7 +93,7 @@ public class PlayerController : MonoBehaviour
         {
             // For some reason, if projectiles are instantiated via FixedUpdate(), then typically more than one
             // appear at any time, usually two or three. If instantiated via Update() then we get only one, as
-            // desired. No idea why, but it seems valid to have both Update() and FixedUpdate() and methods
+            // desired. No idea why, but it seems valid to have both Update() and FixedUpdate() methods
             // present, hence the current code block.
             if ((iNumProjectile > 0) && Input.GetKeyDown(KeyCode.Space))
             {
@@ -115,9 +119,9 @@ public class PlayerController : MonoBehaviour
         // Vector3 v3DirectionMove = ((inputHorz * Vector3.right) + (inputVert * Vector3.forward)).normalized;
 
         Vector3 v3DirectionMove = (v3PositionObjective - transform.position).normalized;
-        transform.position = Vector3.MoveTowards(transform.position, transform.position + v3DirectionMove, fSpeed * Time.deltaTime);
-
         Vector3 v3DirectionLook = Vector3.RotateTowards(transform.forward, v3DirectionMove, fSpeed * Time.deltaTime, 0f);
+
+        transform.position = Vector3.MoveTowards(transform.position, transform.position + v3DirectionMove, fSpeed * Time.deltaTime);
         transform.rotation = Quaternion.LookRotation(v3DirectionLook);
 
         Debug.DrawRay(transform.position, v3DirectionMove * 10f, Color.blue);
@@ -127,18 +131,15 @@ public class PlayerController : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Target"))
+        if (bActive
+        &&  collision.gameObject.CompareTag("Target")
+        &&  !slistLeaveTargetObjective.Contains(goTarget.GetComponent<TargetController>().sObjective))
         {
-            if (slistChangeTargetObjective.Contains(goTarget.GetComponent<TargetController>().sObjective))
+            goGameManager.GetComponent<GameManager>().SfxclpPlay("sfxclpTargetObjectivePlayer");
+            goTarget.GetComponent<TargetController>().StartObjectivePlayer();
+            if (goEnemy)
             {
-                goGameManager.GetComponent<GameManager>().SfxclpPlay("sfxclpTargetObjectivePlayer");
-                goTarget.GetComponent<TargetController>().sObjective = "Player";
-                // goTarget.GetComponent<TargetController>().fForce = 500f;
-                goTarget.GetComponent<TargetController>().fSpeed = 5f;
-                if (goEnemy)
-                {
-                    goEnemy.GetComponent<EnemyController>().sObjective = "Target";
-                }
+                goEnemy.GetComponent<EnemyController>().sObjective = "Target";
             }
         }
     }
@@ -147,14 +148,15 @@ public class PlayerController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("OffGroundTrigger") && goGameManager.GetComponent<GameManager>().bActive)
+        if (other.gameObject.CompareTag("OffGroundTrigger"))
         {
             bInPlay = false;
             goGameManager.GetComponent<GameManager>().LevelFailed();
         }
         else if (other.gameObject.CompareTag("SafeZonePlayer"))
         {
-            if (!goTarget || goTarget.GetComponent<TargetController>().bSafe)
+            if (!goTarget
+            ||  goTarget.GetComponent<TargetController>().bSafe)
             {
                 Destroy(other);
                 bSafe = true;
@@ -164,7 +166,8 @@ public class PlayerController : MonoBehaviour
         else if (other.gameObject.CompareTag("PowerUp"))
         {
             Destroy(other.gameObject);
-            iNumProjectile += 20;
+            goGameManager.GetComponent<GameManager>().SfxclpPlay("sfxclpPowerUp");
+            iNumProjectile += other.gameObject.GetComponent<PowerUpController>().iValue;
             guiNumProjectile.text = iNumProjectile.ToString();
         }
     }
