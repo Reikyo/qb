@@ -18,6 +18,7 @@ public class PlayerController : MonoBehaviour
     private GameObject goTarget;
     private List<string> slistLeaveTargetObjective = new List<string>() {"Player", "SafeZoneTarget"};
     private GameObject goEnemy;
+    private GameObject goSafeZonePlayer;
     public GameObject goProjectile;
     private int iNumProjectile = 0;
     private TextMeshProUGUI guiNumProjectile;
@@ -27,13 +28,14 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        bSafe = !GameObject.FindWithTag("SafeZonePlayer");
         rbPlayer = GetComponent<Rigidbody>();
         // anPlayer = GetComponent<Animator>();
         // anPlayerChildren = GetComponentsInChildren<Animator>(); // n.b. This only gets the component of the first child in the tree
         goGameManager = GameObject.Find("Game Manager");
         goTarget = GameObject.FindWithTag("Target");
         goEnemy = GameObject.FindWithTag("Enemy");
+        goSafeZonePlayer = GameObject.FindWithTag("SafeZonePlayer");
+        bSafe = !goSafeZonePlayer;
         guiNumProjectile = GameObject.Find("Value : Num Projectile").GetComponent<TextMeshProUGUI>();
         guiNumProjectile.text = iNumProjectile.ToString();
     }
@@ -71,6 +73,14 @@ public class PlayerController : MonoBehaviour
                 }
                 // anPlayer.SetFloat("Speed_f", 0f);
             }
+        }
+        else if (goSafeZonePlayer && bSafe)
+        {
+            Move(new Vector3(
+                goSafeZonePlayer.transform.position.x,
+                transform.position.y,
+                goSafeZonePlayer.transform.position.z
+            ));
         }
         else
         {

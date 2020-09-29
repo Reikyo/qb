@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2026335603239140459}
   - component: {fileID: 2026335603239140460}
-  - component: {fileID: 2026335603239140458}
+  - component: {fileID: 4370295241223048762}
   m_Layer: 0
   m_Name: SafeZoneTarget
   m_TagString: SafeZoneTarget
@@ -80,8 +80,8 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!136 &2026335603239140458
-CapsuleCollider:
+--- !u!135 &4370295241223048762
+SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -90,7 +90,6 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1
+  serializedVersion: 2
   m_Radius: 0.100000024
-  m_Height: 0.20000005
-  m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}

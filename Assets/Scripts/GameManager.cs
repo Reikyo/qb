@@ -37,6 +37,7 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        goScreenTitle.SetActive(true);
         goSpawnManager = GameObject.Find("Spawn Manager");
         goCube = GameObject.Find("Cube");
 

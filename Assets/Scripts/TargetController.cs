@@ -10,8 +10,7 @@ public class TargetController : MonoBehaviour
     public bool bActive = true;
     public bool bSafe;
     // public float fForce = 500f;
-    // public float fSpeed = 5f;
-    private float fSpeedRandom = 5f;
+    public float fSpeed = 5f;
     private float fDistPlayerStop = 3f;
     private Rigidbody rbTarget;
     private NavMeshAgent navTarget;
@@ -27,20 +26,21 @@ public class TargetController : MonoBehaviour
     private float fObjectiveRandomTimeSpendThisDirection;
     private float fObjectiveRandomEmissionFreq = 1f;
     private float fObjectiveRandomEmissionAngFreq;
-    private Color colObjectiveRandomEmissionColor = new Color(255f, 70f, 0f) / 255f;
+    private Color colObjectiveRandomEmissionColor = new Color(255f, 70f, 0f, 255f) / 255f;
+    private Color colObjectiveRandomEmissionColorNow;
 
     // ------------------------------------------------------------------------------------------------
 
     // Start is called before the first frame update
     void Start()
     {
-        bSafe = !GameObject.FindWithTag("SafeZoneTarget");
         rbTarget = GetComponent<Rigidbody>();
         navTarget = GetComponent<NavMeshAgent>();
         matTarget = GetComponent<Renderer>().material;
         goGameManager = GameObject.Find("Game Manager");
         goPlayer = GameObject.FindWithTag("Player");
         goSafeZoneTarget = GameObject.FindWithTag("SafeZoneTarget");
+        bSafe = !goSafeZoneTarget;
         sObjective = "None";
         fObjectiveRandomEmissionAngFreq = 2f * Mathf.PI * fObjectiveRandomEmissionFreq;
         SetDirectionRandom();
@@ -80,7 +80,9 @@ public class TargetController : MonoBehaviour
             else if (sObjective == "Random")
             {
                 Move(transform.position + v3DirectionRandom);
-                matTarget.SetColor("_EmissionColor", (0.4f - 0.2f * Mathf.Cos(fObjectiveRandomEmissionAngFreq * (Time.time - fObjectiveRandomTimeStart))) * colObjectiveRandomEmissionColor);
+                colObjectiveRandomEmissionColorNow = (0.4f - 0.2f * Mathf.Cos(fObjectiveRandomEmissionAngFreq * (Time.time - fObjectiveRandomTimeStart))) * colObjectiveRandomEmissionColor;
+                colObjectiveRandomEmissionColorNow.a = 1f;
+                matTarget.SetColor("_EmissionColor", colObjectiveRandomEmissionColorNow);
                 if ((Time.time - fObjectiveRandomTimeStartThisDirection) >= fObjectiveRandomTimeSpendThisDirection)
                 {
                     SetDirectionRandom();
@@ -111,9 +113,9 @@ public class TargetController : MonoBehaviour
     private void Move(Vector3 v3PositionObjective)
     {
         Vector3 v3DirectionMove = (v3PositionObjective - transform.position).normalized;
-        Vector3 v3DirectionLook = Vector3.RotateTowards(transform.forward, v3DirectionMove, fSpeedRandom * Time.deltaTime, 0f);
+        Vector3 v3DirectionLook = Vector3.RotateTowards(transform.forward, v3DirectionMove, fSpeed * Time.deltaTime, 0f);
 
-        transform.position = Vector3.MoveTowards(transform.position, v3PositionObjective, fSpeedRandom * Time.deltaTime);
+        transform.position = Vector3.MoveTowards(transform.position, v3PositionObjective, fSpeed * Time.deltaTime);
         transform.rotation = Quaternion.LookRotation(v3DirectionLook);
 
         Debug.DrawRay(transform.position, v3DirectionMove * 10f, Color.yellow);

@@ -7,7 +7,7 @@ using TMPro;
 public class CubeController : MonoBehaviour
 {
     // private Vector3 v3InstantiatePosition = new Vector3(0f, -210f, 72f);
-    private Vector3 v3InstantiatePosition = new Vector3(0f, -240f, 22f);
+    private Vector3 v3InstantiatePosition = new Vector3(0f, -230f, 19f);
     private Vector3 v3FirstLevelPosition = new Vector3(0f, -25f, 0f);
 
     // private Vector3 v3InstantiateEulerAngles = new Vector3(237.5f, 0f, 0f);

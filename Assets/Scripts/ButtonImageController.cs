@@ -9,7 +9,7 @@ public class ButtonImageController : MonoBehaviour
     public KeyCode keyCode2;
 
     private Image imgBackground;
-    private Color colKeyDown = new Color(255f, 54f, 98f) / 255f;
+    private Color colKeyDown = new Color(255f, 54f, 98f, 255f) / 255f;
     private Color colKeyUp;
 
     // ------------------------------------------------------------------------------------------------
