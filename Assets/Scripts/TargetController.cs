@@ -15,14 +15,19 @@ public class TargetController : MonoBehaviour
     private float fDistPlayerStop = 3f;
     private Rigidbody rbTarget;
     private NavMeshAgent navTarget;
+    private Material matTarget;
     private GameObject goGameManager;
     private GameObject goPlayer;
     private GameObject goSafeZoneTarget;
     public string sObjective;
     private Vector2 v2DirectionRandom;
     private Vector3 v3DirectionRandom;
-    private float fTimeSpentDoingCurrentDirectionRandom;
-    private float fTimeToSpendDoingCurrentDirectionRandom;
+    private float fObjectiveRandomTimeStart;
+    private float fObjectiveRandomTimeStartThisDirection;
+    private float fObjectiveRandomTimeSpendThisDirection;
+    private float fObjectiveRandomEmissionFreq = 1f;
+    private float fObjectiveRandomEmissionAngFreq;
+    private Color colObjectiveRandomEmissionColor = new Color(255f, 70f, 0f) / 255f;
 
     // ------------------------------------------------------------------------------------------------
 
@@ -32,10 +37,12 @@ public class TargetController : MonoBehaviour
         bSafe = !GameObject.FindWithTag("SafeZoneTarget");
         rbTarget = GetComponent<Rigidbody>();
         navTarget = GetComponent<NavMeshAgent>();
+        matTarget = GetComponent<Renderer>().material;
         goGameManager = GameObject.Find("Game Manager");
         goPlayer = GameObject.FindWithTag("Player");
         goSafeZoneTarget = GameObject.FindWithTag("SafeZoneTarget");
         sObjective = "None";
+        fObjectiveRandomEmissionAngFreq = 2f * Mathf.PI * fObjectiveRandomEmissionFreq;
         SetDirectionRandom();
     }
 
@@ -73,8 +80,8 @@ public class TargetController : MonoBehaviour
             else if (sObjective == "Random")
             {
                 Move(transform.position + v3DirectionRandom);
-                fTimeSpentDoingCurrentDirectionRandom += Time.deltaTime;
-                if (fTimeSpentDoingCurrentDirectionRandom >= fTimeToSpendDoingCurrentDirectionRandom)
+                matTarget.SetColor("_EmissionColor", (0.4f - 0.2f * Mathf.Cos(fObjectiveRandomEmissionAngFreq * (Time.time - fObjectiveRandomTimeStart))) * colObjectiveRandomEmissionColor);
+                if ((Time.time - fObjectiveRandomTimeStartThisDirection) >= fObjectiveRandomTimeSpendThisDirection)
                 {
                     SetDirectionRandom();
                 }
@@ -118,8 +125,8 @@ public class TargetController : MonoBehaviour
     {
         v2DirectionRandom = UnityEngine.Random.insideUnitCircle.normalized * 100f;
         v3DirectionRandom = new Vector3(v2DirectionRandom.x, transform.position.y, v2DirectionRandom.y);
-        fTimeSpentDoingCurrentDirectionRandom = 0f;
-        fTimeToSpendDoingCurrentDirectionRandom = UnityEngine.Random.Range(0.5f, 2f);
+        fObjectiveRandomTimeStartThisDirection = Time.time;
+        fObjectiveRandomTimeSpendThisDirection = UnityEngine.Random.Range(0.5f, 2f);
     }
 
     // ------------------------------------------------------------------------------------------------
@@ -129,6 +136,8 @@ public class TargetController : MonoBehaviour
         bActive = true;
         sObjective = "Player";
         navTarget.enabled = true;
+        matTarget.DisableKeyword("_EMISSION");
+        transform.Find("Trail").gameObject.SetActive(false);
     }
 
     // ------------------------------------------------------------------------------------------------
@@ -138,6 +147,10 @@ public class TargetController : MonoBehaviour
         bActive = true;
         sObjective = "Random";
         navTarget.enabled = false;
+        matTarget.EnableKeyword("_EMISSION");
+        transform.Find("Trail").gameObject.SetActive(true);
+        fObjectiveRandomTimeStart = Time.time;
+        fObjectiveRandomTimeStartThisDirection = fObjectiveRandomTimeStart;
     }
 
     // ------------------------------------------------------------------------------------------------
