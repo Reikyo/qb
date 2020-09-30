@@ -295,4 +295,11 @@ public class CubeController : MonoBehaviour
 
     // ------------------------------------------------------------------------------------------------
 
+    public bool GetbProjectilePathDependentLevel()
+    {
+        return(goLevels[iLevel].GetComponent<LevelController>().bProjectilePathDependentLevel);
+    }
+
+    // ------------------------------------------------------------------------------------------------
+
 }

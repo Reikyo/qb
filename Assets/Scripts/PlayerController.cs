@@ -2,6 +2,7 @@ using System;
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 using TMPro;
 
 public class PlayerController : MonoBehaviour
@@ -9,11 +10,16 @@ public class PlayerController : MonoBehaviour
     public bool bInPlay = true;
     public bool bActive = true;
     public bool bSafe;
+    private bool bInMotionLastFrame = false;
+    private bool bInMotionThisFrame = false;
     // private float fForce = 1000f;
     private float fSpeed = 10f;
+    private float anPlayerChildfSpeed;
     private Rigidbody rbPlayer;
     // private Animator anPlayer;
     public Animator[] anPlayerChildren;
+    private NavMeshAgent navPlayer;
+    private NavMeshPath navPlayerPath;
     private GameObject goGameManager;
     private GameObject goTarget;
     private List<string> slistLeaveTargetObjective = new List<string>() {"Player", "SafeZoneTarget"};
@@ -31,6 +37,9 @@ public class PlayerController : MonoBehaviour
         rbPlayer = GetComponent<Rigidbody>();
         // anPlayer = GetComponent<Animator>();
         // anPlayerChildren = GetComponentsInChildren<Animator>(); // n.b. This only gets the component of the first child in the tree
+        navPlayer = GetComponent<NavMeshAgent>();
+        navPlayer.enabled = false; // Only set to true when necessary, otherwise the player will not be able to move off the navmesh i.e. they can't fall off the cube
+        navPlayerPath = new NavMeshPath();
         goGameManager = GameObject.Find("Game Manager");
         goTarget = GameObject.FindWithTag("Target");
         goEnemy = GameObject.FindWithTag("Enemy");
@@ -47,6 +56,9 @@ public class PlayerController : MonoBehaviour
     // different objects clipping into each other, and generally makes motion smoother.
     void FixedUpdate()
     {
+
+        // ------------------------------------------------------------------------------------------------
+
         if (bInPlay
         &&  bActive
         &&  goGameManager.GetComponent<GameManager>().bActive)
@@ -56,40 +68,56 @@ public class PlayerController : MonoBehaviour
 
             if (Math.Abs(inputHorz) + Math.Abs(inputVert) > 0f)
             {
-                // Only needed if the character model has multiple animated parts
-                foreach (Animator anPlayerChild in anPlayerChildren)
-                {
-                    anPlayerChild.SetFloat("fSpeed", 1f);
-                }
-                // anPlayer.SetFloat("Speed_f", 1f);
                 Move(transform.position + ((inputHorz * Vector3.right) + (inputVert * Vector3.forward)).normalized);
+                bInMotionThisFrame = true;
             }
             else
             {
-                // Only needed if the character model has multiple animated parts
-                foreach (Animator anPlayerChild in anPlayerChildren)
-                {
-                    anPlayerChild.SetFloat("fSpeed", 0f);
-                }
-                // anPlayer.SetFloat("Speed_f", 0f);
+                bInMotionThisFrame = false;
             }
         }
-        else if (goSafeZonePlayer && bSafe)
+        else if (goSafeZonePlayer
+        &&  bSafe
+        &&  bInMotionThisFrame)
         {
-            Move(new Vector3(
-                goSafeZonePlayer.transform.position.x,
-                transform.position.y,
-                goSafeZonePlayer.transform.position.z
-            ));
+            if (navPlayer.remainingDistance <= navPlayer.stoppingDistance)
+            {
+                bInMotionThisFrame = false;
+            }
         }
         else
         {
+            bInMotionThisFrame = false;
+        }
+
+        // ------------------------------------------------------------------------------------------------
+
+        if (bInMotionLastFrame != bInMotionThisFrame)
+        {
+            if (!bInMotionLastFrame
+            &&  bInMotionThisFrame)
+            {
+                anPlayerChildfSpeed = 1f;
+            }
+            else if (bInMotionLastFrame
+            &&  !bInMotionThisFrame)
+            {
+                anPlayerChildfSpeed = 0f;
+            }
             // Only needed if the character model has multiple animated parts
             foreach (Animator anPlayerChild in anPlayerChildren)
             {
-                anPlayerChild.SetFloat("fSpeed", 0f);
+                anPlayerChild.SetFloat("fSpeed", anPlayerChildfSpeed);
             }
+            // anPlayer.SetFloat("Speed_f", 0f);
         }
+
+        // ------------------------------------------------------------------------------------------------
+
+        bInMotionLastFrame = bInMotionThisFrame;
+
+        // ------------------------------------------------------------------------------------------------
+
     }
 
     // ------------------------------------------------------------------------------------------------
@@ -108,8 +136,21 @@ public class PlayerController : MonoBehaviour
             if ((iNumProjectile > 0) && Input.GetKeyDown(KeyCode.Space))
             {
                 Instantiate(goProjectile, transform.position, transform.rotation);
-                iNumProjectile -=1;
+
+                iNumProjectile -= 1;
                 guiNumProjectile.text = iNumProjectile.ToString();
+
+                if ((iNumProjectile == 0)
+                &&  (goGameManager.GetComponent<GameManager>().bProjectilePathDependentLevel))
+                {
+                    navPlayer.enabled = true;
+                    navPlayer.CalculatePath(goSafeZonePlayer.transform.position, navPlayerPath);
+                    navPlayer.enabled = false;
+                    if (navPlayerPath.status == NavMeshPathStatus.PathPartial)
+                    {
+                        goGameManager.GetComponent<GameManager>().LevelFailed();
+                    }
+                }
             }
         }
     }
@@ -170,6 +211,13 @@ public class PlayerController : MonoBehaviour
             {
                 Destroy(other);
                 bSafe = true;
+                bInMotionThisFrame = true;
+                navPlayer.enabled = true;
+                navPlayer.destination = new Vector3(
+                    goSafeZonePlayer.transform.position.x,
+                    transform.position.y,
+                    goSafeZonePlayer.transform.position.z
+                );
                 goGameManager.GetComponent<GameManager>().LevelCleared();
             }
         }

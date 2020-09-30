@@ -14,6 +14,7 @@ public class LevelController : MonoBehaviour
     private float fLevelStartMetresPerSecZ;
     private float fLevelStartMetresPerFrameZ;
 
+    public bool bProjectilePathDependentLevel = false;
     public bool bLevelStart = false;
     public bool bLevelFinish = false;
 

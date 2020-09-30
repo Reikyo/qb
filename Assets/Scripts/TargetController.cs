@@ -185,6 +185,10 @@ public class TargetController : MonoBehaviour
             {
                 goGameManager.GetComponent<GameManager>().LevelCleared();
             }
+            else
+            {
+                goGameManager.GetComponent<GameManager>().SfxclpPlay("sfxclpLevelClearedPartial");
+            }
         }
     }
 
