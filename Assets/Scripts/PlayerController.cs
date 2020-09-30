@@ -27,6 +27,7 @@ public class PlayerController : MonoBehaviour
     private GameObject goSafeZonePlayer;
     public GameObject goProjectile;
     private int iNumProjectile = 0;
+    private int iNumProjectileWarning = 5;
     private TextMeshProUGUI guiNumProjectile;
 
     // ------------------------------------------------------------------------------------------------
@@ -140,15 +141,22 @@ public class PlayerController : MonoBehaviour
                 iNumProjectile -= 1;
                 guiNumProjectile.text = iNumProjectile.ToString();
 
-                if ((iNumProjectile == 0)
-                &&  (goGameManager.GetComponent<GameManager>().bProjectilePathDependentLevel))
+                if (goGameManager.GetComponent<GameManager>().bProjectilePathDependentLevel)
                 {
-                    navPlayer.enabled = true;
-                    navPlayer.CalculatePath(goSafeZonePlayer.transform.position, navPlayerPath);
-                    navPlayer.enabled = false;
-                    if (navPlayerPath.status == NavMeshPathStatus.PathPartial)
+                    if ((iNumProjectile <= iNumProjectileWarning)
+                    &&  (!goGameManager.GetComponent<GameManager>().bNumProjectileFlash))
                     {
-                        goGameManager.GetComponent<GameManager>().LevelFailed();
+                        goGameManager.GetComponent<GameManager>().StartNumProjectileFlash();
+                    }
+                    else if (iNumProjectile == 0)
+                    {
+                        navPlayer.enabled = true;
+                        navPlayer.CalculatePath(goSafeZonePlayer.transform.position, navPlayerPath);
+                        navPlayer.enabled = false;
+                        if (navPlayerPath.status == NavMeshPathStatus.PathPartial)
+                        {
+                            goGameManager.GetComponent<GameManager>().LevelFailed("Watch that ammo!");
+                        }
                     }
                 }
             }
@@ -202,7 +210,7 @@ public class PlayerController : MonoBehaviour
         if (other.gameObject.CompareTag("OffGroundTrigger"))
         {
             bInPlay = false;
-            goGameManager.GetComponent<GameManager>().LevelFailed();
+            goGameManager.GetComponent<GameManager>().LevelFailed("That's a long way down ...");
         }
         else if (other.gameObject.CompareTag("SafeZonePlayer"))
         {
@@ -227,6 +235,12 @@ public class PlayerController : MonoBehaviour
             goGameManager.GetComponent<GameManager>().SfxclpPlay("sfxclpPowerUp");
             iNumProjectile += other.gameObject.GetComponent<PowerUpController>().iValue;
             guiNumProjectile.text = iNumProjectile.ToString();
+            if ((goGameManager.GetComponent<GameManager>().bProjectilePathDependentLevel)
+            &&  (goGameManager.GetComponent<GameManager>().bNumProjectileFlash)
+            &&  (iNumProjectile > iNumProjectileWarning))
+            {
+                goGameManager.GetComponent<GameManager>().EndNumProjectileFlash();
+            }
         }
     }
 

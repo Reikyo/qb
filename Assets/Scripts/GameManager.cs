@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 // using UnityEngine.SceneManagement;
 // using UnityEngine.UI;
 
@@ -10,6 +11,8 @@ public class GameManager : MonoBehaviour
     public GameObject goScreenLevelCleared;
     public GameObject goScreenLevelFailed;
     public GameObject goScreenHUD;
+    public TextMeshProUGUI guiNumProjectile;
+    public TextMeshProUGUI guiLevelFailedHelp;
     private GameObject goSpawnManager;
     private GameObject goCube;
     // public Button butStart;
@@ -34,17 +37,25 @@ public class GameManager : MonoBehaviour
     public AudioClip sfxclpEnemyAttack2; // DM-CGS-30
     public AudioClip sfxclpEnemySleep; // DM-CGS-02
 
+    public bool bNumProjectileFlash = false;
+    private float fNumProjectileFlashTimeStart;
+    private float fNumProjectileFlashFreq = 1f;
+    private float fNumProjectileFlashAngFreq;
+    private Color colNumProjectileFlashVertexColorNow = new Color(255f, 255f, 255f, 255f) / 255f;
+
     // ------------------------------------------------------------------------------------------------
 
     // Start is called before the first frame update
     void Start()
     {
+        sfxsrcGameManager = GetComponent<AudioSource>();
+
         goSpawnManager = GameObject.Find("Spawn Manager");
         goCube = GameObject.Find("Cube");
         goCube.SetActive(true);
         goScreenTitle.SetActive(true);
 
-        sfxsrcGameManager = GetComponent<AudioSource>();
+        fNumProjectileFlashAngFreq = 2f * Mathf.PI * fNumProjectileFlashFreq;
     }
 
     // ------------------------------------------------------------------------------------------------
@@ -52,11 +63,25 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
+        // ------------------------------------------------------------------------------------------------
+
         // Temporarily allow level to be cleared for testing purposes:
         if (Input.GetKeyDown(KeyCode.L))
         {
             LevelCleared();
         }
+
+        // ------------------------------------------------------------------------------------------------
+
+        if (bNumProjectileFlash)
+        {
+            colNumProjectileFlashVertexColorNow.a = 0.6f + 0.4f * Mathf.Cos(fNumProjectileFlashAngFreq * (Time.time - fNumProjectileFlashTimeStart));
+            guiNumProjectile.color = colNumProjectileFlashVertexColorNow;
+        }
+
+        // ------------------------------------------------------------------------------------------------
+
     }
 
     // ------------------------------------------------------------------------------------------------
@@ -98,17 +123,26 @@ public class GameManager : MonoBehaviour
         bActive = false;
         goScreenLevelCleared.SetActive(true);
         sfxsrcGameManager.PlayOneShot(sfxclpLevelCleared);
+        if (bNumProjectileFlash)
+        {
+            EndNumProjectileFlash();
+        }
     }
 
     // ------------------------------------------------------------------------------------------------
 
-    public void LevelFailed()
+    public void LevelFailed(string sGuiLevelFailedHelpText)
     {
         if (bActive)
         {
             bActive = false;
+            guiLevelFailedHelp.text = sGuiLevelFailedHelpText;
             goScreenLevelFailed.SetActive(true);
             sfxsrcGameManager.PlayOneShot(sfxclpLevelFailed);
+            if (bNumProjectileFlash)
+            {
+                EndNumProjectileFlash();
+            }
         }
     }
 
@@ -119,6 +153,23 @@ public class GameManager : MonoBehaviour
     //     SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     //     GameStart();
     // }
+
+    // ------------------------------------------------------------------------------------------------
+
+    public void StartNumProjectileFlash()
+    {
+        bNumProjectileFlash = true;
+        fNumProjectileFlashTimeStart = Time.time;
+    }
+
+    // ------------------------------------------------------------------------------------------------
+
+    public void EndNumProjectileFlash()
+    {
+        bNumProjectileFlash = false;
+        colNumProjectileFlashVertexColorNow.a = 1f;
+        guiNumProjectile.color = colNumProjectileFlashVertexColorNow;
+    }
 
     // ------------------------------------------------------------------------------------------------
 

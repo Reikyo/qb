@@ -173,7 +173,7 @@ public class TargetController : MonoBehaviour
         {
             bInPlay = false;
             navTarget.enabled = false;
-            goGameManager.GetComponent<GameManager>().LevelFailed();
+            goGameManager.GetComponent<GameManager>().LevelFailed("Look after your buddy!");
         }
         else if (other.gameObject.CompareTag("SafeZoneTarget")
         &&  (sObjective == "Player"))
