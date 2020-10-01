@@ -44,6 +44,7 @@ public class CubeController : MonoBehaviour
     public TextMeshProUGUI guiLevel;
     public TextMeshProUGUI guiNumProjectile;
     public GameObject[] goLevels;
+    private GameObject[] goWallsDestructible;
     private GameObject[] goWallsMoveable;
 
     // ------------------------------------------------------------------------------------------------
@@ -262,12 +263,13 @@ public class CubeController : MonoBehaviour
 
     public void ThisLevelRestart()
     {
-        foreach(Transform trnChild in goLevels[iLevel].transform)
+        foreach (GameObject goWallDestructible in goWallsDestructible)
         {
-            if (trnChild.gameObject.CompareTag("WallDestructible"))
-            {
-                trnChild.gameObject.SetActive(true);
-            }
+            goWallDestructible.SetActive(true);
+        }
+        foreach (GameObject goWallMoveable in goWallsMoveable)
+        {
+            goWallMoveable.GetComponent<WallController>().Reset();
         }
         goLevels[iLevel].GetComponent<LevelController>().Deactivate();
         goLevels[iLevel].GetComponent<LevelController>().Activate();
@@ -280,6 +282,7 @@ public class CubeController : MonoBehaviour
         guiLevel.text = (iLevel + 1).ToString();
         guiNumProjectile.text = "0";
         goLevels[iLevel].GetComponent<LevelController>().LevelStart();
+        goWallsDestructible = GameObject.FindGameObjectsWithTag("WallDestructible");
         goWallsMoveable = GameObject.FindGameObjectsWithTag("WallMoveable");
     }
 
@@ -289,7 +292,7 @@ public class CubeController : MonoBehaviour
     {
         foreach (GameObject goWallMoveable in goWallsMoveable)
         {
-            goWallMoveable.GetComponent<WallController>().bTargetPositionY = false;
+            goWallMoveable.GetComponent<WallController>().Switch();
         }
     }
 

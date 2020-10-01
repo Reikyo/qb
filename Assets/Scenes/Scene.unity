@@ -535,7 +535,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14c01952185694812bc4dc5d64ed9cf8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bTargetPositionY: 0
+  posStartPositionY: 1
 --- !u!208 &48728951
 NavMeshObstacle:
   m_ObjectHideFlags: 0
@@ -1367,7 +1367,7 @@ GameObject:
   - component: {fileID: 129570169}
   - component: {fileID: 129570168}
   m_Layer: 13
-  m_Name: Wall Moveable (1)
+  m_Name: Wall Moveable Down (1)
   m_TagString: WallMoveable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1399,7 +1399,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14c01952185694812bc4dc5d64ed9cf8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bTargetPositionY: 1
+  posStartPositionY: 0
 --- !u!208 &129570169
 NavMeshObstacle:
   m_ObjectHideFlags: 0
@@ -1983,7 +1983,7 @@ GameObject:
   - component: {fileID: 161923660}
   - component: {fileID: 161923659}
   m_Layer: 13
-  m_Name: Wall Moveable (19)
+  m_Name: Wall Moveable Down (19)
   m_TagString: WallMoveable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2015,7 +2015,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14c01952185694812bc4dc5d64ed9cf8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bTargetPositionY: 1
+  posStartPositionY: 0
 --- !u!208 &161923660
 NavMeshObstacle:
   m_ObjectHideFlags: 0
@@ -2223,7 +2223,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14c01952185694812bc4dc5d64ed9cf8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bTargetPositionY: 0
+  posStartPositionY: 1
 --- !u!208 &180262841
 NavMeshObstacle:
   m_ObjectHideFlags: 0
@@ -8025,7 +8025,7 @@ GameObject:
   - component: {fileID: 735951012}
   - component: {fileID: 735951011}
   m_Layer: 13
-  m_Name: Wall Moveable (28)
+  m_Name: Wall Moveable Down (28)
   m_TagString: WallMoveable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8057,7 +8057,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14c01952185694812bc4dc5d64ed9cf8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bTargetPositionY: 1
+  posStartPositionY: 0
 --- !u!208 &735951012
 NavMeshObstacle:
   m_ObjectHideFlags: 0
@@ -10312,7 +10312,7 @@ GameObject:
   - component: {fileID: 999700543}
   - component: {fileID: 999700542}
   m_Layer: 13
-  m_Name: Wall Moveable (22)
+  m_Name: Wall Moveable Down (22)
   m_TagString: WallMoveable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10344,7 +10344,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14c01952185694812bc4dc5d64ed9cf8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bTargetPositionY: 1
+  posStartPositionY: 0
 --- !u!208 &999700543
 NavMeshObstacle:
   m_ObjectHideFlags: 0
@@ -12645,7 +12645,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14c01952185694812bc4dc5d64ed9cf8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bTargetPositionY: 0
+  posStartPositionY: 1
 --- !u!208 &1170696369
 NavMeshObstacle:
   m_ObjectHideFlags: 0
@@ -12863,7 +12863,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14c01952185694812bc4dc5d64ed9cf8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bTargetPositionY: 0
+  posStartPositionY: 1
 --- !u!208 &1180178723
 NavMeshObstacle:
   m_ObjectHideFlags: 0
@@ -13595,7 +13595,7 @@ GameObject:
   - component: {fileID: 1233100745}
   - component: {fileID: 1233100744}
   m_Layer: 13
-  m_Name: Wall Moveable (31)
+  m_Name: Wall Moveable Down (31)
   m_TagString: WallMoveable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -13627,7 +13627,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14c01952185694812bc4dc5d64ed9cf8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bTargetPositionY: 1
+  posStartPositionY: 0
 --- !u!208 &1233100745
 NavMeshObstacle:
   m_ObjectHideFlags: 0
@@ -14985,7 +14985,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14c01952185694812bc4dc5d64ed9cf8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bTargetPositionY: 0
+  posStartPositionY: 1
 --- !u!208 &1350183713
 NavMeshObstacle:
   m_ObjectHideFlags: 0
@@ -16578,7 +16578,7 @@ GameObject:
   - component: {fileID: 1528566528}
   - component: {fileID: 1528566527}
   m_Layer: 13
-  m_Name: Wall Moveable (14)
+  m_Name: Wall Moveable Down (14)
   m_TagString: WallMoveable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -16610,7 +16610,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14c01952185694812bc4dc5d64ed9cf8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bTargetPositionY: 1
+  posStartPositionY: 0
 --- !u!208 &1528566528
 NavMeshObstacle:
   m_ObjectHideFlags: 0
@@ -18591,7 +18591,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14c01952185694812bc4dc5d64ed9cf8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bTargetPositionY: 0
+  posStartPositionY: 1
 --- !u!208 &1701628352
 NavMeshObstacle:
   m_ObjectHideFlags: 0
@@ -19896,7 +19896,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14c01952185694812bc4dc5d64ed9cf8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bTargetPositionY: 0
+  posStartPositionY: 1
 --- !u!208 &1877093484
 NavMeshObstacle:
   m_ObjectHideFlags: 0
@@ -20003,7 +20003,7 @@ GameObject:
   - component: {fileID: 1877429625}
   - component: {fileID: 1877429624}
   m_Layer: 13
-  m_Name: Wall Moveable (12)
+  m_Name: Wall Moveable Down (12)
   m_TagString: WallMoveable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -20035,7 +20035,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14c01952185694812bc4dc5d64ed9cf8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bTargetPositionY: 1
+  posStartPositionY: 0
 --- !u!208 &1877429625
 NavMeshObstacle:
   m_ObjectHideFlags: 0
@@ -20267,7 +20267,7 @@ GameObject:
   - component: {fileID: 1882549344}
   - component: {fileID: 1882549343}
   m_Layer: 13
-  m_Name: Wall Moveable (26)
+  m_Name: Wall Moveable Down (26)
   m_TagString: WallMoveable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -20299,7 +20299,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14c01952185694812bc4dc5d64ed9cf8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bTargetPositionY: 1
+  posStartPositionY: 0
 --- !u!208 &1882549344
 NavMeshObstacle:
   m_ObjectHideFlags: 0
@@ -20406,7 +20406,7 @@ GameObject:
   - component: {fileID: 1907877809}
   - component: {fileID: 1907877808}
   m_Layer: 13
-  m_Name: Wall Moveable (24)
+  m_Name: Wall Moveable Down (24)
   m_TagString: WallMoveable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -20438,7 +20438,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14c01952185694812bc4dc5d64ed9cf8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bTargetPositionY: 1
+  posStartPositionY: 0
 --- !u!208 &1907877809
 NavMeshObstacle:
   m_ObjectHideFlags: 0
@@ -20702,7 +20702,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14c01952185694812bc4dc5d64ed9cf8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bTargetPositionY: 0
+  posStartPositionY: 1
 --- !u!208 &1944166383
 NavMeshObstacle:
   m_ObjectHideFlags: 0
@@ -21113,7 +21113,7 @@ GameObject:
   - component: {fileID: 1961042308}
   - component: {fileID: 1961042307}
   m_Layer: 13
-  m_Name: Wall Moveable (34)
+  m_Name: Wall Moveable Down (34)
   m_TagString: WallMoveable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -21145,7 +21145,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14c01952185694812bc4dc5d64ed9cf8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bTargetPositionY: 1
+  posStartPositionY: 0
 --- !u!208 &1961042308
 NavMeshObstacle:
   m_ObjectHideFlags: 0
@@ -22082,7 +22082,7 @@ GameObject:
   - component: {fileID: 2071171874}
   - component: {fileID: 2071171873}
   m_Layer: 13
-  m_Name: Wall Moveable (27)
+  m_Name: Wall Moveable Down (27)
   m_TagString: WallMoveable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -22114,7 +22114,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14c01952185694812bc4dc5d64ed9cf8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bTargetPositionY: 1
+  posStartPositionY: 0
 --- !u!208 &2071171874
 NavMeshObstacle:
   m_ObjectHideFlags: 0

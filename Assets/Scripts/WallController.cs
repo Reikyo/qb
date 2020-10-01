@@ -4,27 +4,26 @@ using UnityEngine;
 
 public class WallController : MonoBehaviour
 {
-    // private float fStartPositionY;
+    public enum positionY {down, up};
+    public positionY posStartPositionY = positionY.down;
+    private positionY posCurrentPositionY = positionY.down;
+    private bool bTargetPositionY;
+
     private float fLowerPositionY = 2f;
     private float fUpperPositionY = 6f;
-
     private float fTransitionTime = 0.5f;
-
     private float fMetresPerSecY;
     private float fMetresPerFrameY;
-
-    public bool bTargetPositionY = true;
-    private bool bTranslateUp = true;
 
     // ------------------------------------------------------------------------------------------------
 
     // Start is called before the first frame update
     void Start()
     {
-        // fStartPositionY = transform.position.y;
-
         fMetresPerSecY = (fUpperPositionY - fLowerPositionY) / fTransitionTime;
         fMetresPerFrameY = fMetresPerSecY * Time.deltaTime;
+
+        Reset();
     }
 
     // ------------------------------------------------------------------------------------------------
@@ -34,12 +33,12 @@ public class WallController : MonoBehaviour
     {
         if (!bTargetPositionY)
         {
-            if (bTranslateUp)
+            if (posCurrentPositionY == positionY.down)
             {
                 bTargetPositionY = Translate("y", fMetresPerFrameY, transform.position.y, fUpperPositionY, bTargetPositionY);
                 if (bTargetPositionY)
                 {
-                    bTranslateUp = false;
+                    posCurrentPositionY = positionY.up;
                 }
             }
             else
@@ -47,7 +46,7 @@ public class WallController : MonoBehaviour
                 bTargetPositionY = Translate("y", -fMetresPerFrameY, transform.position.y, fLowerPositionY, bTargetPositionY);
                 if (bTargetPositionY)
                 {
-                    bTranslateUp = true;
+                    posCurrentPositionY = positionY.down;
                 }
             }
         }
@@ -96,6 +95,20 @@ public class WallController : MonoBehaviour
             bTargetPosition = true;
         }
         return(bTargetPosition);
+    }
+
+    // ------------------------------------------------------------------------------------------------
+
+    public void Reset()
+    {
+        bTargetPositionY = (posCurrentPositionY == posStartPositionY);
+    }
+
+    // ------------------------------------------------------------------------------------------------
+
+    public void Switch()
+    {
+        bTargetPositionY = false;
     }
 
     // ------------------------------------------------------------------------------------------------
