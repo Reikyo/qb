@@ -10,7 +10,7 @@ public class EnemyController : MonoBehaviour
     // private float fForce = 500f;
     private float fSpeed = 6f;
     private float fForcePush = 5f;
-    private float fWaitTime = 5f;
+    private float fWaitTime = 10f;
     private Rigidbody rbEnemy;
     // private Animator anEnemy;
     private NavMeshAgent navEnemy;
@@ -19,7 +19,8 @@ public class EnemyController : MonoBehaviour
     private List<string> slistLeaveTargetObjective = new List<string>() {"Random", "SafeZoneTarget"};
     private GameObject goPlayer;
     public string sObjective;
-    public ParticleSystem psInactive;
+    // public ParticleSystem psInactive;
+    private GameObject goInactive;
 
     // ------------------------------------------------------------------------------------------------
 
@@ -32,6 +33,7 @@ public class EnemyController : MonoBehaviour
         goGameManager = GameObject.Find("Game Manager");
         goTarget = GameObject.FindWithTag("Target");
         goPlayer = GameObject.FindWithTag("Player");
+        goInactive = transform.Find("FX_Dust_Prefab_01 1").gameObject;
 
         if (goTarget)
         {
@@ -114,11 +116,13 @@ public class EnemyController : MonoBehaviour
         // anEnemy.ResetTrigger("tAttack1");
         // anEnemy.ResetTrigger("tAttack2");
         goGameManager.GetComponent<GameManager>().SfxclpPlay("sfxclpEnemySleep");
-        psInactive.Play();
+        // psInactive.Play();
+        goInactive.SetActive(true);
         yield return new WaitForSeconds(fWaitTime);
-        psInactive.Stop();
-        yield return new WaitForSeconds(7f);
+        // psInactive.Stop();
+        // yield return new WaitForSeconds(7f);
         // anEnemy.SetBool("bSleep", false);
+        goInactive.SetActive(false);
         bActive = true;
         navEnemy.enabled = true;
     }

@@ -3027,7 +3027,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &219961740
 Transform:
   m_ObjectHideFlags: 0
@@ -15622,6 +15622,8 @@ MonoBehaviour:
   guiLevelFailedHelp: {fileID: 1719569591}
   bActive: 1
   bProjectilePathDependentLevel: 0
+  vfxclpWallDestructible: {fileID: 4127191534959473904, guid: 4bd259b7f996e480e80db43aee50556d,
+    type: 3}
   sfxclpButton: {fileID: 8300000, guid: 32d4b1811dda14a6cb9e059ee8ad17d2, type: 3}
   sfxclpLevelClearedPartial: {fileID: 8300000, guid: 7bd6b897eb5ca4b7d88a205c4a51640c,
     type: 3}

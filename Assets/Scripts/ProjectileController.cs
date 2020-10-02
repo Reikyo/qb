@@ -16,7 +16,8 @@ public class ProjectileController : MonoBehaviour
     {
         goGameManager = GameObject.Find("Game Manager");
         goCube = GameObject.Find("Cube");
-        goGameManager.GetComponent<GameManager>().SfxclpPlay("Projectile");
+
+        goGameManager.GetComponent<GameManager>().SfxclpPlay("sfxclpProjectile");
     }
 
     // ------------------------------------------------------------------------------------------------
@@ -43,13 +44,14 @@ public class ProjectileController : MonoBehaviour
         else if (other.gameObject.CompareTag("WallDestructible"))
         {
             other.gameObject.SetActive(false);
-            goGameManager.GetComponent<GameManager>().SfxclpPlay("WallDestructible");
+            goGameManager.GetComponent<GameManager>().VfxclpPlay("vfxclpWallDestructible", transform.position);
+            goGameManager.GetComponent<GameManager>().SfxclpPlay("sfxclpWallDestructible");
             Destroy(gameObject);
         }
         else if (other.gameObject.CompareTag("WallMoveable"))
         {
             goCube.GetComponent<CubeController>().SwitchWallsMoveable();
-            goGameManager.GetComponent<GameManager>().SfxclpPlay("WallMoveable");
+            goGameManager.GetComponent<GameManager>().SfxclpPlay("sfxclpWallMoveable");
             Destroy(gameObject);
         }
     }
