@@ -256,7 +256,14 @@ public class CubeController : MonoBehaviour
     public void NextLevelStart()
     {
         goLevels[iLevel].GetComponent<LevelController>().LevelFinish();
-        iLevel += 1;
+        if (iLevel < 5)
+        {
+            iLevel += 1;
+        }
+        else
+        {
+            iLevel = 0;
+        }
     }
 
     // ------------------------------------------------------------------------------------------------
@@ -294,6 +301,13 @@ public class CubeController : MonoBehaviour
         {
             goWallMoveable.GetComponent<WallController>().Switch();
         }
+    }
+
+    // ------------------------------------------------------------------------------------------------
+
+    public int GetiLevel()
+    {
+        return(iLevel);
     }
 
     // ------------------------------------------------------------------------------------------------

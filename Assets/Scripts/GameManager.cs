@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour
     public GameObject goScreenTitle;
     public GameObject goScreenLevelCleared;
     public GameObject goScreenLevelFailed;
+    public GameObject goScreenCredits;
     public GameObject goScreenHUD;
     public TextMeshProUGUI guiNumProjectile;
     public TextMeshProUGUI guiLevelFailedHelp;
@@ -112,13 +113,12 @@ public class GameManager : MonoBehaviour
     public void GameStart(string screen)
     {
         sfxsrcGameManager.PlayOneShot(sfxclpButton);
-        if (screen == "Screen: Title")
+        if (screen == "Screen : Title")
         {
             goScreenTitle.SetActive(false);
-            goScreenHUD.SetActive(true);
             goCube.GetComponent<CubeController>().FirstLevelStart();
         }
-        else if (screen == "Screen: Level Cleared")
+        else if (screen == "Screen : Level Cleared")
         {
             goScreenLevelCleared.SetActive(false);
             goCube.GetComponent<CubeController>().NextLevelStart();
@@ -128,14 +128,20 @@ public class GameManager : MonoBehaviour
             // Insert objects
             // Instantiate characters and items
         }
-        else if (screen == "Screen: Level Failed")
+        else if (screen == "Screen : Level Failed")
         {
             goScreenLevelFailed.SetActive(false);
             goCube.GetComponent<CubeController>().ThisLevelRestart();
             // goSpawnManager.GetComponent<SpawnManager>().Destroy();
             // goSpawnManager.GetComponent<SpawnManager>().Instantiate();
         }
+        else if (screen == "Screen : Credits")
+        {
+            goScreenCredits.SetActive(false);
+            goCube.GetComponent<CubeController>().NextLevelStart();
+        }
         bActive = true;
+        goScreenHUD.SetActive(true);
         bProjectilePathDependentLevel = goCube.GetComponent<CubeController>().GetbProjectilePathDependentLevel();
     }
 
@@ -146,7 +152,15 @@ public class GameManager : MonoBehaviour
         if (bActive)
         {
             bActive = false;
-            goScreenLevelCleared.SetActive(true);
+            goScreenHUD.SetActive(false);
+            if (goCube.GetComponent<CubeController>().GetiLevel() < 5)
+            {
+                goScreenLevelCleared.SetActive(true);
+            }
+            else
+            {
+                goScreenCredits.SetActive(true);
+            }
             sfxsrcGameManager.PlayOneShot(sfxclpNames["sfxclpLevelCleared"]);
             if (bNumProjectileFlash)
             {
