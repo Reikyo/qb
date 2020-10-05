@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using MyFunctions;
 
 public class LevelController : MonoBehaviour
 {
@@ -54,11 +55,11 @@ public class LevelController : MonoBehaviour
         {
             if (!bLevelPositionY)
             {
-                bLevelPositionY = Translate("y", fLevelStartMetresPerFrameY, transform.position.y, v3LevelPosition.y, bLevelPositionY);
+                bLevelPositionY = MyFunctions.Move.Translate(gameObject, "y", fLevelStartMetresPerFrameY, transform.position.y, v3LevelPosition.y, bLevelPositionY);
             }
             if (!bLevelPositionZ)
             {
-                bLevelPositionZ = Translate("z", fLevelStartMetresPerFrameZ, transform.position.z, v3LevelPosition.z, bLevelPositionZ);
+                bLevelPositionZ = MyFunctions.Move.Translate(gameObject, "z", fLevelStartMetresPerFrameZ, transform.position.z, v3LevelPosition.z, bLevelPositionZ);
             }
             if (bLevelPositionY
             &&  bLevelPositionZ)
@@ -76,11 +77,11 @@ public class LevelController : MonoBehaviour
         {
             if (!bLevelPositionY)
             {
-                bLevelPositionY = Translate("y", -fLevelStartMetresPerFrameY, transform.position.y, v3InstantiatePosition.y, bLevelPositionY);
+                bLevelPositionY = MyFunctions.Move.Translate(gameObject, "y", -fLevelStartMetresPerFrameY, transform.position.y, v3InstantiatePosition.y, bLevelPositionY);
             }
             if (!bLevelPositionZ)
             {
-                bLevelPositionZ = Translate("z", -fLevelStartMetresPerFrameZ, transform.position.z, v3InstantiatePosition.z, bLevelPositionZ);
+                bLevelPositionZ = MyFunctions.Move.Translate(gameObject, "z", -fLevelStartMetresPerFrameZ, transform.position.z, v3InstantiatePosition.z, bLevelPositionZ);
             }
             if (bLevelPositionY
             &&  bLevelPositionZ)
@@ -99,48 +100,48 @@ public class LevelController : MonoBehaviour
 
     // ------------------------------------------------------------------------------------------------
 
-    private bool Translate(
-        string sAxis,
-        float fMetresPerFrame,
-        float fCurrentPosition,
-        float fTargetPosition,
-        bool bTargetPosition
-    )
-    {
-        if (((fMetresPerFrame > 0f) && (fTargetPosition > (fCurrentPosition + fMetresPerFrame)))
-        ||  ((fMetresPerFrame < 0f) && (fTargetPosition < (fCurrentPosition + fMetresPerFrame))))
-        {
-            switch(sAxis)
-            {
-                case "x":
-                    transform.Translate(fMetresPerFrame, 0f, 0f, Space.World);
-                    break;
-                case "y":
-                    transform.Translate(0f, fMetresPerFrame, 0f, Space.World);
-                    break;
-                case "z":
-                    transform.Translate(0f, 0f, fMetresPerFrame, Space.World);
-                    break;
-            }
-        }
-        else
-        {
-            switch(sAxis)
-            {
-                case "x":
-                    transform.Translate(fTargetPosition - fCurrentPosition, 0f, 0f, Space.World);
-                    break;
-                case "y":
-                    transform.Translate(0f, fTargetPosition - fCurrentPosition, 0f, Space.World);
-                    break;
-                case "z":
-                    transform.Translate(0f, 0f, fTargetPosition - fCurrentPosition, Space.World);
-                    break;
-            }
-            bTargetPosition = true;
-        }
-        return(bTargetPosition);
-    }
+    // private bool Translate(
+    //     string sAxis,
+    //     float fMetresPerFrame,
+    //     float fCurrentPosition,
+    //     float fTargetPosition,
+    //     bool bTargetPosition
+    // )
+    // {
+    //     if (((fMetresPerFrame > 0f) && (fTargetPosition > (fCurrentPosition + fMetresPerFrame)))
+    //     ||  ((fMetresPerFrame < 0f) && (fTargetPosition < (fCurrentPosition + fMetresPerFrame))))
+    //     {
+    //         switch(sAxis)
+    //         {
+    //             case "x":
+    //                 transform.Translate(fMetresPerFrame, 0f, 0f, Space.World);
+    //                 break;
+    //             case "y":
+    //                 transform.Translate(0f, fMetresPerFrame, 0f, Space.World);
+    //                 break;
+    //             case "z":
+    //                 transform.Translate(0f, 0f, fMetresPerFrame, Space.World);
+    //                 break;
+    //         }
+    //     }
+    //     else
+    //     {
+    //         switch(sAxis)
+    //         {
+    //             case "x":
+    //                 transform.Translate(fTargetPosition - fCurrentPosition, 0f, 0f, Space.World);
+    //                 break;
+    //             case "y":
+    //                 transform.Translate(0f, fTargetPosition - fCurrentPosition, 0f, Space.World);
+    //                 break;
+    //             case "z":
+    //                 transform.Translate(0f, 0f, fTargetPosition - fCurrentPosition, Space.World);
+    //                 break;
+    //         }
+    //         bTargetPosition = true;
+    //     }
+    //     return(bTargetPosition);
+    // }
 
     // ------------------------------------------------------------------------------------------------
 

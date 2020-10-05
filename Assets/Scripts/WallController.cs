@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using MyFunctions;
 
 public class WallController : MonoBehaviour
 {
@@ -35,7 +36,7 @@ public class WallController : MonoBehaviour
         {
             if (posCurrentPositionY == positionY.down)
             {
-                bTargetPositionY = Translate("y", fMetresPerFrameY, transform.position.y, fUpperPositionY, bTargetPositionY);
+                bTargetPositionY = MyFunctions.Move.Translate(gameObject, "y", fMetresPerFrameY, transform.position.y, fUpperPositionY, bTargetPositionY);
                 if (bTargetPositionY)
                 {
                     posCurrentPositionY = positionY.up;
@@ -43,7 +44,7 @@ public class WallController : MonoBehaviour
             }
             else
             {
-                bTargetPositionY = Translate("y", -fMetresPerFrameY, transform.position.y, fLowerPositionY, bTargetPositionY);
+                bTargetPositionY = MyFunctions.Move.Translate(gameObject, "y", -fMetresPerFrameY, transform.position.y, fLowerPositionY, bTargetPositionY);
                 if (bTargetPositionY)
                 {
                     posCurrentPositionY = positionY.down;
@@ -52,52 +53,52 @@ public class WallController : MonoBehaviour
         }
     }
 
-    // ------------------------------------------------------------------------------------------------
-
-    private bool Translate(
-        string sAxis,
-        float fMetresPerFrame,
-        float fCurrentPosition,
-        float fTargetPosition,
-        bool bTargetPosition
-    )
-    {
-        if (((fMetresPerFrame > 0f) && (fTargetPosition > (fCurrentPosition + fMetresPerFrame)))
-        ||  ((fMetresPerFrame < 0f) && (fTargetPosition < (fCurrentPosition + fMetresPerFrame))))
-        {
-            switch(sAxis)
-            {
-                case "x":
-                    transform.Translate(fMetresPerFrame, 0f, 0f, Space.World);
-                    break;
-                case "y":
-                    transform.Translate(0f, fMetresPerFrame, 0f, Space.World);
-                    break;
-                case "z":
-                    transform.Translate(0f, 0f, fMetresPerFrame, Space.World);
-                    break;
-            }
-        }
-        else
-        {
-            switch(sAxis)
-            {
-                case "x":
-                    transform.Translate(fTargetPosition - fCurrentPosition, 0f, 0f, Space.World);
-                    break;
-                case "y":
-                    transform.Translate(0f, fTargetPosition - fCurrentPosition, 0f, Space.World);
-                    break;
-                case "z":
-                    transform.Translate(0f, 0f, fTargetPosition - fCurrentPosition, Space.World);
-                    break;
-            }
-            bTargetPosition = true;
-        }
-        return(bTargetPosition);
-    }
-
-    // ------------------------------------------------------------------------------------------------
+    // // ------------------------------------------------------------------------------------------------
+    //
+    // private bool Translate(
+    //     string sAxis,
+    //     float fMetresPerFrame,
+    //     float fCurrentPosition,
+    //     float fTargetPosition,
+    //     bool bTargetPosition
+    // )
+    // {
+    //     if (((fMetresPerFrame > 0f) && (fTargetPosition > (fCurrentPosition + fMetresPerFrame)))
+    //     ||  ((fMetresPerFrame < 0f) && (fTargetPosition < (fCurrentPosition + fMetresPerFrame))))
+    //     {
+    //         switch(sAxis)
+    //         {
+    //             case "x":
+    //                 transform.Translate(fMetresPerFrame, 0f, 0f, Space.World);
+    //                 break;
+    //             case "y":
+    //                 transform.Translate(0f, fMetresPerFrame, 0f, Space.World);
+    //                 break;
+    //             case "z":
+    //                 transform.Translate(0f, 0f, fMetresPerFrame, Space.World);
+    //                 break;
+    //         }
+    //     }
+    //     else
+    //     {
+    //         switch(sAxis)
+    //         {
+    //             case "x":
+    //                 transform.Translate(fTargetPosition - fCurrentPosition, 0f, 0f, Space.World);
+    //                 break;
+    //             case "y":
+    //                 transform.Translate(0f, fTargetPosition - fCurrentPosition, 0f, Space.World);
+    //                 break;
+    //             case "z":
+    //                 transform.Translate(0f, 0f, fTargetPosition - fCurrentPosition, Space.World);
+    //                 break;
+    //         }
+    //         bTargetPosition = true;
+    //     }
+    //     return(bTargetPosition);
+    // }
+    //
+    // // ------------------------------------------------------------------------------------------------
 
     public void Reset()
     {
