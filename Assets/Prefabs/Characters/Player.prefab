@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 4934383281699008913}
   - component: {fileID: 1553810733119108798}
   - component: {fileID: 5106599989140206273}
-  - component: {fileID: 7043905546780822030}
+  - component: {fileID: 54485778142262124}
   - component: {fileID: 9178768823441132938}
   - component: {fileID: 8814479135158853996}
   - component: {fileID: 195094535238053726}
@@ -194,7 +194,7 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!54 &7043905546780822030
+--- !u!54 &54485778142262124
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

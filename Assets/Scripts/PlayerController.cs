@@ -188,6 +188,8 @@ public class PlayerController : MonoBehaviour
 
     // ------------------------------------------------------------------------------------------------
 
+    // This requires a Collider component on both objects, and "Is Trigger" disabled on both of them.
+    // Also, a RigidBody component must be on at least this object, the other doesn't matter.
     private void OnCollisionEnter(Collision collision)
     {
         if (bActive
@@ -205,6 +207,8 @@ public class PlayerController : MonoBehaviour
 
     // ------------------------------------------------------------------------------------------------
 
+    // This requires a Collider component on both objects, and "Is Trigger" enabled on one of them.
+    // Also, a RigidBody component must be on at least one of them, it doesn't matter which one.
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("OffGroundTrigger"))
