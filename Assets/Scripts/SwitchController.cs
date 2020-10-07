@@ -1,24 +1,30 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-// using MyFunctions;
 
-public class WallSpinnerController : MonoBehaviour
+public class SwitchController : MonoBehaviour
 {
-    private bool bRotate = false;
-    private Vector3 v3RotationAxis = Vector3.up;
-    private int iRotationDirection;
-    private float fDegreesPerSec = 180f;
+    public List<string> slistOkayTriggerCharacters = new List<string>() {"Player", "Target"};
+    public string sTriggerCharacter = "";
+    public bool bPositionFullyOff = true;
+    public bool bPositionFullyOn = false;
+    private bool bRotateOn = false;
+    private bool bRotateOff = false;
+    private Vector3 v3RotationAxis = Vector3.forward;
+    private int iRotationDirection = -1;
+    private float fDegreesPerSec = 360f;
     private float fDegreesPerFrame;
-    private float fDegreesToRotate = 90f;
+    private float fDegreesToRotate = 30f;
     private float fDegreesRotated = 0f;
+
+    private GameManager gameManager;
 
     // ------------------------------------------------------------------------------------------------
 
     // Start is called before the first frame update
     void Start()
     {
-
+        gameManager = GameObject.Find("Game Manager").GetComponent<GameManager>();
     }
 
     // ------------------------------------------------------------------------------------------------
@@ -26,40 +32,34 @@ public class WallSpinnerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // if (!bNextEulerAngleY)
-        // {
-        //     var tuple = MyFunctions.Move.Rotate(gameObject, v3EulerAngles, "y", fDegreesPerFrame, v3EulerAngles.y, v3NextEulerAngles.y, bNextEulerAngleY);
-        //     bNextLevelEulerAngleY = tuple.Item1;
-        //     v3EulerAngles = tuple.Item2;
-        // }
-
-        // if (bRotate)
-        // {
-        //     fDegreesPerFrame = fDegreesPerSec * Time.deltaTime;
-        //
-        //     if ((fDegreesRotated + fDegreesPerFrame) > fDegreesToRotate)
-        //     {
-        //         fDegreesPerFrame = fDegreesToRotate - fDegreesRotated;
-        //         bRotate = false;
-        //     }
-        //
-        //     transform.Rotate(iRotationDirection * fDegreesPerFrame * Vector3.up);
-        //     fDegreesRotated += fDegreesPerFrame;
-        //
-        //     if (!bRotate)
-        //     {
-        //         transform.eulerAngles = new Vector3(
-        //             Mathf.Round(transform.eulerAngles.x),
-        //             Mathf.Round(transform.eulerAngles.y),
-        //             Mathf.Round(transform.eulerAngles.z)
-        //         );
-        //         fDegreesRotated = 0f;
-        //     }
-        // }
-
-        if (bRotate)
+        if (bRotateOn)
         {
-            bRotate = Rotate(bRotate);
+            bRotateOn = Rotate(bRotateOn);
+            if (bPositionFullyOff)
+            {
+                bPositionFullyOff = false;
+                gameManager.SfxclpPlay("sfxclpSwitch");
+            }
+            if (!bRotateOn)
+            {
+                bPositionFullyOn = true;
+                iRotationDirection = 1;
+            }
+        }
+        else if (bRotateOff)
+        {
+            bRotateOff = Rotate(bRotateOff);
+            if (bPositionFullyOn)
+            {
+                bPositionFullyOn = false;
+                gameManager.SfxclpPlay("sfxclpSwitch");
+            }
+            if (!bRotateOff)
+            {
+                sTriggerCharacter = "";
+                bPositionFullyOff = true;
+                iRotationDirection = -1;
+            }
         }
     }
 
@@ -67,11 +67,13 @@ public class WallSpinnerController : MonoBehaviour
 
     public void StartRotate(int iRotationDirectionGiven)
     {
-        // Only trigger rotation if not already rotating, else the rotation direction could be messed up
-        if (!bRotate)
+        if (iRotationDirectionGiven == -1)
         {
-            bRotate = true;
-            iRotationDirection = iRotationDirectionGiven;
+            bRotateOn = true;
+        }
+        else if (iRotationDirectionGiven == 1)
+        {
+            bRotateOff = true;
         }
     }
 

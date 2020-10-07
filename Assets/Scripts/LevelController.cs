@@ -22,10 +22,38 @@ public class LevelController : MonoBehaviour
     private bool bLevelPositionY = false;
     private bool bLevelPositionZ = false;
 
-    private GameObject goCube;
-    private GameObject goSpawnManager;
-    public GameObject[] goSpawns;
-    public Vector3[] goSpawnPositions;
+    private CubeController cubeController;
+    private SpawnManager spawnManager;
+    public GameObject[] golistSpawns;
+    public Vector3[] v3listSpawnPositions;
+
+// Level 1
+//   Player         (0, 0, -20)
+//   SafeZonePlayer (0, 0, 20)
+// Level 2
+//   Player         (-20, 0, -20)
+//   Enemy          (-5, 0, 0)
+//   SafeZonePlayer (0, 0, 0)
+//   PowerUp        (20, 0, 20)
+// Level 3
+//   Player         (-22, 0, -23)
+//   SafeZonePlayer (-17, 0, -2)
+//   PowerUp        (0, 0, -23)
+// Level 4
+//   Player         (-21, 0, -21)
+//   Target         (0, 0, -21)
+//   Enemy          (21, 0, -21)
+//   SafeZoneTarget (21, 0, 0)
+//   PowerUp        (-21, 0, 20)
+// Level 5
+//   Player         (-22.5, 0, 22.5)
+//   Target         (22.5, 0, -22.5)
+//   SafeZonePlayer (0, 0, -8)
+//   SafeZoneTarget (-7.5, 0, 21.5)
+//   PowerUp        (-2.5, 0, 0)
+// Level 6
+//   Player         (0, 0, -20)
+//   SafeZonePlayer (0, 0, 20)
 
     // ------------------------------------------------------------------------------------------------
 
@@ -39,8 +67,8 @@ public class LevelController : MonoBehaviour
         fLevelStartMetresPerSecZ = (v3LevelPosition.z - v3InstantiatePosition.z) / fLevelStartTime;
         fLevelStartMetresPerFrameZ = fLevelStartMetresPerSecZ * Time.deltaTime;
 
-        goSpawnManager = GameObject.Find("Spawn Manager");
-        goCube = GameObject.Find("Cube");
+        spawnManager = GameObject.Find("Spawn Manager").GetComponent<SpawnManager>();
+        cubeController = GameObject.Find("Cube").GetComponent<CubeController>();
     }
 
     // ------------------------------------------------------------------------------------------------
@@ -90,7 +118,7 @@ public class LevelController : MonoBehaviour
                 bLevelPositionZ = false;
                 bLevelFinish = false;
                 gameObject.SetActive(false);
-                goCube.GetComponent<CubeController>().bNextLevelStart = true;
+                cubeController.bNextLevelStart = true;
             }
         }
 
@@ -155,7 +183,7 @@ public class LevelController : MonoBehaviour
 
     public void LevelFinish()
     {
-        // goSpawnManager.GetComponent<SpawnManager>().Destroy();
+        // spawnManager.Destroy();
         Deactivate();
         bLevelFinish = true;
     }
@@ -164,18 +192,18 @@ public class LevelController : MonoBehaviour
 
     public void Activate()
     {
-        // goSpawnManager.GetComponent<SpawnManager>().Instantiate(goSpawns, goSpawnPositions);
+        // spawnManager.Instantiate(golistSpawns, v3listSpawnPositions);
 
-        for (int goSpawnsIdx=0; goSpawnsIdx<goSpawns.Length; goSpawnsIdx++)
+        for (int golistSpawnsIdx=0; golistSpawnsIdx<golistSpawns.Length; golistSpawnsIdx++)
         {
             Instantiate(
-                goSpawns[goSpawnsIdx],
+                golistSpawns[golistSpawnsIdx],
                 new Vector3(
-                    goSpawnPositions[goSpawnsIdx].x,
-                    goSpawns[goSpawnsIdx].transform.position.y,
-                    goSpawnPositions[goSpawnsIdx].z
+                    v3listSpawnPositions[golistSpawnsIdx].x,
+                    golistSpawns[golistSpawnsIdx].transform.position.y,
+                    v3listSpawnPositions[golistSpawnsIdx].z
                 ),
-                goSpawns[goSpawnsIdx].transform.rotation
+                golistSpawns[golistSpawnsIdx].transform.rotation
             );
         }
     }

@@ -7,18 +7,18 @@ public class ProjectileController : MonoBehaviour
     private bool bTriggered = false;
     private float fMetresPerSec = 50f;
 
-    private GameObject goGameManager;
-    private GameObject goCube;
+    private GameManager gameManager;
+    private CubeController cubeController;
 
     // ------------------------------------------------------------------------------------------------
 
     // Start is called before the first frame update
     void Start()
     {
-        goGameManager = GameObject.Find("Game Manager");
-        goCube = GameObject.Find("Cube");
+        gameManager = GameObject.Find("Game Manager").GetComponent<GameManager>();
+        cubeController = GameObject.Find("Cube").GetComponent<CubeController>();
 
-        goGameManager.GetComponent<GameManager>().SfxclpPlay("sfxclpProjectile");
+        gameManager.SfxclpPlay("sfxclpProjectile");
     }
 
     // ------------------------------------------------------------------------------------------------
@@ -69,13 +69,13 @@ public class ProjectileController : MonoBehaviour
             else if (other.gameObject.CompareTag("WallDestructible"))
             {
                 other.gameObject.SetActive(false);
-                goGameManager.GetComponent<GameManager>().VfxclpPlay("vfxclpWallDestructible", transform.position);
-                goGameManager.GetComponent<GameManager>().SfxclpPlay("sfxclpWallDestructible");
+                gameManager.VfxclpPlay("vfxclpWallDestructible", transform.position);
+                gameManager.SfxclpPlay("sfxclpWallDestructible");
             }
             else if (other.gameObject.CompareTag("WallMoveable"))
             {
-                goCube.GetComponent<CubeController>().SwitchWallsMoveable();
-                goGameManager.GetComponent<GameManager>().SfxclpPlay("sfxclpWallMoveable");
+                cubeController.SwitchWallsMoveable();
+                gameManager.SfxclpPlay("sfxclpWallMoveable");
             }
             else if (other.gameObject.CompareTag("WallSpinnerSwitch"))
             {
@@ -83,11 +83,13 @@ public class ProjectileController : MonoBehaviour
 
                 if (fDot > 0)
                 {
-                    other.transform.parent.GetComponent<WallSpinnerController>().Rotate(1);
+                    other.transform.parent.GetComponent<WallSpinnerController>().StartRotate(1);
+                    gameManager.SfxclpPlay("sfxclpWallSpinner");
                 }
                 else if (fDot < 0)
                 {
-                    other.transform.parent.GetComponent<WallSpinnerController>().Rotate(-1);
+                    other.transform.parent.GetComponent<WallSpinnerController>().StartRotate(-1);
+                    gameManager.SfxclpPlay("sfxclpWallSpinner");
                 }
             }
 

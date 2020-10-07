@@ -14,7 +14,7 @@ public class EnemyController : MonoBehaviour
     private Rigidbody rbEnemy;
     // private Animator anEnemy;
     private NavMeshAgent navEnemy;
-    private GameObject goGameManager;
+    private GameManager gameManager;
     private GameObject goTarget;
     private List<string> slistLeaveTargetObjective = new List<string>() {"Random", "SafeZoneTarget"};
     private GameObject goPlayer;
@@ -30,7 +30,7 @@ public class EnemyController : MonoBehaviour
         rbEnemy = GetComponent<Rigidbody>();
         // anEnemy = GetComponent<Animator>();
         navEnemy = GetComponent<NavMeshAgent>();
-        goGameManager = GameObject.Find("Game Manager");
+        gameManager = GameObject.Find("Game Manager").GetComponent<GameManager>();
         goTarget = GameObject.FindWithTag("Target");
         goPlayer = GameObject.FindWithTag("Player");
         goInactive = transform.Find("FX_Dust_Prefab_01 1").gameObject;
@@ -56,7 +56,7 @@ public class EnemyController : MonoBehaviour
     {
         if (bInPlay
         &&  bActive
-        &&  goGameManager.GetComponent<GameManager>().bActive)
+        &&  gameManager.bActive)
         {
             if ((sObjective == "Target")
             &&  goTarget
@@ -85,8 +85,8 @@ public class EnemyController : MonoBehaviour
                 // anEnemy.ResetTrigger("tAttack2");
             }
         }
-        // else if (anEnemy.GetBool("bWalkForward") && (!bInPlay || !goGameManager.GetComponent<GameManager>().bActive))
-        else if (!goGameManager.GetComponent<GameManager>().bActive)
+        // else if (anEnemy.GetBool("bWalkForward") && (!bInPlay || !gameManager.bActive))
+        else if (!gameManager.bActive)
         {
             bActive = false;
             navEnemy.enabled = false;
@@ -115,7 +115,7 @@ public class EnemyController : MonoBehaviour
         // anEnemy.SetBool("bSleep", true);
         // anEnemy.ResetTrigger("tAttack1");
         // anEnemy.ResetTrigger("tAttack2");
-        goGameManager.GetComponent<GameManager>().SfxclpPlay("sfxclpEnemySleep");
+        gameManager.SfxclpPlay("sfxclpEnemySleep");
         // psInactive.Play();
         goInactive.SetActive(true);
         yield return new WaitForSeconds(fWaitTime);
@@ -149,8 +149,8 @@ public class EnemyController : MonoBehaviour
         &&  !slistLeaveTargetObjective.Contains(goTarget.GetComponent<TargetController>().sObjective))
         {
             // anEnemy.SetTrigger("tAttack1");
-            goGameManager.GetComponent<GameManager>().SfxclpPlay("sfxclpEnemyAttack1");
-            goGameManager.GetComponent<GameManager>().SfxclpPlay("sfxclpTargetObjectiveRandom");
+            gameManager.SfxclpPlay("sfxclpEnemyAttack1");
+            gameManager.SfxclpPlay("sfxclpTargetObjectiveRandom");
             goTarget.GetComponent<TargetController>().StartObjectiveRandom();
             sObjective = "Player";
         }
@@ -158,7 +158,7 @@ public class EnemyController : MonoBehaviour
         &&  collision.gameObject.CompareTag("Player"))
         {
             // anEnemy.SetTrigger("tAttack2");
-            goGameManager.GetComponent<GameManager>().SfxclpPlay("sfxclpEnemyAttack2");
+            gameManager.SfxclpPlay("sfxclpEnemyAttack2");
             collision.gameObject.GetComponent<Rigidbody>().AddForce(fForcePush * (collision.gameObject.transform.position - transform.position).normalized, ForceMode.Impulse);
         }
     }

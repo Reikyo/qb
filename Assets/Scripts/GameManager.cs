@@ -22,7 +22,7 @@ public class GameManager : MonoBehaviour
     // public Button butTryAgain;
 
     private GameObject goSpawnManager;
-    private GameObject goCube;
+    private CubeController cubeController;
 
     // private GameObject vfxclpName;
     private Dictionary<string, GameObject> vfxclpNames = new Dictionary<string, GameObject>();
@@ -39,6 +39,8 @@ public class GameManager : MonoBehaviour
     public AudioClip sfxclpProjectile; // DM-CGS-20
     public AudioClip sfxclpWallDestructible; // DM-CGS-32
     public AudioClip sfxclpWallMoveable; // DM-CGS-38
+    public AudioClip sfxclpWallSpinner;
+    public AudioClip sfxclpSwitch;
     public AudioClip sfxclpTargetObjectivePlayer; // DM-CGS-24
     public AudioClip sfxclpTargetObjectiveRandom; // DM-CGS-25
     public AudioClip sfxclpEnemyAttack1; // DM-CGS-47
@@ -68,6 +70,8 @@ public class GameManager : MonoBehaviour
         sfxclpNames.Add("sfxclpProjectile", sfxclpProjectile);
         sfxclpNames.Add("sfxclpWallDestructible", sfxclpWallDestructible);
         sfxclpNames.Add("sfxclpWallMoveable", sfxclpWallMoveable);
+        sfxclpNames.Add("sfxclpWallSpinner", sfxclpWallSpinner);
+        sfxclpNames.Add("sfxclpSwitch", sfxclpSwitch);
         sfxclpNames.Add("sfxclpTargetObjectivePlayer", sfxclpTargetObjectivePlayer);
         sfxclpNames.Add("sfxclpTargetObjectiveRandom", sfxclpTargetObjectiveRandom);
         sfxclpNames.Add("sfxclpEnemyAttack1", sfxclpEnemyAttack1);
@@ -75,8 +79,7 @@ public class GameManager : MonoBehaviour
         sfxclpNames.Add("sfxclpEnemySleep", sfxclpEnemySleep);
 
         goSpawnManager = GameObject.Find("Spawn Manager");
-        goCube = GameObject.Find("Cube");
-        goCube.SetActive(true);
+        cubeController = GameObject.Find("Cube").GetComponent<CubeController>();
         goScreenTitle.SetActive(true);
 
         fNumProjectileFlashAngFreq = 2f * Mathf.PI * fNumProjectileFlashFreq;
@@ -116,12 +119,12 @@ public class GameManager : MonoBehaviour
         if (screen == "Screen : Title")
         {
             goScreenTitle.SetActive(false);
-            goCube.GetComponent<CubeController>().FirstLevelStart();
+            cubeController.FirstLevelStart();
         }
         else if (screen == "Screen : Level Cleared")
         {
             goScreenLevelCleared.SetActive(false);
-            goCube.GetComponent<CubeController>().NextLevelStart();
+            cubeController.NextLevelStart();
             // Destroy characters and items
             // Remove objects
             // Rotate cube
@@ -131,18 +134,18 @@ public class GameManager : MonoBehaviour
         else if (screen == "Screen : Level Failed")
         {
             goScreenLevelFailed.SetActive(false);
-            goCube.GetComponent<CubeController>().ThisLevelRestart();
+            cubeController.ThisLevelRestart();
             // goSpawnManager.GetComponent<SpawnManager>().Destroy();
             // goSpawnManager.GetComponent<SpawnManager>().Instantiate();
         }
         else if (screen == "Screen : Credits")
         {
             goScreenCredits.SetActive(false);
-            goCube.GetComponent<CubeController>().NextLevelStart();
+            cubeController.NextLevelStart();
         }
         bActive = true;
         goScreenHUD.SetActive(true);
-        bProjectilePathDependentLevel = goCube.GetComponent<CubeController>().GetbProjectilePathDependentLevel();
+        bProjectilePathDependentLevel = cubeController.GetbProjectilePathDependentLevel();
     }
 
     // ------------------------------------------------------------------------------------------------
@@ -153,7 +156,7 @@ public class GameManager : MonoBehaviour
         {
             bActive = false;
             goScreenHUD.SetActive(false);
-            if (goCube.GetComponent<CubeController>().GetiLevel() < 5)
+            if (cubeController.GetiLevel() < 5)
             {
                 goScreenLevelCleared.SetActive(true);
             }

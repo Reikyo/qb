@@ -20,7 +20,7 @@ public class PlayerController : MonoBehaviour
     public Animator[] anPlayerChildren;
     private NavMeshAgent navPlayer;
     private NavMeshPath navPlayerPath;
-    private GameObject goGameManager;
+    private GameManager gameManager;
     private GameObject goTarget;
     private List<string> slistLeaveTargetObjective = new List<string>() {"Player", "SafeZoneTarget"};
     private GameObject goEnemy;
@@ -41,7 +41,7 @@ public class PlayerController : MonoBehaviour
         navPlayer = GetComponent<NavMeshAgent>();
         navPlayer.enabled = false; // Only set to true when necessary, otherwise the player will not be able to move off the navmesh i.e. they can't fall off the cube
         navPlayerPath = new NavMeshPath();
-        goGameManager = GameObject.Find("Game Manager");
+        gameManager = GameObject.Find("Game Manager").GetComponent<GameManager>();
         goTarget = GameObject.FindWithTag("Target");
         goEnemy = GameObject.FindWithTag("Enemy");
         goSafeZonePlayer = GameObject.FindWithTag("SafeZonePlayer");
@@ -62,7 +62,7 @@ public class PlayerController : MonoBehaviour
 
         if (bInPlay
         &&  bActive
-        &&  goGameManager.GetComponent<GameManager>().bActive)
+        &&  gameManager.bActive)
         {
             float inputHorz = Input.GetAxis("Horizontal");
             float inputVert = Input.GetAxis("Vertical");
@@ -128,7 +128,7 @@ public class PlayerController : MonoBehaviour
     {
         if (bInPlay
         &&  bActive
-        &&  goGameManager.GetComponent<GameManager>().bActive)
+        &&  gameManager.bActive)
         {
             // For some reason, if projectiles are instantiated via FixedUpdate(), then typically more than one
             // appear at any time, usually two or three. If instantiated via Update() then we get only one, as
@@ -141,12 +141,12 @@ public class PlayerController : MonoBehaviour
                 iNumProjectile -= 1;
                 guiNumProjectile.text = iNumProjectile.ToString();
 
-                if (goGameManager.GetComponent<GameManager>().bProjectilePathDependentLevel)
+                if (gameManager.bProjectilePathDependentLevel)
                 {
                     if ((iNumProjectile <= iNumProjectileWarning)
-                    &&  (!goGameManager.GetComponent<GameManager>().bNumProjectileFlash))
+                    &&  (!gameManager.bNumProjectileFlash))
                     {
-                        goGameManager.GetComponent<GameManager>().StartNumProjectileFlash();
+                        gameManager.StartNumProjectileFlash();
                     }
                     else if (iNumProjectile == 0)
                     {
@@ -155,7 +155,7 @@ public class PlayerController : MonoBehaviour
                         navPlayer.enabled = false;
                         if (navPlayerPath.status == NavMeshPathStatus.PathPartial)
                         {
-                            goGameManager.GetComponent<GameManager>().LevelFailed("Watch that ammo!");
+                            gameManager.LevelFailed("Watch that ammo!");
                         }
                     }
                 }
@@ -196,7 +196,7 @@ public class PlayerController : MonoBehaviour
         &&  collision.gameObject.CompareTag("Target")
         &&  !slistLeaveTargetObjective.Contains(goTarget.GetComponent<TargetController>().sObjective))
         {
-            goGameManager.GetComponent<GameManager>().SfxclpPlay("sfxclpTargetObjectivePlayer");
+            gameManager.SfxclpPlay("sfxclpTargetObjectivePlayer");
             goTarget.GetComponent<TargetController>().StartObjectivePlayer();
             if (goEnemy)
             {
@@ -214,7 +214,7 @@ public class PlayerController : MonoBehaviour
         if (other.gameObject.CompareTag("OffGroundTrigger"))
         {
             bInPlay = false;
-            goGameManager.GetComponent<GameManager>().LevelFailed("That's a long way down ...");
+            gameManager.LevelFailed("That's a long way down ...");
         }
         else if (other.gameObject.CompareTag("SafeZonePlayer"))
         {
@@ -230,20 +230,20 @@ public class PlayerController : MonoBehaviour
                     transform.position.y,
                     goSafeZonePlayer.transform.position.z
                 );
-                goGameManager.GetComponent<GameManager>().LevelCleared();
+                gameManager.LevelCleared();
             }
         }
         else if (other.gameObject.CompareTag("PowerUp"))
         {
             Destroy(other.gameObject);
-            goGameManager.GetComponent<GameManager>().SfxclpPlay("sfxclpPowerUp");
+            gameManager.SfxclpPlay("sfxclpPowerUp");
             iNumProjectile += other.gameObject.GetComponent<PowerUpController>().iValue;
             guiNumProjectile.text = iNumProjectile.ToString();
-            if ((goGameManager.GetComponent<GameManager>().bProjectilePathDependentLevel)
-            &&  (goGameManager.GetComponent<GameManager>().bNumProjectileFlash)
+            if ((gameManager.bProjectilePathDependentLevel)
+            &&  (gameManager.bNumProjectileFlash)
             &&  (iNumProjectile > iNumProjectileWarning))
             {
-                goGameManager.GetComponent<GameManager>().EndNumProjectileFlash();
+                gameManager.EndNumProjectileFlash();
             }
         }
     }

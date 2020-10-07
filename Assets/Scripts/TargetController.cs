@@ -15,7 +15,7 @@ public class TargetController : MonoBehaviour
     private Rigidbody rbTarget;
     private NavMeshAgent navTarget;
     private Material matTarget;
-    private GameObject goGameManager;
+    private GameManager gameManager;
     private GameObject goPlayer;
     private GameObject goSafeZoneTarget;
     public string sObjective;
@@ -37,7 +37,7 @@ public class TargetController : MonoBehaviour
         rbTarget = GetComponent<Rigidbody>();
         navTarget = GetComponent<NavMeshAgent>();
         matTarget = GetComponent<Renderer>().material;
-        goGameManager = GameObject.Find("Game Manager");
+        gameManager = GameObject.Find("Game Manager").GetComponent<GameManager>();
         goPlayer = GameObject.FindWithTag("Player");
         goSafeZoneTarget = GameObject.FindWithTag("SafeZoneTarget");
         bSafe = !goSafeZoneTarget;
@@ -173,7 +173,7 @@ public class TargetController : MonoBehaviour
         {
             bInPlay = false;
             navTarget.enabled = false;
-            goGameManager.GetComponent<GameManager>().LevelFailed("Look after your buddy!");
+            gameManager.LevelFailed("Look after your buddy!");
         }
         else if (other.gameObject.CompareTag("SafeZoneTarget")
         &&  (sObjective == "Player"))
@@ -183,11 +183,11 @@ public class TargetController : MonoBehaviour
             sObjective = "SafeZoneTarget";
             if (goPlayer.GetComponent<PlayerController>().bSafe)
             {
-                goGameManager.GetComponent<GameManager>().LevelCleared();
+                gameManager.LevelCleared();
             }
             else
             {
-                goGameManager.GetComponent<GameManager>().SfxclpPlay("sfxclpLevelClearedPartial");
+                gameManager.SfxclpPlay("sfxclpLevelClearedPartial");
             }
         }
     }
