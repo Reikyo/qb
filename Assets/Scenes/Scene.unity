@@ -503,8 +503,8 @@ GameObject:
   - component: {fileID: 48728951}
   - component: {fileID: 48728950}
   m_Layer: 13
-  m_Name: Wall Moveable Up (21)
-  m_TagString: WallMoveable
+  m_Name: Wall Slider Up (21)
+  m_TagString: WallSlider
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 8
@@ -1367,8 +1367,8 @@ GameObject:
   - component: {fileID: 129570169}
   - component: {fileID: 129570168}
   m_Layer: 13
-  m_Name: Wall Moveable Down (1)
-  m_TagString: WallMoveable
+  m_Name: Wall Slider Down (1)
+  m_TagString: WallSlider
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 8
@@ -1983,8 +1983,8 @@ GameObject:
   - component: {fileID: 161923660}
   - component: {fileID: 161923659}
   m_Layer: 13
-  m_Name: Wall Moveable Down (19)
-  m_TagString: WallMoveable
+  m_Name: Wall Slider Down (19)
+  m_TagString: WallSlider
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 8
@@ -2191,8 +2191,8 @@ GameObject:
   - component: {fileID: 180262841}
   - component: {fileID: 180262840}
   m_Layer: 13
-  m_Name: Wall Moveable Up (20)
-  m_TagString: WallMoveable
+  m_Name: Wall Slider Up (20)
+  m_TagString: WallSlider
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 8
@@ -8057,7 +8057,7 @@ GameObject:
   - component: {fileID: 716048004}
   m_Layer: 11
   m_Name: Wall Spinner Switch (1) Endcap
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 8
@@ -8391,8 +8391,8 @@ GameObject:
   - component: {fileID: 735951012}
   - component: {fileID: 735951011}
   m_Layer: 13
-  m_Name: Wall Moveable Down (28)
-  m_TagString: WallMoveable
+  m_Name: Wall Slider Down (28)
+  m_TagString: WallSlider
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 8
@@ -9083,7 +9083,7 @@ GameObject:
   - component: {fileID: 861377173}
   m_Layer: 11
   m_Name: Wall Spinner Switch (2) Endcap
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 8
@@ -11123,8 +11123,8 @@ GameObject:
   - component: {fileID: 999700543}
   - component: {fileID: 999700542}
   m_Layer: 13
-  m_Name: Wall Moveable Down (22)
-  m_TagString: WallMoveable
+  m_Name: Wall Slider Down (22)
+  m_TagString: WallSlider
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 8
@@ -13424,8 +13424,8 @@ GameObject:
   - component: {fileID: 1170696369}
   - component: {fileID: 1170696368}
   m_Layer: 13
-  m_Name: Wall Moveable Up (16)
-  m_TagString: WallMoveable
+  m_Name: Wall Slider Up (16)
+  m_TagString: WallSlider
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 8
@@ -13642,8 +13642,8 @@ GameObject:
   - component: {fileID: 1180178723}
   - component: {fileID: 1180178722}
   m_Layer: 13
-  m_Name: Wall Moveable Up (32)
-  m_TagString: WallMoveable
+  m_Name: Wall Slider Up (32)
+  m_TagString: WallSlider
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 8
@@ -14459,8 +14459,8 @@ GameObject:
   - component: {fileID: 1233100745}
   - component: {fileID: 1233100744}
   m_Layer: 13
-  m_Name: Wall Moveable Down (31)
-  m_TagString: WallMoveable
+  m_Name: Wall Slider Down (31)
+  m_TagString: WallSlider
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 8
@@ -16023,8 +16023,8 @@ GameObject:
   - component: {fileID: 1350183713}
   - component: {fileID: 1350183712}
   m_Layer: 13
-  m_Name: Wall Moveable Up (30)
-  m_TagString: WallMoveable
+  m_Name: Wall Slider Up (30)
+  m_TagString: WallSlider
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 8
@@ -16762,7 +16762,7 @@ MonoBehaviour:
   sfxclpProjectile: {fileID: 8300000, guid: 6e8772b49f34d402a90016ed445d8a2f, type: 3}
   sfxclpWallDestructible: {fileID: 8300000, guid: 29bde6326b4c34ad8a12da475f79b50a,
     type: 3}
-  sfxclpWallMoveable: {fileID: 8300000, guid: 84e427d6b66ab4066b6a4dcd0ce819ee, type: 3}
+  sfxclpWallSlider: {fileID: 0}
   sfxclpWallSpinner: {fileID: 8300000, guid: a931da70ee74947d5a047de583170ade, type: 3}
   sfxclpSwitch: {fileID: 8300000, guid: 81652031b64c342cc8dbc59c138d77c5, type: 3}
   sfxclpTargetObjectivePlayer: {fileID: 8300000, guid: 657578e4be6b64dbf9b09deada272e55,
@@ -17982,8 +17982,8 @@ GameObject:
   - component: {fileID: 1528566528}
   - component: {fileID: 1528566527}
   m_Layer: 13
-  m_Name: Wall Moveable Down (14)
-  m_TagString: WallMoveable
+  m_Name: Wall Slider Down (14)
+  m_TagString: WallSlider
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 8
@@ -19963,8 +19963,8 @@ GameObject:
   - component: {fileID: 1701628352}
   - component: {fileID: 1701628351}
   m_Layer: 13
-  m_Name: Wall Moveable Up (29)
-  m_TagString: WallMoveable
+  m_Name: Wall Slider Up (29)
+  m_TagString: WallSlider
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 8
@@ -21484,8 +21484,8 @@ GameObject:
   - component: {fileID: 1877093484}
   - component: {fileID: 1877093483}
   m_Layer: 13
-  m_Name: Wall Moveable Up (17)
-  m_TagString: WallMoveable
+  m_Name: Wall Slider Up (17)
+  m_TagString: WallSlider
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 8
@@ -21623,8 +21623,8 @@ GameObject:
   - component: {fileID: 1877429625}
   - component: {fileID: 1877429624}
   m_Layer: 13
-  m_Name: Wall Moveable Down (12)
-  m_TagString: WallMoveable
+  m_Name: Wall Slider Down (12)
+  m_TagString: WallSlider
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 8
@@ -21887,8 +21887,8 @@ GameObject:
   - component: {fileID: 1882549344}
   - component: {fileID: 1882549343}
   m_Layer: 13
-  m_Name: Wall Moveable Down (26)
-  m_TagString: WallMoveable
+  m_Name: Wall Slider Down (26)
+  m_TagString: WallSlider
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 8
@@ -22026,8 +22026,8 @@ GameObject:
   - component: {fileID: 1907877809}
   - component: {fileID: 1907877808}
   m_Layer: 13
-  m_Name: Wall Moveable Down (24)
-  m_TagString: WallMoveable
+  m_Name: Wall Slider Down (24)
+  m_TagString: WallSlider
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 8
@@ -22290,8 +22290,8 @@ GameObject:
   - component: {fileID: 1944166383}
   - component: {fileID: 1944166382}
   m_Layer: 13
-  m_Name: Wall Moveable Up (33)
-  m_TagString: WallMoveable
+  m_Name: Wall Slider Up (33)
+  m_TagString: WallSlider
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 8
@@ -22733,8 +22733,8 @@ GameObject:
   - component: {fileID: 1961042308}
   - component: {fileID: 1961042307}
   m_Layer: 13
-  m_Name: Wall Moveable Down (34)
-  m_TagString: WallMoveable
+  m_Name: Wall Slider Down (34)
+  m_TagString: WallSlider
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 8
@@ -24190,8 +24190,8 @@ GameObject:
   - component: {fileID: 2071171874}
   - component: {fileID: 2071171873}
   m_Layer: 13
-  m_Name: Wall Moveable Down (27)
-  m_TagString: WallMoveable
+  m_Name: Wall Slider Down (27)
+  m_TagString: WallSlider
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 8

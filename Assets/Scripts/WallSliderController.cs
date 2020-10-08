@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using MyFunctions;
 
-public class WallController : MonoBehaviour
+public class WallSliderController : MonoBehaviour
 {
     public enum positionY {down, up};
     public positionY posStartPositionY = positionY.down;

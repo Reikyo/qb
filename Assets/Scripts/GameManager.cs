@@ -38,7 +38,7 @@ public class GameManager : MonoBehaviour
     public AudioClip sfxclpPowerUp; // DM-CGS-28
     public AudioClip sfxclpProjectile; // DM-CGS-20
     public AudioClip sfxclpWallDestructible; // DM-CGS-32
-    public AudioClip sfxclpWallMoveable; // DM-CGS-38
+    public AudioClip sfxclpWallSlider; // DM-CGS-38
     public AudioClip sfxclpWallSpinner;
     public AudioClip sfxclpSwitch;
     public AudioClip sfxclpTargetObjectivePlayer; // DM-CGS-24
@@ -69,7 +69,7 @@ public class GameManager : MonoBehaviour
         sfxclpNames.Add("sfxclpPowerUp", sfxclpPowerUp);
         sfxclpNames.Add("sfxclpProjectile", sfxclpProjectile);
         sfxclpNames.Add("sfxclpWallDestructible", sfxclpWallDestructible);
-        sfxclpNames.Add("sfxclpWallMoveable", sfxclpWallMoveable);
+        sfxclpNames.Add("sfxclpWallSlider", sfxclpWallSlider);
         sfxclpNames.Add("sfxclpWallSpinner", sfxclpWallSpinner);
         sfxclpNames.Add("sfxclpSwitch", sfxclpSwitch);
         sfxclpNames.Add("sfxclpTargetObjectivePlayer", sfxclpTargetObjectivePlayer);
@@ -246,8 +246,8 @@ public class GameManager : MonoBehaviour
         //     case "sfxclpWallDestructible":
         //         sfxclpName = sfxclpWallDestructible;
         //         break;
-        //     case "sfxclpWallMoveable":
-        //         sfxclpName = sfxclpWallMoveable;
+        //     case "sfxclpWallSlider":
+        //         sfxclpName = sfxclpWallSlider;
         //         break;
         //     case "sfxclpTargetObjectivePlayer":
         //         sfxclpName = sfxclpTargetObjectivePlayer;

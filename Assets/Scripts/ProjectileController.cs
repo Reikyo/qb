@@ -72,10 +72,10 @@ public class ProjectileController : MonoBehaviour
                 gameManager.VfxclpPlay("vfxclpWallDestructible", transform.position);
                 gameManager.SfxclpPlay("sfxclpWallDestructible");
             }
-            else if (other.gameObject.CompareTag("WallMoveable"))
+            else if (other.gameObject.CompareTag("WallSlider"))
             {
-                cubeController.SwitchWallsMoveable();
-                gameManager.SfxclpPlay("sfxclpWallMoveable");
+                cubeController.SwitchWallsSlider();
+                gameManager.SfxclpPlay("sfxclpWallSlider");
             }
             else if (other.gameObject.CompareTag("WallSpinnerSwitch"))
             {
