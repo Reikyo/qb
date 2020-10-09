@@ -5,14 +5,17 @@ using MyFunctions;
 
 public class WallSliderController : MonoBehaviour
 {
-    public enum positionY {down, up};
-    public positionY posStartPositionY = positionY.down;
-    private positionY posCurrentPositionY = positionY.down;
-    private bool bTargetPositionY;
+    private GameManager gameManager;
 
-    private float fLowerPositionY = 2f;
-    private float fUpperPositionY = 6f;
+    public enum positionY {down, up};
+    public positionY posPositionYStart = positionY.down;
+    private positionY posPositionYCurrent = positionY.down;
+    private bool bChangeState;
+    private int iDirection = -1;
     private float fTransitionTime = 0.5f;
+    private float fMetresPositionYLower = 2f;
+    private float fMetresPositionYUpper = 6f;
+    private float fMetresPositionYTarget;
     private float fMetresPerSecY;
     private float fMetresPerFrameY;
 
@@ -21,8 +24,9 @@ public class WallSliderController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        fMetresPerSecY = (fUpperPositionY - fLowerPositionY) / fTransitionTime;
-        fMetresPerFrameY = fMetresPerSecY * Time.deltaTime;
+        gameManager = GameObject.Find("Game Manager").GetComponent<GameManager>();
+
+        fMetresPerSecY = (fMetresPositionYUpper - fMetresPositionYLower) / fTransitionTime;
 
         Reset();
     }
@@ -32,84 +36,56 @@ public class WallSliderController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!bTargetPositionY)
+        if (bChangeState)
         {
-            if (posCurrentPositionY == positionY.down)
+            fMetresPerFrameY = fMetresPerSecY * Time.deltaTime;
+            bChangeState = MyFunctions.Move.Translate(
+                gameObject,
+                "y",
+                iDirection * fMetresPerFrameY,
+                transform.position.y,
+                fMetresPositionYTarget
+            );
+            if (!bChangeState)
             {
-                bTargetPositionY = MyFunctions.Move.Translate(gameObject, "y", fMetresPerFrameY, transform.position.y, fUpperPositionY, bTargetPositionY);
-                if (bTargetPositionY)
+                if (iDirection == 1)
                 {
-                    posCurrentPositionY = positionY.up;
+                    posPositionYCurrent = positionY.up;
                 }
-            }
-            else
-            {
-                bTargetPositionY = MyFunctions.Move.Translate(gameObject, "y", -fMetresPerFrameY, transform.position.y, fLowerPositionY, bTargetPositionY);
-                if (bTargetPositionY)
+                else
                 {
-                    posCurrentPositionY = positionY.down;
+                    posPositionYCurrent = positionY.down;
                 }
             }
         }
     }
 
-    // // ------------------------------------------------------------------------------------------------
-    //
-    // private bool Translate(
-    //     string sAxis,
-    //     float fMetresPerFrame,
-    //     float fCurrentPosition,
-    //     float fTargetPosition,
-    //     bool bTargetPosition
-    // )
-    // {
-    //     if (((fMetresPerFrame > 0f) && (fTargetPosition > (fCurrentPosition + fMetresPerFrame)))
-    //     ||  ((fMetresPerFrame < 0f) && (fTargetPosition < (fCurrentPosition + fMetresPerFrame))))
-    //     {
-    //         switch(sAxis)
-    //         {
-    //             case "x":
-    //                 transform.Translate(fMetresPerFrame, 0f, 0f, Space.World);
-    //                 break;
-    //             case "y":
-    //                 transform.Translate(0f, fMetresPerFrame, 0f, Space.World);
-    //                 break;
-    //             case "z":
-    //                 transform.Translate(0f, 0f, fMetresPerFrame, Space.World);
-    //                 break;
-    //         }
-    //     }
-    //     else
-    //     {
-    //         switch(sAxis)
-    //         {
-    //             case "x":
-    //                 transform.Translate(fTargetPosition - fCurrentPosition, 0f, 0f, Space.World);
-    //                 break;
-    //             case "y":
-    //                 transform.Translate(0f, fTargetPosition - fCurrentPosition, 0f, Space.World);
-    //                 break;
-    //             case "z":
-    //                 transform.Translate(0f, 0f, fTargetPosition - fCurrentPosition, Space.World);
-    //                 break;
-    //         }
-    //         bTargetPosition = true;
-    //     }
-    //     return(bTargetPosition);
-    // }
-    //
-    // // ------------------------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------------------------
 
-    public void Reset()
+    public void Trigger()
     {
-        bTargetPositionY = (posCurrentPositionY == posStartPositionY);
+        gameManager.SfxclpPlay("sfxclpWallSlider");
+        bChangeState = true;
+        if (iDirection == -1)
+        {
+            iDirection = 1;
+            fMetresPositionYTarget = fMetresPositionYUpper;
+        }
+        else
+        {
+            iDirection = -1;
+            fMetresPositionYTarget = fMetresPositionYLower;
+        }
     }
 
     // ------------------------------------------------------------------------------------------------
 
-    public void Switch()
+    public void Reset()
     {
-        bTargetPositionY = false;
+        if (posPositionYCurrent != posPositionYStart)
+        {
+            Trigger();
+        }
     }
 
     // ------------------------------------------------------------------------------------------------

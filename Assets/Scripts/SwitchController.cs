@@ -4,20 +4,21 @@ using UnityEngine;
 
 public class SwitchController : MonoBehaviour
 {
+    private GameManager gameManager;
+
+    public GameObject goDevice;
     public List<string> slistOkayTriggerCharacters = new List<string>() {"Player", "Target"};
     public string sTriggerCharacter = "";
-    public bool bPositionFullyOff = true;
-    public bool bPositionFullyOn = false;
-    private bool bRotateOn = false;
-    private bool bRotateOff = false;
-    private Vector3 v3RotationAxis = Vector3.forward;
-    private int iRotationDirection = -1;
-    private float fDegreesPerSec = 360f;
-    private float fDegreesPerFrame;
+    private bool bState1 = true;
+    private bool bState2 = false;
+    private bool bChangeState1to2 = false;
+    private bool bChangeState2to1 = false;
+    private int iDirection = -1;
     private float fDegreesToRotate = 30f;
     private float fDegreesRotated = 0f;
-
-    private GameManager gameManager;
+    private float fDegreesPerSec = 360f;
+    private float fDegreesPerFrame;
+    private Vector3 v3RotationAxis = Vector3.forward;
 
     // ------------------------------------------------------------------------------------------------
 
@@ -32,54 +33,82 @@ public class SwitchController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (bRotateOn)
+        if (bChangeState1to2)
         {
-            bRotateOn = Rotate(bRotateOn);
-            if (bPositionFullyOff)
+            bChangeState1to2 = Rotate(bChangeState1to2);
+            if (bState1)
             {
-                bPositionFullyOff = false;
+                bState1 = false;
                 gameManager.SfxclpPlay("sfxclpSwitch");
             }
-            if (!bRotateOn)
+            if (!bChangeState1to2)
             {
-                bPositionFullyOn = true;
-                iRotationDirection = 1;
+                bState2 = true;
+                iDirection = 1;
+                if (goDevice)
+                {
+                    DeviceTrigger(goDevice, 1);
+                }
             }
         }
-        else if (bRotateOff)
+        else if (bChangeState2to1)
         {
-            bRotateOff = Rotate(bRotateOff);
-            if (bPositionFullyOn)
+            bChangeState2to1 = Rotate(bChangeState2to1);
+            if (bState2)
             {
-                bPositionFullyOn = false;
+                bState2 = false;
                 gameManager.SfxclpPlay("sfxclpSwitch");
+                if (goDevice)
+                {
+                    DeviceTrigger(goDevice, -1);
+                }
             }
-            if (!bRotateOff)
+            if (!bChangeState2to1)
             {
                 sTriggerCharacter = "";
-                bPositionFullyOff = true;
-                iRotationDirection = -1;
+                bState1 = true;
+                iDirection = -1;
             }
         }
     }
 
     // ------------------------------------------------------------------------------------------------
 
-    public void StartRotate(int iRotationDirectionGiven)
+    public void Trigger(string sChangeState, string sTriggerCharacterGiven)
     {
-        if (iRotationDirectionGiven == -1)
+        if ((sChangeState == "state1to2")
+        &&  bState1
+        &&  slistOkayTriggerCharacters.Contains(sTriggerCharacterGiven))
         {
-            bRotateOn = true;
+            sTriggerCharacter = sTriggerCharacterGiven;
+            bChangeState1to2 = true;
         }
-        else if (iRotationDirectionGiven == 1)
+        else if ((sChangeState == "state2to1")
+        &&  !bState1
+        &&  (sTriggerCharacterGiven == sTriggerCharacter))
         {
-            bRotateOff = true;
+            bChangeState2to1 = true;
         }
     }
 
     // ------------------------------------------------------------------------------------------------
 
-    private bool Rotate(bool bRotate)
+    private void DeviceTrigger(GameObject goDevice, int iChangeState)
+    {
+        switch(goDevice.tag)
+        {
+            case "WallSlider":
+                goDevice.GetComponent<WallSliderController>().Trigger();
+                break;
+            case "WallSpinner":
+                goDevice.GetComponent<WallSpinnerController>().Trigger(iChangeState);
+                break;
+        }
+    }
+
+    // ------------------------------------------------------------------------------------------------
+
+    private bool Rotate(bool bChangeState)
     {
         fDegreesPerFrame = fDegreesPerSec * Time.deltaTime;
         fDegreesRotated += fDegreesPerFrame;
@@ -88,12 +117,12 @@ public class SwitchController : MonoBehaviour
         {
             fDegreesRotated -= fDegreesPerFrame;
             fDegreesPerFrame = fDegreesToRotate - fDegreesRotated;
-            bRotate = false;
+            bChangeState = false;
         }
 
-        transform.Rotate(iRotationDirection * fDegreesPerFrame * v3RotationAxis);
+        transform.Rotate(iDirection * fDegreesPerFrame * v3RotationAxis);
 
-        if (!bRotate)
+        if (!bChangeState)
         {
             transform.eulerAngles = new Vector3(
                 Mathf.Round(transform.eulerAngles.x),
@@ -103,7 +132,7 @@ public class SwitchController : MonoBehaviour
             fDegreesRotated = 0f;
         }
 
-        return(bRotate);
+        return(bChangeState);
     }
 
     // ------------------------------------------------------------------------------------------------

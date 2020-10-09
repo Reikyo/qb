@@ -5,27 +5,30 @@ using MyFunctions;
 
 public class LevelController : MonoBehaviour
 {
-    private Vector3 v3InstantiatePosition = new Vector3(0f, -5f, 1f);
-    private Vector3 v3LevelPosition = new Vector3(0f, 0f, 0f);
-
-    private float fLevelStartTime = 0.5f;
-
-    private float fLevelStartMetresPerSecY;
-    private float fLevelStartMetresPerFrameY;
-    private float fLevelStartMetresPerSecZ;
-    private float fLevelStartMetresPerFrameZ;
+    // private SpawnManager spawnManager;
+    private CubeController cubeController;
 
     public bool bProjectilePathDependentLevel = false;
-    public bool bLevelStart = false;
-    public bool bLevelFinish = false;
+    public GameObject[] goArrSpawns;
+    public Vector3[] v3ArrSpawnPositions;
+    private GameObject[] goArrWallsDestructible;
+    private GameObject[] goArrWallsSlider;
 
-    private bool bLevelPositionY = false;
-    private bool bLevelPositionZ = false;
+    private Vector3 v3PositionInstantiate = new Vector3(0f, -5f, 1f);
+    private Vector3 v3PositionPlay = new Vector3(0f, 0f, 0f);
 
-    private CubeController cubeController;
-    private SpawnManager spawnManager;
-    public GameObject[] golistSpawns;
-    public Vector3[] v3listSpawnPositions;
+    private float fTransitionTime = 0.5f;
+
+    private float fMetresPerSecY;
+    private float fMetresPerFrameY;
+    private float fMetresPerSecZ;
+    private float fMetresPerFrameZ;
+
+    private bool bChangeStateStartLevel = false;
+    private bool bChangeStateFinishLevel = false;
+
+    private bool bChangeStatePositionY = false;
+    private bool bChangeStatePositionZ = false;
 
 // Level 1
 //   Player         (0, 0, -20)
@@ -60,15 +63,14 @@ public class LevelController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        transform.position = v3InstantiatePosition;
-
-        fLevelStartMetresPerSecY = (v3LevelPosition.y - v3InstantiatePosition.y) / fLevelStartTime;
-        fLevelStartMetresPerFrameY = fLevelStartMetresPerSecY * Time.deltaTime;
-        fLevelStartMetresPerSecZ = (v3LevelPosition.z - v3InstantiatePosition.z) / fLevelStartTime;
-        fLevelStartMetresPerFrameZ = fLevelStartMetresPerSecZ * Time.deltaTime;
-
-        spawnManager = GameObject.Find("Spawn Manager").GetComponent<SpawnManager>();
+        // spawnManager = GameObject.Find("Spawn Manager").GetComponent<SpawnManager>();
         cubeController = GameObject.Find("Cube").GetComponent<CubeController>();
+
+        transform.position = v3PositionInstantiate;
+
+        fMetresPerSecY = (v3PositionPlay.y - v3PositionInstantiate.y) / fTransitionTime;
+        fMetresPerSecZ = (v3PositionPlay.z - v3PositionInstantiate.z) / fTransitionTime;
+
     }
 
     // ------------------------------------------------------------------------------------------------
@@ -79,46 +81,70 @@ public class LevelController : MonoBehaviour
 
         // ------------------------------------------------------------------------------------------------
 
-        if (bLevelStart)
+        if (bChangeStateStartLevel)
         {
-            if (!bLevelPositionY)
+            if (bChangeStatePositionY)
             {
-                bLevelPositionY = MyFunctions.Move.Translate(gameObject, "y", fLevelStartMetresPerFrameY, transform.position.y, v3LevelPosition.y, bLevelPositionY);
+                fMetresPerFrameY = fMetresPerSecY * Time.deltaTime;
+                bChangeStatePositionY = MyFunctions.Move.Translate(
+                    gameObject,
+                    "y",
+                    fMetresPerFrameY,
+                    transform.position.y,
+                    v3PositionPlay.y
+                );
             }
-            if (!bLevelPositionZ)
+            if (bChangeStatePositionZ)
             {
-                bLevelPositionZ = MyFunctions.Move.Translate(gameObject, "z", fLevelStartMetresPerFrameZ, transform.position.z, v3LevelPosition.z, bLevelPositionZ);
+                fMetresPerFrameZ = fMetresPerSecZ * Time.deltaTime;
+                bChangeStatePositionZ = MyFunctions.Move.Translate(
+                    gameObject,
+                    "z",
+                    fMetresPerFrameZ,
+                    transform.position.z,
+                    v3PositionPlay.z
+                );
             }
-            if (bLevelPositionY
-            &&  bLevelPositionZ)
+            if (!bChangeStatePositionY
+            &&  !bChangeStatePositionZ)
             {
-                bLevelPositionY = false;
-                bLevelPositionZ = false;
-                bLevelStart = false;
+                bChangeStateStartLevel = false;
                 Activate();
             }
         }
 
         // ------------------------------------------------------------------------------------------------
 
-        if (bLevelFinish)
+        if (bChangeStateFinishLevel)
         {
-            if (!bLevelPositionY)
+            if (bChangeStatePositionY)
             {
-                bLevelPositionY = MyFunctions.Move.Translate(gameObject, "y", -fLevelStartMetresPerFrameY, transform.position.y, v3InstantiatePosition.y, bLevelPositionY);
+                fMetresPerFrameY = fMetresPerSecY * Time.deltaTime;
+                bChangeStatePositionY = MyFunctions.Move.Translate(
+                    gameObject,
+                    "y",
+                    -fMetresPerFrameY,
+                    transform.position.y,
+                    v3PositionInstantiate.y
+                );
             }
-            if (!bLevelPositionZ)
+            if (bChangeStatePositionZ)
             {
-                bLevelPositionZ = MyFunctions.Move.Translate(gameObject, "z", -fLevelStartMetresPerFrameZ, transform.position.z, v3InstantiatePosition.z, bLevelPositionZ);
+                fMetresPerFrameZ = fMetresPerSecZ * Time.deltaTime;
+                bChangeStatePositionZ = MyFunctions.Move.Translate(
+                    gameObject,
+                    "z",
+                    -fMetresPerFrameZ,
+                    transform.position.z,
+                    v3PositionInstantiate.z
+                );
             }
-            if (bLevelPositionY
-            &&  bLevelPositionZ)
+            if (!bChangeStatePositionY
+            &&  !bChangeStatePositionZ)
             {
-                bLevelPositionY = false;
-                bLevelPositionZ = false;
-                bLevelFinish = false;
+                bChangeStateFinishLevel = false;
                 gameObject.SetActive(false);
-                cubeController.bNextLevelStart = true;
+                cubeController.StartNextLevelContinue();
             }
         }
 
@@ -128,98 +154,93 @@ public class LevelController : MonoBehaviour
 
     // ------------------------------------------------------------------------------------------------
 
-    // private bool Translate(
-    //     string sAxis,
-    //     float fMetresPerFrame,
-    //     float fCurrentPosition,
-    //     float fTargetPosition,
-    //     bool bTargetPosition
-    // )
-    // {
-    //     if (((fMetresPerFrame > 0f) && (fTargetPosition > (fCurrentPosition + fMetresPerFrame)))
-    //     ||  ((fMetresPerFrame < 0f) && (fTargetPosition < (fCurrentPosition + fMetresPerFrame))))
-    //     {
-    //         switch(sAxis)
-    //         {
-    //             case "x":
-    //                 transform.Translate(fMetresPerFrame, 0f, 0f, Space.World);
-    //                 break;
-    //             case "y":
-    //                 transform.Translate(0f, fMetresPerFrame, 0f, Space.World);
-    //                 break;
-    //             case "z":
-    //                 transform.Translate(0f, 0f, fMetresPerFrame, Space.World);
-    //                 break;
-    //         }
-    //     }
-    //     else
-    //     {
-    //         switch(sAxis)
-    //         {
-    //             case "x":
-    //                 transform.Translate(fTargetPosition - fCurrentPosition, 0f, 0f, Space.World);
-    //                 break;
-    //             case "y":
-    //                 transform.Translate(0f, fTargetPosition - fCurrentPosition, 0f, Space.World);
-    //                 break;
-    //             case "z":
-    //                 transform.Translate(0f, 0f, fTargetPosition - fCurrentPosition, Space.World);
-    //                 break;
-    //         }
-    //         bTargetPosition = true;
-    //     }
-    //     return(bTargetPosition);
-    // }
-
-    // ------------------------------------------------------------------------------------------------
-
-    public void LevelStart()
+    public void StartLevel()
     {
         gameObject.SetActive(true);
-        bLevelStart = true;
+        goArrWallsDestructible = GameObject.FindGameObjectsWithTag("WallDestructible");
+        goArrWallsSlider = GameObject.FindGameObjectsWithTag("WallSlider");
+        bChangeStateStartLevel = true;
+        bChangeStatePositionY = true;
+        bChangeStatePositionZ = true;
     }
 
     // ------------------------------------------------------------------------------------------------
 
-    public void LevelFinish()
+    public void FinishLevel()
     {
         // spawnManager.Destroy();
         Deactivate();
-        bLevelFinish = true;
+        bChangeStateFinishLevel = true;
+        bChangeStatePositionY = true;
+        bChangeStatePositionZ = true;
     }
 
     // ------------------------------------------------------------------------------------------------
 
-    public void Activate()
+    private void Activate()
     {
-        // spawnManager.Instantiate(golistSpawns, v3listSpawnPositions);
+        // spawnManager.Instantiate(goArrSpawns, v3ArrSpawnPositions);
 
-        for (int golistSpawnsIdx=0; golistSpawnsIdx<golistSpawns.Length; golistSpawnsIdx++)
+        for (int goArrSpawnsIdx=0; goArrSpawnsIdx<goArrSpawns.Length; goArrSpawnsIdx++)
         {
             Instantiate(
-                golistSpawns[golistSpawnsIdx],
+                goArrSpawns[goArrSpawnsIdx],
                 new Vector3(
-                    v3listSpawnPositions[golistSpawnsIdx].x,
-                    golistSpawns[golistSpawnsIdx].transform.position.y,
-                    v3listSpawnPositions[golistSpawnsIdx].z
+                    v3ArrSpawnPositions[goArrSpawnsIdx].x,
+                    goArrSpawns[goArrSpawnsIdx].transform.position.y,
+                    v3ArrSpawnPositions[goArrSpawnsIdx].z
                 ),
-                golistSpawns[golistSpawnsIdx].transform.rotation
+                goArrSpawns[goArrSpawnsIdx].transform.rotation
             );
         }
     }
 
     // ------------------------------------------------------------------------------------------------
 
-    public void Deactivate()
+    private void Deactivate()
     {
-        foreach (string sTag in new List<string>() {"Player", "Enemy", "Target", "PowerUp", "SafeZonePlayer", "SafeZoneTarget"})
+        foreach (string sTag in new List<string>() {
+            "Player",
+            "Target",
+            "Enemy",
+            "SafeZonePlayer",
+            "SafeZoneTarget",
+            "PowerUp"
+        })
         {
             GameObject go = GameObject.FindWithTag(sTag);
             if (go)
             {
-                go.SetActive(false); // We must deactivate all game objects or they will not be found by the FindWithTag method on reload
+                // We must deactivate all game objects or they will not be found by the FindWithTag method on reload
+                go.SetActive(false);
                 Destroy(go);
             }
+        }
+    }
+
+    // ------------------------------------------------------------------------------------------------
+
+    public void Reset()
+    {
+        foreach (GameObject goWallDestructible in goArrWallsDestructible)
+        {
+            goWallDestructible.SetActive(true);
+        }
+        foreach (GameObject goWallSlider in goArrWallsSlider)
+        {
+            goWallSlider.GetComponent<WallSliderController>().Reset();
+        }
+        Deactivate();
+        Activate();
+    }
+
+    // ------------------------------------------------------------------------------------------------
+
+    public void TriggerWallsSlider()
+    {
+        foreach (GameObject goWallSlider in goArrWallsSlider)
+        {
+            goWallSlider.GetComponent<WallSliderController>().Trigger();
         }
     }
 

@@ -1,24 +1,25 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-// using MyFunctions;
 
 public class WallSpinnerController : MonoBehaviour
 {
-    private bool bRotate = false;
-    private Vector3 v3RotationAxis = Vector3.up;
-    private int iRotationDirection;
-    private float fDegreesPerSec = 180f;
-    private float fDegreesPerFrame;
+    private GameManager gameManager;
+
+    private bool bChangeState = false;
+    private int iDirection;
     private float fDegreesToRotate = 90f;
     private float fDegreesRotated = 0f;
+    private float fDegreesPerSec = 180f;
+    private float fDegreesPerFrame;
+    private Vector3 v3RotationAxis = Vector3.up;
 
     // ------------------------------------------------------------------------------------------------
 
     // Start is called before the first frame update
     void Start()
     {
-
+        gameManager = GameObject.Find("Game Manager").GetComponent<GameManager>();
     }
 
     // ------------------------------------------------------------------------------------------------
@@ -26,58 +27,28 @@ public class WallSpinnerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // if (!bNextEulerAngleY)
-        // {
-        //     var tuple = MyFunctions.Move.Rotate(gameObject, v3EulerAngles, "y", fDegreesPerFrame, v3EulerAngles.y, v3NextEulerAngles.y, bNextEulerAngleY);
-        //     bNextLevelEulerAngleY = tuple.Item1;
-        //     v3EulerAngles = tuple.Item2;
-        // }
-
-        // if (bRotate)
-        // {
-        //     fDegreesPerFrame = fDegreesPerSec * Time.deltaTime;
-        //
-        //     if ((fDegreesRotated + fDegreesPerFrame) > fDegreesToRotate)
-        //     {
-        //         fDegreesPerFrame = fDegreesToRotate - fDegreesRotated;
-        //         bRotate = false;
-        //     }
-        //
-        //     transform.Rotate(iRotationDirection * fDegreesPerFrame * Vector3.up);
-        //     fDegreesRotated += fDegreesPerFrame;
-        //
-        //     if (!bRotate)
-        //     {
-        //         transform.eulerAngles = new Vector3(
-        //             Mathf.Round(transform.eulerAngles.x),
-        //             Mathf.Round(transform.eulerAngles.y),
-        //             Mathf.Round(transform.eulerAngles.z)
-        //         );
-        //         fDegreesRotated = 0f;
-        //     }
-        // }
-
-        if (bRotate)
+        if (bChangeState)
         {
-            bRotate = Rotate(bRotate);
+            bChangeState = Rotate(bChangeState);
         }
     }
 
     // ------------------------------------------------------------------------------------------------
 
-    public void StartRotate(int iRotationDirectionGiven)
+    public void Trigger(int iDirectionGiven)
     {
         // Only trigger rotation if not already rotating, else the rotation direction could be messed up
-        if (!bRotate)
+        if (!bChangeState)
         {
-            bRotate = true;
-            iRotationDirection = iRotationDirectionGiven;
+            gameManager.SfxclpPlay("sfxclpWallSpinner");
+            bChangeState = true;
+            iDirection = iDirectionGiven;
         }
     }
 
     // ------------------------------------------------------------------------------------------------
 
-    private bool Rotate(bool bRotate)
+    private bool Rotate(bool bChangeState)
     {
         fDegreesPerFrame = fDegreesPerSec * Time.deltaTime;
         fDegreesRotated += fDegreesPerFrame;
@@ -86,12 +57,12 @@ public class WallSpinnerController : MonoBehaviour
         {
             fDegreesRotated -= fDegreesPerFrame;
             fDegreesPerFrame = fDegreesToRotate - fDegreesRotated;
-            bRotate = false;
+            bChangeState = false;
         }
 
-        transform.Rotate(iRotationDirection * fDegreesPerFrame * v3RotationAxis);
+        transform.Rotate(iDirection * fDegreesPerFrame * v3RotationAxis);
 
-        if (!bRotate)
+        if (!bChangeState)
         {
             transform.eulerAngles = new Vector3(
                 Mathf.Round(transform.eulerAngles.x),
@@ -101,7 +72,7 @@ public class WallSpinnerController : MonoBehaviour
             fDegreesRotated = 0f;
         }
 
-        return(bRotate);
+        return(bChangeState);
     }
 
     // ------------------------------------------------------------------------------------------------

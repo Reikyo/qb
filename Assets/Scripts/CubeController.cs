@@ -1,4 +1,3 @@
-using System;
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,65 +6,56 @@ using TMPro;
 
 public class CubeController : MonoBehaviour
 {
-    // private Vector3 v3InstantiatePosition = new Vector3(0f, -210f, 72f);
-    private Vector3 v3InstantiatePosition = new Vector3(0f, -230f, 19f);
-    private Vector3 v3FirstLevelPosition = new Vector3(0f, -25f, 0f);
-
-    // private Vector3 v3InstantiateEulerAngles = new Vector3(237.5f, 0f, 0f);
-    private Vector3 v3InstantiateEulerAngles = new Vector3(253f, 0f, 0f);
-    private Vector3 v3FirstLevelEulerAngles = new Vector3(0f, 0f, 0f);
-    private Vector3 v3NextLevelEulerAngles = new Vector3(0f, 0f, 90f);
-    private Vector3 v3EulerAngles;
-
-    private float fFirstLevelStartTime = 1f;
-    private float fNextLevelStartTime = 0.5f;
-
-    private float fFirstLevelStartMetresPerSecY;
-    private float fFirstLevelStartMetresPerFrameY;
-    private float fFirstLevelStartMetresPerSecZ;
-    private float fFirstLevelStartMetresPerFrameZ;
-
-    private float fFirstLevelStartDegreesPerSec;
-    private float fFirstLevelStartDegreesPerFrame;
-    private float fNextLevelStartDegreesPerSec;
-    private float fNextLevelStartDegreesPerFrame;
-
-    public bool bFirstLevelStart = false;
-    public bool bNextLevelStart = false;
-
-    private bool bFirstLevelPositionY = false;
-    private bool bFirstLevelPositionZ = false;
-    private bool bFirstLevelEulerAngleX = false;
-    private bool bNextLevelEulerAngleX = false;
-    private bool bNextLevelEulerAngleZ = false;
-
-    private string sNextLevelStartRotationAxis = "z";
-
     private int iLevel = 0;
     public TextMeshProUGUI guiLevel;
     public TextMeshProUGUI guiNumProjectile;
-    public GameObject[] goLevels;
-    private GameObject[] goWallsDestructible;
-    private GameObject[] goWallsSlider;
+
+    public GameObject[] goArrLevels;
+    private LevelController levelController;
+
+    private Vector3 v3PositionInstantiate = new Vector3(0f, -230f, 19f);
+    private Vector3 v3PositionFirstLevel = new Vector3(0f, -25f, 0f);
+
+    private Vector3 v3EulerAngles;
+    private Vector3 v3EulerAnglesInstantiate = new Vector3(253f, 0f, 0f);
+    private Vector3 v3EulerAnglesFirstLevel = new Vector3(0f, 0f, 0f);
+    private Vector3 v3EulerAnglesNextLevel = new Vector3(0f, 0f, 90f);
+
+    private float fTransitionTimeFirstLevel = 1f;
+    private float fTransitionTimeNextLevel = 0.5f;
+
+    private float fMetresPerSecYFirstLevel;
+    private float fMetresPerFrameYFirstLevel;
+    private float fMetresPerSecZFirstLevel;
+    private float fMetresPerFrameZFirstLevel;
+
+    private float fDegreesPerSecXFirstLevel;
+    private float fDegreesPerFrameXFirstLevel;
+    private float fDegreesPerSecNextLevel;
+    private float fDegreesPerFrameNextLevel;
+
+    private bool bChangeStateStartFirstLevel = false;
+    private bool bChangeStateStartNextLevel = false;
+
+    private bool bChangeStatePositionY = false;
+    private bool bChangeStatePositionZ = false;
+    private bool bChangeStateEulerAngleX = false;
+    private bool bChangeStateEulerAngleZ = false;
 
     // ------------------------------------------------------------------------------------------------
 
     // Start is called before the first frame update
     void Start()
     {
-        transform.position = v3InstantiatePosition;
-        transform.eulerAngles = v3InstantiateEulerAngles;
-        v3EulerAngles = v3InstantiateEulerAngles;
+        transform.position = v3PositionInstantiate;
+        transform.eulerAngles = v3EulerAnglesInstantiate;
+        v3EulerAngles = v3EulerAnglesInstantiate;
 
-        fFirstLevelStartMetresPerSecY = (v3FirstLevelPosition.y - v3InstantiatePosition.y) / fFirstLevelStartTime;
-        fFirstLevelStartMetresPerFrameY = fFirstLevelStartMetresPerSecY * Time.deltaTime;
-        fFirstLevelStartMetresPerSecZ = (v3FirstLevelPosition.z - v3InstantiatePosition.z) / fFirstLevelStartTime;
-        fFirstLevelStartMetresPerFrameZ = fFirstLevelStartMetresPerSecZ * Time.deltaTime;
+        fMetresPerSecYFirstLevel = (v3PositionFirstLevel.y - v3PositionInstantiate.y) / fTransitionTimeFirstLevel;
+        fMetresPerSecZFirstLevel = (v3PositionFirstLevel.z - v3PositionInstantiate.z) / fTransitionTimeFirstLevel;
 
-        fFirstLevelStartDegreesPerSec = (v3FirstLevelEulerAngles.x - v3InstantiateEulerAngles.x) / fFirstLevelStartTime;
-        fFirstLevelStartDegreesPerFrame = fFirstLevelStartDegreesPerSec * Time.deltaTime;
-        fNextLevelStartDegreesPerSec = 90f / fNextLevelStartTime;
-        fNextLevelStartDegreesPerFrame = fNextLevelStartDegreesPerSec * Time.deltaTime;
+        fDegreesPerSecXFirstLevel = (v3EulerAnglesFirstLevel.x - v3EulerAnglesInstantiate.x) / fTransitionTimeFirstLevel;
+        fDegreesPerSecNextLevel = (v3EulerAnglesNextLevel.z - v3EulerAnglesFirstLevel.z) / fTransitionTimeNextLevel;
     }
 
     // ------------------------------------------------------------------------------------------------
@@ -76,71 +66,89 @@ public class CubeController : MonoBehaviour
 
         // ------------------------------------------------------------------------------------------------
 
-        if (bFirstLevelStart)
+        if (bChangeStateStartFirstLevel)
         {
-            if (!bFirstLevelPositionY)
+            if (bChangeStatePositionY)
             {
-                bFirstLevelPositionY = MyFunctions.Move.Translate(gameObject, "y", fFirstLevelStartMetresPerFrameY, transform.position.y, v3FirstLevelPosition.y, bFirstLevelPositionY);
+                fMetresPerFrameYFirstLevel = fMetresPerSecYFirstLevel * Time.deltaTime;
+                bChangeStatePositionY = MyFunctions.Move.Translate(
+                    gameObject,
+                    "y",
+                    fMetresPerFrameYFirstLevel,
+                    transform.position.y,
+                    v3PositionFirstLevel.y
+                );
             }
-            if (!bFirstLevelPositionZ)
+            if (bChangeStatePositionZ)
             {
-                bFirstLevelPositionZ = MyFunctions.Move.Translate(gameObject, "z", fFirstLevelStartMetresPerFrameZ, transform.position.z, v3FirstLevelPosition.z, bFirstLevelPositionZ);
+                fMetresPerFrameZFirstLevel = fMetresPerSecZFirstLevel * Time.deltaTime;
+                bChangeStatePositionZ = MyFunctions.Move.Translate(
+                    gameObject,
+                    "z",
+                    fMetresPerFrameZFirstLevel,
+                    transform.position.z,
+                    v3PositionFirstLevel.z
+                );
             }
-            if (!bFirstLevelEulerAngleX)
+            if (bChangeStateEulerAngleX)
             {
-                var tuple = MyFunctions.Move.Rotate(gameObject, v3EulerAngles, "x", fFirstLevelStartDegreesPerFrame, v3EulerAngles.x, v3FirstLevelEulerAngles.x, bFirstLevelEulerAngleX);
-                bFirstLevelEulerAngleX = tuple.Item1;
-                v3EulerAngles = tuple.Item2;
+                fDegreesPerFrameXFirstLevel = fDegreesPerSecXFirstLevel * Time.deltaTime;
+                var tuple = MyFunctions.Move.Rotate(
+                    gameObject,
+                    "x",
+                    fDegreesPerFrameXFirstLevel,
+                    v3EulerAngles.x,
+                    v3EulerAnglesFirstLevel.x
+                );
+                bChangeStateEulerAngleX = tuple.Item1;
+                v3EulerAngles.x = tuple.Item2;
             }
-            if (bFirstLevelPositionY
-            &&  bFirstLevelPositionZ
-            &&  bFirstLevelEulerAngleX)
+            if (!bChangeStatePositionY
+            &&  !bChangeStatePositionZ
+            &&  !bChangeStateEulerAngleX)
             {
-                bFirstLevelPositionY = false;
-                bFirstLevelPositionZ = false;
-                bFirstLevelEulerAngleX = false;
-                bFirstLevelStart = false;
+                bChangeStateStartFirstLevel = false;
                 Activate();
             }
         }
 
         // ------------------------------------------------------------------------------------------------
 
-        if (bNextLevelStart)
+        else if (bChangeStateStartNextLevel)
         {
-            if (sNextLevelStartRotationAxis == "z")
+            fDegreesPerFrameNextLevel = fDegreesPerSecNextLevel * Time.deltaTime;
+
+            if (bChangeStateEulerAngleZ)
             {
-                if (!bNextLevelEulerAngleZ)
+                var tuple = MyFunctions.Move.Rotate(
+                    gameObject,
+                    "z",
+                    fDegreesPerFrameNextLevel,
+                    v3EulerAngles.z,
+                    v3EulerAnglesNextLevel.z
+                );
+                bChangeStateEulerAngleZ = tuple.Item1;
+                v3EulerAngles.z = tuple.Item2;
+                if (!bChangeStateEulerAngleZ)
                 {
-                    var tuple = MyFunctions.Move.Rotate(gameObject, v3EulerAngles, "z", fNextLevelStartDegreesPerFrame, v3EulerAngles.z, v3NextLevelEulerAngles.z, bNextLevelEulerAngleZ);
-                    bNextLevelEulerAngleZ = tuple.Item1;
-                    v3EulerAngles = tuple.Item2;
-                }
-                if (bNextLevelEulerAngleZ)
-                {
-                    sNextLevelStartRotationAxis = "x";
-                    v3NextLevelEulerAngles.x += 90f;
-                    v3NextLevelEulerAngles.x = Mathf.Round(v3NextLevelEulerAngles.x);
-                    bNextLevelEulerAngleZ = false;
-                    bNextLevelStart = false;
+                    bChangeStateStartNextLevel = false;
                     Activate();
                 }
             }
-            else if (sNextLevelStartRotationAxis == "x")
+            else if (bChangeStateEulerAngleX)
             {
-                if (!bNextLevelEulerAngleX)
+                var tuple = MyFunctions.Move.Rotate(
+                    gameObject,
+                    "x",
+                    fDegreesPerFrameNextLevel,
+                    v3EulerAngles.x,
+                    v3EulerAnglesNextLevel.x
+                );
+                bChangeStateEulerAngleX = tuple.Item1;
+                v3EulerAngles.x = tuple.Item2;
+                if (!bChangeStateEulerAngleX)
                 {
-                    var tuple = MyFunctions.Move.Rotate(gameObject, v3EulerAngles, "x", fNextLevelStartDegreesPerFrame, v3EulerAngles.x, v3NextLevelEulerAngles.x, bNextLevelEulerAngleX);
-                    bNextLevelEulerAngleX = tuple.Item1;
-                    v3EulerAngles = tuple.Item2;
-                }
-                if (bNextLevelEulerAngleX)
-                {
-                    sNextLevelStartRotationAxis = "z";
-                    v3NextLevelEulerAngles.z += 90f;
-                    v3NextLevelEulerAngles.z = Mathf.Round(v3NextLevelEulerAngles.z);
-                    bNextLevelEulerAngleX = false;
-                    bNextLevelStart = false;
+                    bChangeStateStartNextLevel = false;
                     Activate();
                 }
             }
@@ -152,117 +160,44 @@ public class CubeController : MonoBehaviour
 
     // ------------------------------------------------------------------------------------------------
 
-    // private bool Translate(
-    //     string sAxis,
-    //     float fMetresPerFrame,
-    //     float fCurrentPosition,
-    //     float fTargetPosition,
-    //     bool bTargetPosition
-    // )
-    // {
-    //     if (((fMetresPerFrame > 0f) && (fTargetPosition > (fCurrentPosition + fMetresPerFrame)))
-    //     ||  ((fMetresPerFrame < 0f) && (fTargetPosition < (fCurrentPosition + fMetresPerFrame))))
-    //     {
-    //         switch(sAxis)
-    //         {
-    //             case "x":
-    //                 transform.Translate(fMetresPerFrame, 0f, 0f, Space.World);
-    //                 break;
-    //             case "y":
-    //                 transform.Translate(0f, fMetresPerFrame, 0f, Space.World);
-    //                 break;
-    //             case "z":
-    //                 transform.Translate(0f, 0f, fMetresPerFrame, Space.World);
-    //                 break;
-    //         }
-    //     }
-    //     else
-    //     {
-    //         switch(sAxis)
-    //         {
-    //             case "x":
-    //                 transform.Translate(fTargetPosition - fCurrentPosition, 0f, 0f, Space.World);
-    //                 break;
-    //             case "y":
-    //                 transform.Translate(0f, fTargetPosition - fCurrentPosition, 0f, Space.World);
-    //                 break;
-    //             case "z":
-    //                 transform.Translate(0f, 0f, fTargetPosition - fCurrentPosition, Space.World);
-    //                 break;
-    //         }
-    //         bTargetPosition = true;
-    //     }
-    //     return(bTargetPosition);
-    // }
-
-    // ------------------------------------------------------------------------------------------------
-
-    // private bool Rotate(
-    //     string sAxis,
-    //     float fDegreesPerFrame,
-    //     float fCurrentRotation,
-    //     float fTargetRotation,
-    //     bool bTargetRotation
-    // )
-    // {
-    //     if (((fDegreesPerFrame > 0f) && (fTargetRotation > (fCurrentRotation + fDegreesPerFrame)))
-    //     ||  ((fDegreesPerFrame < 0f) && (fTargetRotation < (fCurrentRotation + fDegreesPerFrame))))
-    //     {
-    //         switch(sAxis)
-    //         {
-    //             case "x":
-    //                 transform.Rotate(fDegreesPerFrame, 0f, 0f, Space.World);
-    //                 v3EulerAngles.x += fDegreesPerFrame;
-    //                 break;
-    //             case "y":
-    //                 transform.Rotate(0f, fDegreesPerFrame, 0f, Space.World);
-    //                 v3EulerAngles.y += fDegreesPerFrame;
-    //                 break;
-    //             case "z":
-    //                 transform.Rotate(0f, 0f, fDegreesPerFrame, Space.World);
-    //                 v3EulerAngles.z += fDegreesPerFrame;
-    //                 break;
-    //         }
-    //     }
-    //     else
-    //     {
-    //         switch(sAxis)
-    //         {
-    //             case "x":
-    //                 transform.Rotate(fTargetRotation - fCurrentRotation, 0f, 0f, Space.World);
-    //                 v3EulerAngles.x = fTargetRotation;
-    //                 break;
-    //             case "y":
-    //                 transform.Rotate(0f, fTargetRotation - fCurrentRotation, 0f, Space.World);
-    //                 v3EulerAngles.y = fTargetRotation;
-    //                 break;
-    //             case "z":
-    //                 transform.Rotate(0f, 0f, fTargetRotation - fCurrentRotation, Space.World);
-    //                 v3EulerAngles.z = fTargetRotation;
-    //                 break;
-    //         }
-    //         transform.eulerAngles = new Vector3(
-    //             Mathf.Round(transform.eulerAngles.x),
-    //             Mathf.Round(transform.eulerAngles.y),
-    //             Mathf.Round(transform.eulerAngles.z)
-    //         );
-    //         bTargetRotation = true;
-    //     }
-    //     return(bTargetRotation);
-    // }
-
-    // ------------------------------------------------------------------------------------------------
-
-    public void FirstLevelStart()
+    public void StartFirstLevel()
     {
-        bFirstLevelStart = true;
+        levelController = goArrLevels[iLevel].GetComponent<LevelController>();
+        bChangeStateStartFirstLevel = true;
+        bChangeStatePositionY = true;
+        bChangeStatePositionZ = true;
+        bChangeStateEulerAngleX = true;
     }
 
     // ------------------------------------------------------------------------------------------------
 
-    public void NextLevelStart()
+    public void StartNextLevel()
     {
-        goLevels[iLevel].GetComponent<LevelController>().LevelFinish();
+        levelController.FinishLevel();
+    }
+
+    // ------------------------------------------------------------------------------------------------
+
+    public void StartNextLevelContinue()
+    {
+        bChangeStateStartNextLevel = true;
+
+        if (iLevel % 2 == 0)
+        {
+            bChangeStateEulerAngleZ = true;
+            if (iLevel > 0)
+            {
+                v3EulerAnglesNextLevel.z += 90f;
+                v3EulerAnglesNextLevel.z = Mathf.Round(v3EulerAnglesNextLevel.z);
+            }
+        }
+        else
+        {
+            bChangeStateEulerAngleX = true;
+            v3EulerAnglesNextLevel.x += 90f;
+            v3EulerAnglesNextLevel.x = Mathf.Round(v3EulerAnglesNextLevel.x);
+        }
+
         if (iLevel < 5)
         {
             iLevel += 1;
@@ -270,23 +205,18 @@ public class CubeController : MonoBehaviour
         else
         {
             iLevel = 0;
+            v3EulerAngles = new Vector3(0f, 0f, 0f);
+            v3EulerAnglesNextLevel = new Vector3(0f, 0f, 90f);
         }
+
+        levelController = goArrLevels[iLevel].GetComponent<LevelController>();
     }
 
     // ------------------------------------------------------------------------------------------------
 
-    public void ThisLevelRestart()
+    public void RestartThisLevel()
     {
-        foreach (GameObject goWallDestructible in goWallsDestructible)
-        {
-            goWallDestructible.SetActive(true);
-        }
-        foreach (GameObject goWallSlider in goWallsSlider)
-        {
-            goWallSlider.GetComponent<WallSliderController>().Reset();
-        }
-        goLevels[iLevel].GetComponent<LevelController>().Deactivate();
-        goLevels[iLevel].GetComponent<LevelController>().Activate();
+        levelController.Reset();
     }
 
     // ------------------------------------------------------------------------------------------------
@@ -295,19 +225,7 @@ public class CubeController : MonoBehaviour
     {
         guiLevel.text = (iLevel + 1).ToString();
         guiNumProjectile.text = "0";
-        goLevels[iLevel].GetComponent<LevelController>().LevelStart();
-        goWallsDestructible = GameObject.FindGameObjectsWithTag("WallDestructible");
-        goWallsSlider = GameObject.FindGameObjectsWithTag("WallSlider");
-    }
-
-    // ------------------------------------------------------------------------------------------------
-
-    public void SwitchWallsSlider()
-    {
-        foreach (GameObject goWallSlider in goWallsSlider)
-        {
-            goWallSlider.GetComponent<WallSliderController>().Switch();
-        }
+        levelController.StartLevel();
     }
 
     // ------------------------------------------------------------------------------------------------
@@ -321,7 +239,14 @@ public class CubeController : MonoBehaviour
 
     public bool GetbProjectilePathDependentLevel()
     {
-        return(goLevels[iLevel].GetComponent<LevelController>().bProjectilePathDependentLevel);
+        return(levelController.bProjectilePathDependentLevel);
+    }
+
+    // ------------------------------------------------------------------------------------------------
+
+    public void TriggerWallsSlider()
+    {
+        levelController.TriggerWallsSlider();
     }
 
     // ------------------------------------------------------------------------------------------------

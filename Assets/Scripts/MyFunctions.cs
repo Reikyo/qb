@@ -15,8 +15,7 @@ namespace MyFunctions
             string sAxis,
             float fMetresPerFrame,
             float fCurrentPosition,
-            float fTargetPosition,
-            bool bTargetPosition
+            float fTargetPosition
         )
         {
             if (((fMetresPerFrame > 0f) && (fTargetPosition > (fCurrentPosition + fMetresPerFrame)))
@@ -34,6 +33,7 @@ namespace MyFunctions
                         go.transform.Translate(0f, 0f, fMetresPerFrame, Space.World);
                         break;
                 }
+                return(true);
             }
             else
             {
@@ -49,21 +49,18 @@ namespace MyFunctions
                         go.transform.Translate(0f, 0f, fTargetPosition - fCurrentPosition, Space.World);
                         break;
                 }
-                bTargetPosition = true;
+                return(false);
             }
-            return(bTargetPosition);
         }
 
         // ------------------------------------------------------------------------------------------------
 
-        public static Tuple<bool, Vector3> Rotate(
+        public static Tuple<bool, float> Rotate(
             GameObject go,
-            Vector3 v3EulerAngles,
             string sAxis,
             float fDegreesPerFrame,
             float fCurrentRotation,
-            float fTargetRotation,
-            bool bTargetRotation
+            float fTargetRotation
         )
         {
             if (((fDegreesPerFrame > 0f) && (fTargetRotation > (fCurrentRotation + fDegreesPerFrame)))
@@ -73,17 +70,18 @@ namespace MyFunctions
                 {
                     case "x":
                         go.transform.Rotate(fDegreesPerFrame, 0f, 0f, Space.World);
-                        v3EulerAngles.x += fDegreesPerFrame;
+                        fCurrentRotation += fDegreesPerFrame;
                         break;
                     case "y":
                         go.transform.Rotate(0f, fDegreesPerFrame, 0f, Space.World);
-                        v3EulerAngles.y += fDegreesPerFrame;
+                        fCurrentRotation += fDegreesPerFrame;
                         break;
                     case "z":
                         go.transform.Rotate(0f, 0f, fDegreesPerFrame, Space.World);
-                        v3EulerAngles.z += fDegreesPerFrame;
+                        fCurrentRotation += fDegreesPerFrame;
                         break;
                 }
+                return(new Tuple<bool, float>(true, fCurrentRotation));
             }
             else
             {
@@ -91,15 +89,15 @@ namespace MyFunctions
                 {
                     case "x":
                         go.transform.Rotate(fTargetRotation - fCurrentRotation, 0f, 0f, Space.World);
-                        v3EulerAngles.x = fTargetRotation;
+                        fCurrentRotation = fTargetRotation;
                         break;
                     case "y":
                         go.transform.Rotate(0f, fTargetRotation - fCurrentRotation, 0f, Space.World);
-                        v3EulerAngles.y = fTargetRotation;
+                        fCurrentRotation = fTargetRotation;
                         break;
                     case "z":
                         go.transform.Rotate(0f, 0f, fTargetRotation - fCurrentRotation, Space.World);
-                        v3EulerAngles.z = fTargetRotation;
+                        fCurrentRotation = fTargetRotation;
                         break;
                 }
                 go.transform.eulerAngles = new Vector3(
@@ -107,9 +105,8 @@ namespace MyFunctions
                     Mathf.Round(go.transform.eulerAngles.y),
                     Mathf.Round(go.transform.eulerAngles.z)
                 );
-                bTargetRotation = true;
+                return(new Tuple<bool, float>(false, fCurrentRotation));
             }
-            return(new Tuple<bool, Vector3>(bTargetRotation, v3EulerAngles));
         }
 
         // ------------------------------------------------------------------------------------------------

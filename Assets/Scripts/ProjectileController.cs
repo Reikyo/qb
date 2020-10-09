@@ -74,22 +74,19 @@ public class ProjectileController : MonoBehaviour
             }
             else if (other.gameObject.CompareTag("WallSlider"))
             {
-                cubeController.SwitchWallsSlider();
-                gameManager.SfxclpPlay("sfxclpWallSlider");
+                cubeController.TriggerWallsSlider();
             }
-            else if (other.gameObject.CompareTag("WallSpinnerSwitch"))
+            else if (other.gameObject.CompareTag("WallSpinnerTrigger"))
             {
                 float fDot = Vector3.Dot(gameObject.transform.forward, other.transform.forward);
 
                 if (fDot > 0)
                 {
-                    other.transform.parent.GetComponent<WallSpinnerController>().StartRotate(1);
-                    gameManager.SfxclpPlay("sfxclpWallSpinner");
+                    other.transform.parent.GetComponent<WallSpinnerController>().Trigger(1);
                 }
                 else if (fDot < 0)
                 {
-                    other.transform.parent.GetComponent<WallSpinnerController>().StartRotate(-1);
-                    gameManager.SfxclpPlay("sfxclpWallSpinner");
+                    other.transform.parent.GetComponent<WallSpinnerController>().Trigger(-1);
                 }
             }
 

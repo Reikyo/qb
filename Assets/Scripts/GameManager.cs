@@ -39,8 +39,8 @@ public class GameManager : MonoBehaviour
     public AudioClip sfxclpProjectile; // DM-CGS-20
     public AudioClip sfxclpWallDestructible; // DM-CGS-32
     public AudioClip sfxclpWallSlider; // DM-CGS-38
-    public AudioClip sfxclpWallSpinner;
-    public AudioClip sfxclpSwitch;
+    public AudioClip sfxclpWallSpinner; // DM-CGS-37
+    public AudioClip sfxclpSwitch; // DM-CGS-19
     public AudioClip sfxclpTargetObjectivePlayer; // DM-CGS-24
     public AudioClip sfxclpTargetObjectiveRandom; // DM-CGS-25
     public AudioClip sfxclpEnemyAttack1; // DM-CGS-47
@@ -119,12 +119,12 @@ public class GameManager : MonoBehaviour
         if (screen == "Screen : Title")
         {
             goScreenTitle.SetActive(false);
-            cubeController.FirstLevelStart();
+            cubeController.StartFirstLevel();
         }
         else if (screen == "Screen : Level Cleared")
         {
             goScreenLevelCleared.SetActive(false);
-            cubeController.NextLevelStart();
+            cubeController.StartNextLevel();
             // Destroy characters and items
             // Remove objects
             // Rotate cube
@@ -134,14 +134,14 @@ public class GameManager : MonoBehaviour
         else if (screen == "Screen : Level Failed")
         {
             goScreenLevelFailed.SetActive(false);
-            cubeController.ThisLevelRestart();
+            cubeController.RestartThisLevel();
             // goSpawnManager.GetComponent<SpawnManager>().Destroy();
             // goSpawnManager.GetComponent<SpawnManager>().Instantiate();
         }
         else if (screen == "Screen : Credits")
         {
             goScreenCredits.SetActive(false);
-            cubeController.NextLevelStart();
+            cubeController.StartNextLevel();
         }
         bActive = true;
         goScreenHUD.SetActive(true);

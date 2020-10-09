@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SwitchTriggerController : MonoBehaviour
 {
-    public enum trigger {on, off};
+    public enum trigger {state1to2, state2to1};
     public trigger trigType;
     private SwitchController switchController;
 
@@ -28,12 +28,9 @@ public class SwitchTriggerController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if ((trigType == trigger.on)
-        &&  switchController.bPositionFullyOff
-        &&  switchController.slistOkayTriggerCharacters.Contains(other.gameObject.tag))
+        if (trigType == trigger.state1to2)
         {
-            switchController.sTriggerCharacter = other.gameObject.tag;
-            switchController.StartRotate(-1);
+            switchController.Trigger("state1to2", other.gameObject.tag);
         }
     }
 
@@ -41,11 +38,9 @@ public class SwitchTriggerController : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if ((trigType == trigger.off)
-        &&  !switchController.bPositionFullyOff
-        &&  (other.gameObject.tag == switchController.sTriggerCharacter))
+        if (trigType == trigger.state2to1)
         {
-            switchController.StartRotate(1);
+            switchController.Trigger("state2to1", other.gameObject.tag);
         }
     }
 

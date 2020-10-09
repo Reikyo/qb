@@ -535,7 +535,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14c01952185694812bc4dc5d64ed9cf8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  posStartPositionY: 1
+  posPositionYStart: 0
 --- !u!208 &48728951
 NavMeshObstacle:
   m_ObjectHideFlags: 0
@@ -1399,7 +1399,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14c01952185694812bc4dc5d64ed9cf8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  posStartPositionY: 0
+  posPositionYStart: 0
 --- !u!208 &129570169
 NavMeshObstacle:
   m_ObjectHideFlags: 0
@@ -2015,7 +2015,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14c01952185694812bc4dc5d64ed9cf8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  posStartPositionY: 0
+  posPositionYStart: 0
 --- !u!208 &161923660
 NavMeshObstacle:
   m_ObjectHideFlags: 0
@@ -2223,7 +2223,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14c01952185694812bc4dc5d64ed9cf8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  posStartPositionY: 1
+  posPositionYStart: 0
 --- !u!208 &180262841
 NavMeshObstacle:
   m_ObjectHideFlags: 0
@@ -3055,14 +3055,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bProjectilePathDependentLevel: 0
-  bLevelStart: 0
-  bLevelFinish: 0
-  golistSpawns:
-  - {fileID: 1771335333213938881, guid: aea832b32a5bc47f3b8b7af04aab5d75, type: 3}
-  - {fileID: 4699610405486949842, guid: 2a569548265f04a16a8170c88414488f, type: 3}
-  v3listSpawnPositions:
-  - {x: 0, y: 0, z: -20}
-  - {x: 0, y: 0, z: 20}
+  goArrSpawns: []
+  v3ArrSpawnPositions: []
 --- !u!1 &228746762
 GameObject:
   m_ObjectHideFlags: 0
@@ -3880,6 +3874,128 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 322835007}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &327198571
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 327198578}
+  - component: {fileID: 327198577}
+  - component: {fileID: 327198576}
+  - component: {fileID: 327198575}
+  - component: {fileID: 327198573}
+  - component: {fileID: 327198572}
+  m_Layer: 13
+  m_Name: Wall Slider
+  m_TagString: WallSlider
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 8
+  m_IsActive: 1
+--- !u!114 &327198572
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 327198571}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14c01952185694812bc4dc5d64ed9cf8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  posPositionYStart: 0
+--- !u!208 &327198573
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 327198571}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.5, y: 0.5, z: 0.5}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0, z: 0}
+  m_TimeToStationary: 0.5
+--- !u!65 &327198575
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 327198571}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!23 &327198576
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 327198571}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 6d0f1c6950ca94afd8eec4e2b94197fd, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 0
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+--- !u!33 &327198577
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 327198571}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!4 &327198578
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 327198571}
+  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 15, y: 2, z: 0}
+  m_LocalScale: {x: 1, y: 4, z: 7}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 26
+  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!1 &370076739
 GameObject:
   m_ObjectHideFlags: 0
@@ -6408,7 +6524,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &585253433
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8056,7 +8172,7 @@ GameObject:
   - component: {fileID: 716048005}
   - component: {fileID: 716048004}
   m_Layer: 11
-  m_Name: Wall Spinner Switch (1) Endcap
+  m_Name: Wall Spinner Trigger (1) Endcap
   m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8423,7 +8539,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14c01952185694812bc4dc5d64ed9cf8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  posStartPositionY: 0
+  posPositionYStart: 0
 --- !u!208 &735951012
 NavMeshObstacle:
   m_ObjectHideFlags: 0
@@ -9082,7 +9198,7 @@ GameObject:
   - component: {fileID: 861377174}
   - component: {fileID: 861377173}
   m_Layer: 11
-  m_Name: Wall Spinner Switch (2) Endcap
+  m_Name: Wall Spinner Trigger (2) Endcap
   m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10403,7 +10519,7 @@ PrefabInstance:
     - target: {fileID: 1018675173185206068, guid: d97787738d3404876b6f2f032b566af0,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2847729153049419829, guid: d97787738d3404876b6f2f032b566af0,
         type: 3}
@@ -11155,7 +11271,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14c01952185694812bc4dc5d64ed9cf8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  posStartPositionY: 0
+  posPositionYStart: 0
 --- !u!208 &999700543
 NavMeshObstacle:
   m_ObjectHideFlags: 0
@@ -13034,18 +13150,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bProjectilePathDependentLevel: 1
-  bLevelStart: 0
-  bLevelFinish: 0
-  golistSpawns:
-  - {fileID: 1771335333213938881, guid: aea832b32a5bc47f3b8b7af04aab5d75, type: 3}
-  - {fileID: 5372751787709200270, guid: df3f9b85964824ffcb8b4cf85ea7026d, type: 3}
-  - {fileID: 4699610405486949842, guid: 2a569548265f04a16a8170c88414488f, type: 3}
-  - {fileID: 1018675173185206068, guid: d97787738d3404876b6f2f032b566af0, type: 3}
-  v3listSpawnPositions:
-  - {x: -20, y: 0, z: -20}
-  - {x: -5, y: 0, z: 0}
-  - {x: 0, y: 0, z: 0}
-  - {x: 20, y: 0, z: 20}
+  goArrSpawns: []
+  v3ArrSpawnPositions: []
 --- !u!4 &1132629647
 Transform:
   m_ObjectHideFlags: 0
@@ -13148,16 +13254,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bProjectilePathDependentLevel: 1
-  bLevelStart: 0
-  bLevelFinish: 0
-  golistSpawns:
-  - {fileID: 1771335333213938881, guid: aea832b32a5bc47f3b8b7af04aab5d75, type: 3}
-  - {fileID: 4699610405486949842, guid: 2a569548265f04a16a8170c88414488f, type: 3}
-  - {fileID: 1018675173185206068, guid: d97787738d3404876b6f2f032b566af0, type: 3}
-  v3listSpawnPositions:
-  - {x: -22, y: 0, z: -23}
-  - {x: -17, y: 0, z: -2}
-  - {x: 0, y: 0, z: -23}
+  goArrSpawns: []
+  v3ArrSpawnPositions: []
 --- !u!1 &1155369369
 GameObject:
   m_ObjectHideFlags: 0
@@ -13456,7 +13554,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14c01952185694812bc4dc5d64ed9cf8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  posStartPositionY: 1
+  posPositionYStart: 0
 --- !u!208 &1170696369
 NavMeshObstacle:
   m_ObjectHideFlags: 0
@@ -13674,7 +13772,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14c01952185694812bc4dc5d64ed9cf8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  posStartPositionY: 1
+  posPositionYStart: 0
 --- !u!208 &1180178723
 NavMeshObstacle:
   m_ObjectHideFlags: 0
@@ -14402,11 +14500,11 @@ GameObject:
   - component: {fileID: 1228615438}
   m_Layer: 0
   m_Name: Switch
-  m_TagString: Untagged
+  m_TagString: Switch
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1228615438
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14419,12 +14517,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb4b5710bf2fc4a769a164924cf4ff94, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  goDevice: {fileID: 0}
   slistOkayTriggerCharacters:
   - Player
   - Target
   sTriggerCharacter: 
-  bPositionFullyOff: 1
-  bPositionFullyOn: 0
 --- !u!4 &1228615440
 Transform:
   m_ObjectHideFlags: 0
@@ -14441,7 +14538,7 @@ Transform:
   - {fileID: 916766750}
   - {fileID: 1406819819}
   m_Father: {fileID: 0}
-  m_RootOrder: 27
+  m_RootOrder: 28
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 30}
 --- !u!1 &1233100742
 GameObject:
@@ -14491,7 +14588,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14c01952185694812bc4dc5d64ed9cf8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  posStartPositionY: 0
+  posPositionYStart: 0
 --- !u!208 &1233100745
 NavMeshObstacle:
   m_ObjectHideFlags: 0
@@ -14875,11 +14972,11 @@ GameObject:
   - component: {fileID: 1290033801}
   m_Layer: 0
   m_Name: Wall Spinner
-  m_TagString: Untagged
+  m_TagString: WallSpinner
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1290033801
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14911,7 +15008,7 @@ Transform:
   - {fileID: 861377172}
   - {fileID: 1791800067}
   m_Father: {fileID: 0}
-  m_RootOrder: 26
+  m_RootOrder: 27
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1291969649
 GameObject:
@@ -15443,14 +15540,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bProjectilePathDependentLevel: 0
-  bLevelStart: 0
-  bLevelFinish: 0
-  golistSpawns:
-  - {fileID: 1771335333213938881, guid: aea832b32a5bc47f3b8b7af04aab5d75, type: 3}
-  - {fileID: 4699610405486949842, guid: 2a569548265f04a16a8170c88414488f, type: 3}
-  v3listSpawnPositions:
-  - {x: 0, y: 0, z: -20}
-  - {x: 0, y: 0, z: 20}
+  goArrSpawns: []
+  v3ArrSpawnPositions: []
 --- !u!4 &1328732372
 Transform:
   m_ObjectHideFlags: 0
@@ -16055,7 +16146,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14c01952185694812bc4dc5d64ed9cf8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  posStartPositionY: 1
+  posPositionYStart: 0
 --- !u!208 &1350183713
 NavMeshObstacle:
   m_ObjectHideFlags: 0
@@ -16762,7 +16853,7 @@ MonoBehaviour:
   sfxclpProjectile: {fileID: 8300000, guid: 6e8772b49f34d402a90016ed445d8a2f, type: 3}
   sfxclpWallDestructible: {fileID: 8300000, guid: 29bde6326b4c34ad8a12da475f79b50a,
     type: 3}
-  sfxclpWallSlider: {fileID: 0}
+  sfxclpWallSlider: {fileID: 8300000, guid: 84e427d6b66ab4066b6a4dcd0ce819ee, type: 3}
   sfxclpWallSpinner: {fileID: 8300000, guid: a931da70ee74947d5a047de583170ade, type: 3}
   sfxclpSwitch: {fileID: 8300000, guid: 81652031b64c342cc8dbc59c138d77c5, type: 3}
   sfxclpTargetObjectivePlayer: {fileID: 8300000, guid: 657578e4be6b64dbf9b09deada272e55,
@@ -16897,8 +16988,8 @@ GameObject:
   - component: {fileID: 1443177233}
   - component: {fileID: 1443177231}
   m_Layer: 11
-  m_Name: Wall Spinner Switch (2)
-  m_TagString: WallSpinnerSwitch
+  m_Name: Wall Spinner Trigger (2)
+  m_TagString: WallSpinnerTrigger
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 8
@@ -18014,7 +18105,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14c01952185694812bc4dc5d64ed9cf8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  posStartPositionY: 0
+  posPositionYStart: 0
 --- !u!208 &1528566528
 NavMeshObstacle:
   m_ObjectHideFlags: 0
@@ -19995,7 +20086,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14c01952185694812bc4dc5d64ed9cf8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  posStartPositionY: 1
+  posPositionYStart: 0
 --- !u!208 &1701628352
 NavMeshObstacle:
   m_ObjectHideFlags: 0
@@ -20134,8 +20225,8 @@ GameObject:
   - component: {fileID: 1712782286}
   - component: {fileID: 1712782284}
   m_Layer: 11
-  m_Name: Wall Spinner Switch (1)
-  m_TagString: WallSpinnerSwitch
+  m_Name: Wall Spinner Trigger (1)
+  m_TagString: WallSpinnerTrigger
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 8
@@ -20979,20 +21070,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bProjectilePathDependentLevel: 1
-  bLevelStart: 0
-  bLevelFinish: 0
-  golistSpawns:
-  - {fileID: 1771335333213938881, guid: aea832b32a5bc47f3b8b7af04aab5d75, type: 3}
-  - {fileID: 6939492379494027690, guid: fe104c7959e8b42e997a1f83a209f23c, type: 3}
-  - {fileID: 4699610405486949842, guid: 2a569548265f04a16a8170c88414488f, type: 3}
-  - {fileID: 2026335603239140461, guid: 0c35ce157feef4ebcb26b3df307e6649, type: 3}
-  - {fileID: 1018675173185206068, guid: d97787738d3404876b6f2f032b566af0, type: 3}
-  v3listSpawnPositions:
-  - {x: -22.5, y: 0, z: 22.5}
-  - {x: 22.5, y: 0, z: -22.5}
-  - {x: 0, y: 0, z: -8}
-  - {x: -7.5, y: 0, z: 21.5}
-  - {x: -22.5, y: 0, z: 0}
+  goArrSpawns: []
+  v3ArrSpawnPositions: []
 --- !u!1 &1842996427
 GameObject:
   m_ObjectHideFlags: 0
@@ -21516,7 +21595,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14c01952185694812bc4dc5d64ed9cf8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  posStartPositionY: 1
+  posPositionYStart: 0
 --- !u!208 &1877093484
 NavMeshObstacle:
   m_ObjectHideFlags: 0
@@ -21655,7 +21734,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14c01952185694812bc4dc5d64ed9cf8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  posStartPositionY: 0
+  posPositionYStart: 0
 --- !u!208 &1877429625
 NavMeshObstacle:
   m_ObjectHideFlags: 0
@@ -21919,7 +21998,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14c01952185694812bc4dc5d64ed9cf8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  posStartPositionY: 0
+  posPositionYStart: 0
 --- !u!208 &1882549344
 NavMeshObstacle:
   m_ObjectHideFlags: 0
@@ -22058,7 +22137,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14c01952185694812bc4dc5d64ed9cf8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  posStartPositionY: 0
+  posPositionYStart: 0
 --- !u!208 &1907877809
 NavMeshObstacle:
   m_ObjectHideFlags: 0
@@ -22322,7 +22401,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14c01952185694812bc4dc5d64ed9cf8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  posStartPositionY: 1
+  posPositionYStart: 0
 --- !u!208 &1944166383
 NavMeshObstacle:
   m_ObjectHideFlags: 0
@@ -22765,7 +22844,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14c01952185694812bc4dc5d64ed9cf8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  posStartPositionY: 0
+  posPositionYStart: 0
 --- !u!208 &1961042308
 NavMeshObstacle:
   m_ObjectHideFlags: 0
@@ -24222,7 +24301,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14c01952185694812bc4dc5d64ed9cf8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  posStartPositionY: 0
+  posPositionYStart: 0
 --- !u!208 &2071171874
 NavMeshObstacle:
   m_ObjectHideFlags: 0
@@ -24898,20 +24977,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bProjectilePathDependentLevel: 0
-  bLevelStart: 0
-  bLevelFinish: 0
-  golistSpawns:
-  - {fileID: 1771335333213938881, guid: aea832b32a5bc47f3b8b7af04aab5d75, type: 3}
-  - {fileID: 6939492379494027690, guid: fe104c7959e8b42e997a1f83a209f23c, type: 3}
-  - {fileID: 5372751787709200270, guid: df3f9b85964824ffcb8b4cf85ea7026d, type: 3}
-  - {fileID: 2026335603239140461, guid: 0c35ce157feef4ebcb26b3df307e6649, type: 3}
-  - {fileID: 1018675173185206068, guid: d97787738d3404876b6f2f032b566af0, type: 3}
-  v3listSpawnPositions:
-  - {x: -21, y: 0, z: -21}
-  - {x: 0, y: 0, z: -21}
-  - {x: 21, y: 0, z: -21}
-  - {x: 21, y: 0, z: 0}
-  - {x: -21, y: 0, z: 20}
+  goArrSpawns: []
+  v3ArrSpawnPositions: []
 --- !u!1001 &6509780029402080963
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -24991,6 +25058,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6509780028161023080, guid: 32d5ea8b0a00a4bd6ba731b74d7f6d84,
         type: 3}
+      propertyPath: goArrLevels.Array.size
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 6509780028161023080, guid: 32d5ea8b0a00a4bd6ba731b74d7f6d84,
+        type: 3}
       propertyPath: goLevels.Array.data[0]
       value: 
       objectReference: {fileID: 1328732370}
@@ -25029,6 +25101,36 @@ PrefabInstance:
       propertyPath: guiNumProjectile
       value: 
       objectReference: {fileID: 1091215719}
+    - target: {fileID: 6509780028161023080, guid: 32d5ea8b0a00a4bd6ba731b74d7f6d84,
+        type: 3}
+      propertyPath: goArrLevels.Array.data[0]
+      value: 
+      objectReference: {fileID: 1328732370}
+    - target: {fileID: 6509780028161023080, guid: 32d5ea8b0a00a4bd6ba731b74d7f6d84,
+        type: 3}
+      propertyPath: goArrLevels.Array.data[1]
+      value: 
+      objectReference: {fileID: 1132629645}
+    - target: {fileID: 6509780028161023080, guid: 32d5ea8b0a00a4bd6ba731b74d7f6d84,
+        type: 3}
+      propertyPath: goArrLevels.Array.data[2]
+      value: 
+      objectReference: {fileID: 1141485224}
+    - target: {fileID: 6509780028161023080, guid: 32d5ea8b0a00a4bd6ba731b74d7f6d84,
+        type: 3}
+      propertyPath: goArrLevels.Array.data[3]
+      value: 
+      objectReference: {fileID: 1708553273}
+    - target: {fileID: 6509780028161023080, guid: 32d5ea8b0a00a4bd6ba731b74d7f6d84,
+        type: 3}
+      propertyPath: goArrLevels.Array.data[4]
+      value: 
+      objectReference: {fileID: 1828212669}
+    - target: {fileID: 6509780028161023080, guid: 32d5ea8b0a00a4bd6ba731b74d7f6d84,
+        type: 3}
+      propertyPath: goArrLevels.Array.data[5]
+      value: 
+      objectReference: {fileID: 219961739}
     - target: {fileID: 6509780028161023081, guid: 32d5ea8b0a00a4bd6ba731b74d7f6d84,
         type: 3}
       propertyPath: m_LocalPosition.x
