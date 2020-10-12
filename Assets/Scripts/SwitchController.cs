@@ -9,16 +9,19 @@ public class SwitchController : MonoBehaviour
     public GameObject goDevice;
     public List<string> slistOkayTriggerCharacters = new List<string>() {"Player", "Target"};
     public string sTriggerCharacter = "";
-    private bool bState1 = true;
-    private bool bState2 = false;
-    private bool bChangeState1to2 = false;
-    private bool bChangeState2to1 = false;
-    private int iDirection = -1;
+
     private float fDegreesToRotate = 30f;
     private float fDegreesRotated = 0f;
     private float fDegreesPerSec = 360f;
     private float fDegreesPerFrame;
+
+    private int iDirection = -1;
     private Vector3 v3RotationAxis = Vector3.forward;
+
+    private bool bState1 = true;
+    private bool bState2 = false;
+    private bool bChangeState1to2 = false;
+    private bool bChangeState2to1 = false;
 
     // ------------------------------------------------------------------------------------------------
 
@@ -47,7 +50,7 @@ public class SwitchController : MonoBehaviour
                 iDirection = 1;
                 if (goDevice)
                 {
-                    DeviceTrigger(goDevice, 1);
+                    DeviceTrigger(goDevice);
                 }
             }
         }
@@ -60,7 +63,7 @@ public class SwitchController : MonoBehaviour
                 gameManager.SfxclpPlay("sfxclpSwitch");
                 if (goDevice)
                 {
-                    DeviceTrigger(goDevice, -1);
+                    DeviceTrigger(goDevice);
                 }
             }
             if (!bChangeState2to1)
@@ -93,7 +96,7 @@ public class SwitchController : MonoBehaviour
 
     // ------------------------------------------------------------------------------------------------
 
-    private void DeviceTrigger(GameObject goDevice, int iChangeState)
+    private void DeviceTrigger(GameObject goDevice)
     {
         switch(goDevice.tag)
         {
@@ -101,7 +104,7 @@ public class SwitchController : MonoBehaviour
                 goDevice.GetComponent<WallSliderController>().Trigger();
                 break;
             case "WallSpinner":
-                goDevice.GetComponent<WallSpinnerController>().Trigger(iChangeState);
+                goDevice.GetComponent<WallSpinnerController>().Trigger();
                 break;
         }
     }

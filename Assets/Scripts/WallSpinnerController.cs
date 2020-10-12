@@ -1,18 +1,25 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using MyFunctions;
 
 public class WallSpinnerController : MonoBehaviour
 {
     private GameManager gameManager;
 
+    private float fDegreesRotationY = 0f;
+    private float fDegreesRotationYLower = 0f;
+    private float fDegreesRotationYUpper = 90f;
+    private float fDegreesRotationYTarget = 0f;
+
+    private float fDegreesPerSecY;
+    private float fDegreesPerFrameY;
+
+    private float fTransitionTime = 0.5f;
+
+    private int iDirection = -1;
+
     private bool bChangeState = false;
-    private int iDirection;
-    private float fDegreesToRotate = 90f;
-    private float fDegreesRotated = 0f;
-    private float fDegreesPerSec = 180f;
-    private float fDegreesPerFrame;
-    private Vector3 v3RotationAxis = Vector3.up;
 
     // ------------------------------------------------------------------------------------------------
 
@@ -20,6 +27,8 @@ public class WallSpinnerController : MonoBehaviour
     void Start()
     {
         gameManager = GameObject.Find("Game Manager").GetComponent<GameManager>();
+
+        fDegreesPerSecY = (fDegreesRotationYUpper - fDegreesRotationYLower) / fTransitionTime;
     }
 
     // ------------------------------------------------------------------------------------------------
@@ -29,50 +38,43 @@ public class WallSpinnerController : MonoBehaviour
     {
         if (bChangeState)
         {
-            bChangeState = Rotate(bChangeState);
-        }
-    }
-
-    // ------------------------------------------------------------------------------------------------
-
-    public void Trigger(int iDirectionGiven)
-    {
-        // Only trigger rotation if not already rotating, else the rotation direction could be messed up
-        if (!bChangeState)
-        {
-            gameManager.SfxclpPlay("sfxclpWallSpinner");
-            bChangeState = true;
-            iDirection = iDirectionGiven;
-        }
-    }
-
-    // ------------------------------------------------------------------------------------------------
-
-    private bool Rotate(bool bChangeState)
-    {
-        fDegreesPerFrame = fDegreesPerSec * Time.deltaTime;
-        fDegreesRotated += fDegreesPerFrame;
-
-        if (fDegreesRotated > fDegreesToRotate)
-        {
-            fDegreesRotated -= fDegreesPerFrame;
-            fDegreesPerFrame = fDegreesToRotate - fDegreesRotated;
-            bChangeState = false;
-        }
-
-        transform.Rotate(iDirection * fDegreesPerFrame * v3RotationAxis);
-
-        if (!bChangeState)
-        {
-            transform.eulerAngles = new Vector3(
-                Mathf.Round(transform.eulerAngles.x),
-                Mathf.Round(transform.eulerAngles.y),
-                Mathf.Round(transform.eulerAngles.z)
+            fDegreesPerFrameY = fDegreesPerSecY * Time.deltaTime;
+            var tuple = MyFunctions.Move.Rotate(
+                gameObject,
+                "y",
+                iDirection * fDegreesPerFrameY,
+                fDegreesRotationY,
+                fDegreesRotationYTarget
             );
-            fDegreesRotated = 0f;
+            bChangeState = tuple.Item1;
+            fDegreesRotationY = tuple.Item2;
         }
+    }
 
-        return(bChangeState);
+    // ------------------------------------------------------------------------------------------------
+
+    public void Trigger(int iDirectionGiven=0)
+    {
+        gameManager.SfxclpPlay("sfxclpWallSpinner");
+        bChangeState = true;
+        if (iDirectionGiven == 0)
+        {
+            if (iDirection == -1)
+            {
+                iDirection = 1;
+                fDegreesRotationYTarget = fDegreesRotationYUpper;
+            }
+            else
+            {
+                iDirection = -1;
+                fDegreesRotationYTarget = fDegreesRotationYLower;
+            }
+        }
+        else
+        {
+            iDirection = iDirectionGiven;
+            fDegreesRotationYTarget += iDirection * fDegreesRotationYUpper;
+        }
     }
 
     // ------------------------------------------------------------------------------------------------

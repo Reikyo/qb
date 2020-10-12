@@ -21,9 +21,6 @@ public class CubeController : MonoBehaviour
     private Vector3 v3EulerAnglesFirstLevel = new Vector3(0f, 0f, 0f);
     private Vector3 v3EulerAnglesNextLevel = new Vector3(0f, 0f, 90f);
 
-    private float fTransitionTimeFirstLevel = 1f;
-    private float fTransitionTimeNextLevel = 0.5f;
-
     private float fMetresPerSecYFirstLevel;
     private float fMetresPerFrameYFirstLevel;
     private float fMetresPerSecZFirstLevel;
@@ -33,6 +30,9 @@ public class CubeController : MonoBehaviour
     private float fDegreesPerFrameXFirstLevel;
     private float fDegreesPerSecNextLevel;
     private float fDegreesPerFrameNextLevel;
+
+    private float fTransitionTimeFirstLevel = 1f;
+    private float fTransitionTimeNextLevel = 0.5f;
 
     private bool bChangeStateStartFirstLevel = false;
     private bool bChangeStateStartNextLevel = false;

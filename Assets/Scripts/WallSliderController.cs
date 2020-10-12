@@ -10,14 +10,19 @@ public class WallSliderController : MonoBehaviour
     public enum positionY {down, up};
     public positionY posPositionYStart = positionY.down;
     private positionY posPositionYCurrent = positionY.down;
-    private bool bChangeState;
-    private int iDirection = -1;
-    private float fTransitionTime = 0.5f;
+
     private float fMetresPositionYLower = 2f;
     private float fMetresPositionYUpper = 6f;
     private float fMetresPositionYTarget;
+
     private float fMetresPerSecY;
     private float fMetresPerFrameY;
+
+    private float fTransitionTime = 0.5f;
+
+    private int iDirection = -1;
+
+    private bool bChangeState = false;
 
     // ------------------------------------------------------------------------------------------------
 

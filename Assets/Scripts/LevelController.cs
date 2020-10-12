@@ -17,12 +17,12 @@ public class LevelController : MonoBehaviour
     private Vector3 v3PositionInstantiate = new Vector3(0f, -5f, 1f);
     private Vector3 v3PositionPlay = new Vector3(0f, 0f, 0f);
 
-    private float fTransitionTime = 0.5f;
-
     private float fMetresPerSecY;
     private float fMetresPerFrameY;
     private float fMetresPerSecZ;
     private float fMetresPerFrameZ;
+
+    private float fTransitionTime = 0.5f;
 
     private bool bChangeStateStartLevel = false;
     private bool bChangeStateFinishLevel = false;
