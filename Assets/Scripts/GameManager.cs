@@ -37,6 +37,7 @@ public class GameManager : MonoBehaviour
     public AudioClip sfxclpLevelFailed; // DM-CGS-23
     public AudioClip sfxclpPowerUp; // DM-CGS-28
     public AudioClip sfxclpProjectile; // DM-CGS-20
+    public AudioClip sfxclpLaunchPad; // DM-CGS-34
     public AudioClip sfxclpWallDestructible; // DM-CGS-32
     public AudioClip sfxclpWallSlider; // DM-CGS-38
     public AudioClip sfxclpWallSpinner; // DM-CGS-37
@@ -68,6 +69,7 @@ public class GameManager : MonoBehaviour
         sfxclpNames.Add("sfxclpLevelFailed", sfxclpLevelFailed);
         sfxclpNames.Add("sfxclpPowerUp", sfxclpPowerUp);
         sfxclpNames.Add("sfxclpProjectile", sfxclpProjectile);
+        sfxclpNames.Add("sfxclpLaunchPad", sfxclpLaunchPad);
         sfxclpNames.Add("sfxclpWallDestructible", sfxclpWallDestructible);
         sfxclpNames.Add("sfxclpWallSlider", sfxclpWallSlider);
         sfxclpNames.Add("sfxclpWallSpinner", sfxclpWallSpinner);

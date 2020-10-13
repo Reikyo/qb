@@ -12,13 +12,15 @@ TagManager:
   - Obstacle
   - SafeZonePlayer
   - SafeZoneTarget
-  - SafeZone
-  - ObstacleDestructible
   - NavMesh
-  - ObstacleMoveable
   - Wall
   - WallDestructible
-  - WallMoveable
+  - FxTemporaire
+  - WallSlider
+  - WallSpinnerTrigger
+  - Switch
+  - WallSpinner
+  - LaunchPad
   layers:
   - Default
   - TransparentFX

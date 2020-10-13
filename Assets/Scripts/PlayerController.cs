@@ -15,6 +15,7 @@ public class PlayerController : MonoBehaviour
     // private float fForce = 1000f;
     private float fSpeed = 10f;
     private float anPlayerChildfSpeed;
+    private float fForceLaunchPad = 5f;
     private Rigidbody rbPlayer;
     // private Animator anPlayer;
     public Animator[] anPlayerChildren;
@@ -245,6 +246,11 @@ public class PlayerController : MonoBehaviour
             {
                 gameManager.EndNumProjectileFlash();
             }
+        }
+        else if (other.gameObject.CompareTag("LaunchPad"))
+        {
+            gameManager.SfxclpPlay("sfxclpLaunchPad");
+            rbPlayer.AddForce(fForceLaunchPad * other.gameObject.transform.right, ForceMode.Impulse);
         }
     }
 
