@@ -13,6 +13,7 @@ public class LevelController : MonoBehaviour
     public Vector3[] v3ArrSpawnPositions;
     private GameObject[] goArrWallsDestructible;
     private GameObject[] goArrWallsSlider;
+    private GameObject[] goArrWallsSpinner;
 
     private Vector3 v3PositionInstantiate = new Vector3(0f, -5f, 1f);
     private Vector3 v3PositionPlay = new Vector3(0f, 0f, 0f);
@@ -159,6 +160,7 @@ public class LevelController : MonoBehaviour
         gameObject.SetActive(true);
         goArrWallsDestructible = GameObject.FindGameObjectsWithTag("WallDestructible");
         goArrWallsSlider = GameObject.FindGameObjectsWithTag("WallSlider");
+        goArrWallsSpinner = GameObject.FindGameObjectsWithTag("WallSpinner");
         bChangeStateStartLevel = true;
         bChangeStatePositionY = true;
         bChangeStatePositionZ = true;
@@ -229,6 +231,10 @@ public class LevelController : MonoBehaviour
         foreach (GameObject goWallSlider in goArrWallsSlider)
         {
             goWallSlider.GetComponent<WallSliderController>().Reset();
+        }
+        foreach (GameObject goWallSpinner in goArrWallsSpinner)
+        {
+            goWallSpinner.GetComponent<WallSpinnerController>().Reset();
         }
         Deactivate();
         Activate();

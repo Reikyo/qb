@@ -7,6 +7,10 @@ public class WallSpinnerController : MonoBehaviour
 {
     private GameManager gameManager;
 
+    public enum rotationY {horizontal, vertical};
+    public rotationY rotRotationYStart = rotationY.horizontal;
+    private rotationY rotRotationYCurrent = rotationY.horizontal;
+
     private float fDegreesRotationY = 0f;
     private float fDegreesRotationYLower = 0f;
     private float fDegreesRotationYUpper = 90f;
@@ -18,6 +22,7 @@ public class WallSpinnerController : MonoBehaviour
     private float fTransitionTime = 0.5f;
 
     private int iDirection = -1;
+    private int iDirectionSum = 0;
 
     private bool bChangeState = false;
 
@@ -29,12 +34,14 @@ public class WallSpinnerController : MonoBehaviour
         gameManager = GameObject.Find("Game Manager").GetComponent<GameManager>();
 
         fDegreesPerSecY = (fDegreesRotationYUpper - fDegreesRotationYLower) / fTransitionTime;
+
+        Reset();
     }
 
     // ------------------------------------------------------------------------------------------------
 
-    // Update is called once per frame
-    void Update()
+    // FixedUpdate is called once per frame
+    void FixedUpdate()
     {
         if (bChangeState)
         {
@@ -48,6 +55,33 @@ public class WallSpinnerController : MonoBehaviour
             );
             bChangeState = tuple.Item1;
             fDegreesRotationY = tuple.Item2;
+            if (!bChangeState)
+            {
+                if (iDirectionSum % 2 != 0)
+                {
+                    if (rotRotationYCurrent == rotationY.horizontal)
+                    {
+                        rotRotationYCurrent = rotationY.vertical;
+                    }
+                    else
+                    {
+                        rotRotationYCurrent = rotationY.horizontal;
+                    }
+                }
+                if (rotRotationYCurrent == rotationY.horizontal)
+                {
+                    fDegreesRotationY = fDegreesRotationYLower;
+                    fDegreesRotationYTarget = fDegreesRotationYLower;
+                    transform.eulerAngles = new Vector3(0f, fDegreesRotationYLower, 0f);
+                }
+                else
+                {
+                    fDegreesRotationY = fDegreesRotationYUpper;
+                    fDegreesRotationYTarget = fDegreesRotationYUpper;
+                    transform.eulerAngles = new Vector3(0f, fDegreesRotationYUpper, 0f);
+                }
+                iDirectionSum = 0;
+            }
         }
     }
 
@@ -62,18 +96,27 @@ public class WallSpinnerController : MonoBehaviour
             if (iDirection == -1)
             {
                 iDirection = 1;
-                fDegreesRotationYTarget = fDegreesRotationYUpper;
             }
             else
             {
                 iDirection = -1;
-                fDegreesRotationYTarget = fDegreesRotationYLower;
             }
         }
         else
         {
             iDirection = iDirectionGiven;
-            fDegreesRotationYTarget += iDirection * fDegreesRotationYUpper;
+        }
+        iDirectionSum += iDirection;
+        fDegreesRotationYTarget += iDirection * fDegreesRotationYUpper;
+    }
+
+    // ------------------------------------------------------------------------------------------------
+
+    public void Reset()
+    {
+        if (rotRotationYCurrent != rotRotationYStart)
+        {
+            Trigger();
         }
     }
 
