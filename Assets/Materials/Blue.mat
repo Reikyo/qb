@@ -167,7 +167,7 @@ Material:
     - _Color2_R: {r: 1, g: 1, b: 1, a: 1}
     - _Color2_T: {r: 1, g: 1, b: 1, a: 1}
     - _Color_Fog: {r: 0.5, g: 0.5, b: 0.5, a: 1}
-    - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _EmissionColor: {r: 0, g: 0.33333334, b: 0.5, a: 1}
     - _GizmoPosition_B: {r: 0, g: 0, b: 10, a: 10}
     - _GizmoPosition_D: {r: 0, g: 0, b: 10, a: 10}
     - _GizmoPosition_F: {r: 0, g: 0, b: 10, a: 10}

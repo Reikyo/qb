@@ -12,15 +12,19 @@ public class PlayerController : MonoBehaviour
     public bool bSafe;
     private bool bInMotionLastFrame = false;
     private bool bInMotionThisFrame = false;
+    private bool bBoost = false;
+    private bool bLaunch = false;
     // private float fForce = 1000f;
     private float fSpeed = 10f;
     private float anPlayerChildfSpeed;
-    private float fForceLaunchPad = 5f;
+    private float fForceBoost = 40f;
+    private float fForceLaunch = 5f;
     private Rigidbody rbPlayer;
     // private Animator anPlayer;
     public Animator[] anPlayerChildren;
     private NavMeshAgent navPlayer;
     private NavMeshPath navPlayerPath;
+    // private Material matPlayer;
     private GameManager gameManager;
     private GameObject goTarget;
     private List<string> slistLeaveTargetObjective = new List<string>() {"Player", "SafeZoneTarget"};
@@ -42,6 +46,7 @@ public class PlayerController : MonoBehaviour
         navPlayer = GetComponent<NavMeshAgent>();
         navPlayer.enabled = false; // Only set to true when necessary, otherwise the player will not be able to move off the navmesh i.e. they can't fall off the cube
         navPlayerPath = new NavMeshPath();
+        // matPlayer = GetComponent<Renderer>().material;
         gameManager = GameObject.Find("Game Manager").GetComponent<GameManager>();
         goTarget = GameObject.FindWithTag("Target");
         goEnemy = GameObject.FindWithTag("Enemy");
@@ -72,6 +77,15 @@ public class PlayerController : MonoBehaviour
             {
                 Move(transform.position + ((inputHorz * Vector3.right) + (inputVert * Vector3.forward)).normalized);
                 bInMotionThisFrame = true;
+                if (Input.GetKeyDown(KeyCode.LeftShift))
+                {
+                    StartCoroutine(StartBoost());
+                }
+                else if (bBoost
+                &&  Input.GetKeyUp(KeyCode.LeftShift))
+                {
+                    FinishBoost();
+                }
             }
             else
             {
@@ -189,19 +203,59 @@ public class PlayerController : MonoBehaviour
 
     // ------------------------------------------------------------------------------------------------
 
+    IEnumerator StartBoost()
+    {
+        bBoost = true;
+        // matPlayer.EnableKeyword("_EMISSION");
+        transform.Find("Trail").gameObject.SetActive(true);
+        rbPlayer.AddForce(fForceBoost * transform.forward, ForceMode.Impulse);
+
+        yield return new WaitForSeconds(0.1f);
+
+        FinishBoost();
+    }
+
+    // ------------------------------------------------------------------------------------------------
+
+    private void FinishBoost()
+    {
+        bBoost = false;
+        // matPlayer.DisableKeyword("_EMISSION");
+        transform.Find("Trail").gameObject.SetActive(false);
+        rbPlayer.velocity = new Vector3(0f, 0f, 0f);
+    }
+
+    // ------------------------------------------------------------------------------------------------
+
     // This requires a Collider component on both objects, and "Is Trigger" disabled on both of them.
     // Also, a RigidBody component must be on at least this object, the other doesn't matter.
     private void OnCollisionEnter(Collision collision)
     {
-        if (bActive
-        &&  collision.gameObject.CompareTag("Target")
-        &&  !slistLeaveTargetObjective.Contains(goTarget.GetComponent<TargetController>().sObjective))
+        if (bActive)
         {
-            gameManager.SfxclpPlay("sfxclpTargetObjectivePlayer");
-            goTarget.GetComponent<TargetController>().StartObjectivePlayer();
-            if (goEnemy)
+            if (collision.gameObject.CompareTag("WallDestructible")
+            &&  bBoost)
             {
-                goEnemy.GetComponent<EnemyController>().sObjective = "Target";
+                collision.gameObject.SetActive(false);
+                gameManager.VfxclpPlay("vfxclpWallDestructible", collision.gameObject.transform.position);
+                gameManager.SfxclpPlay("sfxclpWallDestructible");
+            }
+            else if (collision.gameObject.CompareTag("Cube")
+            &&  bLaunch)
+            {
+                bLaunch = false;
+                // matPlayer.DisableKeyword("_EMISSION");
+                transform.Find("Trail").gameObject.SetActive(false);
+            }
+            else if (collision.gameObject.CompareTag("Target")
+            &&  !slistLeaveTargetObjective.Contains(goTarget.GetComponent<TargetController>().sObjective))
+            {
+                gameManager.SfxclpPlay("sfxclpTargetObjectivePlayer");
+                goTarget.GetComponent<TargetController>().StartObjectivePlayer();
+                if (goEnemy)
+                {
+                    goEnemy.GetComponent<EnemyController>().sObjective = "Target";
+                }
             }
         }
     }
@@ -249,8 +303,11 @@ public class PlayerController : MonoBehaviour
         }
         else if (other.gameObject.CompareTag("LaunchPad"))
         {
+            bLaunch = true;
             gameManager.SfxclpPlay("sfxclpLaunchPad");
-            rbPlayer.AddForce(fForceLaunchPad * other.gameObject.transform.right, ForceMode.Impulse);
+            // matPlayer.EnableKeyword("_EMISSION");
+            transform.Find("Trail").gameObject.SetActive(true);
+            rbPlayer.AddForce(fForceLaunch * other.gameObject.transform.right, ForceMode.Impulse);
         }
     }
 

@@ -6,7 +6,7 @@ using TMPro;
 
 public class CubeController : MonoBehaviour
 {
-    private int iLevel = 0;
+    private int iLevel = 5;
     public TextMeshProUGUI guiLevel;
     public TextMeshProUGUI guiNumProjectile;
 
