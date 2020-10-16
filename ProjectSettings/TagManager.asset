@@ -20,7 +20,9 @@ TagManager:
   - WallSpinnerTrigger
   - Switch
   - WallSpinner
-  - LaunchPad
+  - Cube
+  - Warp
+  - Launch
   layers:
   - Default
   - TransparentFX

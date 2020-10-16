@@ -24,20 +24,23 @@ public class GameManager : MonoBehaviour
     private GameObject goSpawnManager;
     private CubeController cubeController;
 
-    // private GameObject vfxclpName;
-    private Dictionary<string, GameObject> vfxclpNames = new Dictionary<string, GameObject>();
-    public GameObject vfxclpWallDestructible;
+    private GameObject vfxclpName;
+    // private Dictionary<string, GameObject> vfxclpNames = new Dictionary<string, GameObject>();
+    public GameObject vfxclpWarp; // CFX3_MagicAura_B_Runic 1
+    public GameObject vfxclpWallDestructible; // FX_Fireworks_Yellow_Large 1
 
     private AudioSource sfxsrcGameManager;
-    // private AudioClip sfxclpName;
-    private Dictionary<string, AudioClip> sfxclpNames = new Dictionary<string, AudioClip>();
+    private AudioClip sfxclpName;
+    // private Dictionary<string, AudioClip> sfxclpNames = new Dictionary<string, AudioClip>();
     public AudioClip sfxclpButton; // DM-CGS-01
     public AudioClip sfxclpLevelClearedPartial; // DM-CGS-26
     public AudioClip sfxclpLevelCleared; // DM-CGS-45
     public AudioClip sfxclpLevelFailed; // DM-CGS-23
+    public AudioClip sfxclpBoost; // DM-CGS-46
     public AudioClip sfxclpPowerUp; // DM-CGS-28
     public AudioClip sfxclpProjectile; // DM-CGS-20
-    public AudioClip sfxclpLaunchPad; // DM-CGS-34
+    public AudioClip sfxclpLaunch; // DM-CGS-34
+    public AudioClip sfxclpWarp; // DM-CGS-42
     public AudioClip sfxclpWallDestructible; // DM-CGS-32
     public AudioClip sfxclpWallSlider; // DM-CGS-38
     public AudioClip sfxclpWallSpinner; // DM-CGS-37
@@ -61,24 +64,26 @@ public class GameManager : MonoBehaviour
     {
         sfxsrcGameManager = GetComponent<AudioSource>();
 
-        vfxclpNames.Add("vfxclpWallDestructible", vfxclpWallDestructible);
+        // vfxclpNames.Add("vfxclpWallDestructible", vfxclpWallDestructible);
 
-        sfxclpNames.Add("sfxclpButton", sfxclpButton);
-        sfxclpNames.Add("sfxclpLevelClearedPartial", sfxclpLevelClearedPartial);
-        sfxclpNames.Add("sfxclpLevelCleared", sfxclpLevelCleared);
-        sfxclpNames.Add("sfxclpLevelFailed", sfxclpLevelFailed);
-        sfxclpNames.Add("sfxclpPowerUp", sfxclpPowerUp);
-        sfxclpNames.Add("sfxclpProjectile", sfxclpProjectile);
-        sfxclpNames.Add("sfxclpLaunchPad", sfxclpLaunchPad);
-        sfxclpNames.Add("sfxclpWallDestructible", sfxclpWallDestructible);
-        sfxclpNames.Add("sfxclpWallSlider", sfxclpWallSlider);
-        sfxclpNames.Add("sfxclpWallSpinner", sfxclpWallSpinner);
-        sfxclpNames.Add("sfxclpSwitch", sfxclpSwitch);
-        sfxclpNames.Add("sfxclpTargetObjectivePlayer", sfxclpTargetObjectivePlayer);
-        sfxclpNames.Add("sfxclpTargetObjectiveRandom", sfxclpTargetObjectiveRandom);
-        sfxclpNames.Add("sfxclpEnemyAttack1", sfxclpEnemyAttack1);
-        sfxclpNames.Add("sfxclpEnemyAttack2", sfxclpEnemyAttack2);
-        sfxclpNames.Add("sfxclpEnemySleep", sfxclpEnemySleep);
+        // sfxclpNames.Add("sfxclpButton", sfxclpButton);
+        // sfxclpNames.Add("sfxclpLevelClearedPartial", sfxclpLevelClearedPartial);
+        // sfxclpNames.Add("sfxclpLevelCleared", sfxclpLevelCleared);
+        // sfxclpNames.Add("sfxclpLevelFailed", sfxclpLevelFailed);
+        // sfxclpNames.Add("sfxclpBoost", sfxclpBoost);
+        // sfxclpNames.Add("sfxclpPowerUp", sfxclpPowerUp);
+        // sfxclpNames.Add("sfxclpProjectile", sfxclpProjectile);
+        // sfxclpNames.Add("sfxclpLaunch", sfxclpLaunch);
+        // sfxclpNames.Add("sfxclpWarp", sfxclpWarp);
+        // sfxclpNames.Add("sfxclpWallDestructible", sfxclpWallDestructible);
+        // sfxclpNames.Add("sfxclpWallSlider", sfxclpWallSlider);
+        // sfxclpNames.Add("sfxclpWallSpinner", sfxclpWallSpinner);
+        // sfxclpNames.Add("sfxclpSwitch", sfxclpSwitch);
+        // sfxclpNames.Add("sfxclpTargetObjectivePlayer", sfxclpTargetObjectivePlayer);
+        // sfxclpNames.Add("sfxclpTargetObjectiveRandom", sfxclpTargetObjectiveRandom);
+        // sfxclpNames.Add("sfxclpEnemyAttack1", sfxclpEnemyAttack1);
+        // sfxclpNames.Add("sfxclpEnemyAttack2", sfxclpEnemyAttack2);
+        // sfxclpNames.Add("sfxclpEnemySleep", sfxclpEnemySleep);
 
         goSpawnManager = GameObject.Find("Spawn Manager");
         cubeController = GameObject.Find("Cube").GetComponent<CubeController>();
@@ -166,7 +171,8 @@ public class GameManager : MonoBehaviour
             {
                 goScreenCredits.SetActive(true);
             }
-            sfxsrcGameManager.PlayOneShot(sfxclpNames["sfxclpLevelCleared"]);
+            // sfxsrcGameManager.PlayOneShot(sfxclpNames["sfxclpLevelCleared"]);
+            sfxsrcGameManager.PlayOneShot(sfxclpLevelCleared);
             if (bNumProjectileFlash)
             {
                 EndNumProjectileFlash();
@@ -183,7 +189,8 @@ public class GameManager : MonoBehaviour
             bActive = false;
             guiLevelFailedHelp.text = sGuiLevelFailedHelpText;
             goScreenLevelFailed.SetActive(true);
-            sfxsrcGameManager.PlayOneShot(sfxclpNames["sfxclpLevelFailed"]);
+            // sfxsrcGameManager.PlayOneShot(sfxclpNames["sfxclpLevelFailed"]);
+            sfxsrcGameManager.PlayOneShot(sfxclpLevelFailed);
             if (bNumProjectileFlash)
             {
                 EndNumProjectileFlash();
@@ -220,55 +227,43 @@ public class GameManager : MonoBehaviour
 
     public void VfxclpPlay(string strVfxclpName, Vector3 v3Position)
     {
-        // switch(strVfxclpName)
-        // {
-        //     case "vfxclpWallDestructible":
-        //         vfxclpName = vfxclpWallDestructible;
-        //         break;
-        // }
-        GameObject go = Instantiate(vfxclpNames[strVfxclpName], v3Position, vfxclpNames[strVfxclpName].transform.rotation);
-        StartCoroutine(WaitUntilDestroy(go, 0.5f));
+        switch(strVfxclpName)
+        {
+            case "vfxclpWallDestructible": vfxclpName = vfxclpWallDestructible; break;
+            case "vfxclpWarp": vfxclpName = vfxclpWarp; break;
+        }
+        // GameObject go = Instantiate(vfxclpNames[strVfxclpName], v3Position, vfxclpNames[strVfxclpName].transform.rotation);
+        GameObject go = Instantiate(vfxclpName, v3Position, vfxclpName.transform.rotation);
+        // StartCoroutine(WaitUntilDestroy(go, 0.5f));
     }
 
     // ------------------------------------------------------------------------------------------------
 
     public void SfxclpPlay(string strSfxclpName)
     {
-        // switch(strSfxclpName)
-        // {
-        //     case "sfxclpLevelClearedPartial":
-        //         sfxclpName = sfxclpLevelClearedPartial;
-        //         break;
-        //     case "sfxclpPowerUp":
-        //         sfxclpName = sfxclpPowerUp;
-        //         break;
-        //     case "sfxclpProjectile":
-        //         sfxclpName = sfxclpProjectile;
-        //         break;
-        //     case "sfxclpWallDestructible":
-        //         sfxclpName = sfxclpWallDestructible;
-        //         break;
-        //     case "sfxclpWallSlider":
-        //         sfxclpName = sfxclpWallSlider;
-        //         break;
-        //     case "sfxclpTargetObjectivePlayer":
-        //         sfxclpName = sfxclpTargetObjectivePlayer;
-        //         break;
-        //     case "sfxclpTargetObjectiveRandom":
-        //         sfxclpName = sfxclpTargetObjectiveRandom;
-        //         break;
-        //     case "sfxclpEnemyAttack1":
-        //         sfxclpName = sfxclpEnemyAttack1;
-        //         break;
-        //     case "sfxclpEnemyAttack2":
-        //         sfxclpName = sfxclpEnemyAttack2;
-        //         break;
-        //     case "sfxclpEnemySleep":
-        //         sfxclpName = sfxclpEnemySleep;
-        //         break;
-        // }
-        // sfxsrcGameManager.PlayOneShot(sfxclpName);
-        sfxsrcGameManager.PlayOneShot(sfxclpNames[strSfxclpName]);
+        switch(strSfxclpName)
+        {
+            case "sfxclpButton": sfxclpName = sfxclpButton; break;
+            case "sfxclpLevelClearedPartial": sfxclpName = sfxclpLevelClearedPartial; break;
+            case "sfxclpLevelCleared": sfxclpName = sfxclpLevelCleared; break;
+            case "sfxclpLevelFailed": sfxclpName = sfxclpLevelFailed; break;
+            case "sfxclpBoost": sfxclpName = sfxclpBoost; break;
+            case "sfxclpPowerUp": sfxclpName = sfxclpPowerUp; break;
+            case "sfxclpProjectile": sfxclpName = sfxclpProjectile; break;
+            case "sfxclpLaunch": sfxclpName = sfxclpLaunch; break;
+            case "sfxclpWarp": sfxclpName = sfxclpWarp; break;
+            case "sfxclpWallDestructible": sfxclpName = sfxclpWallDestructible; break;
+            case "sfxclpWallSlider": sfxclpName = sfxclpWallSlider; break;
+            case "sfxclpWallSpinner": sfxclpName = sfxclpWallSpinner; break;
+            case "sfxclpSwitch": sfxclpName = sfxclpSwitch; break;
+            case "sfxclpTargetObjectivePlayer": sfxclpName = sfxclpTargetObjectivePlayer; break;
+            case "sfxclpTargetObjectiveRandom": sfxclpName = sfxclpTargetObjectiveRandom; break;
+            case "sfxclpEnemyAttack1": sfxclpName = sfxclpEnemyAttack1; break;
+            case "sfxclpEnemyAttack2": sfxclpName = sfxclpEnemyAttack2; break;
+            case "sfxclpEnemySleep": sfxclpName = sfxclpEnemySleep; break;
+        }
+        sfxsrcGameManager.PlayOneShot(sfxclpName);
+        // sfxsrcGameManager.PlayOneShot(sfxclpNames[strSfxclpName]);
     }
 
     // ------------------------------------------------------------------------------------------------

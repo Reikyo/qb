@@ -7,6 +7,8 @@ using TMPro;
 
 public class PlayerController : MonoBehaviour
 {
+    private GameManager gameManager;
+
     public bool bInPlay = true;
     public bool bActive = true;
     public bool bSafe;
@@ -14,20 +16,29 @@ public class PlayerController : MonoBehaviour
     private bool bInMotionThisFrame = false;
     private bool bBoost = false;
     private bool bLaunch = false;
+    private bool bWarp = false;
+    private bool bWarpDown = false;
+    private bool bWarpUp = false;
+    private bool bWarpVfx = false;
+    private float fWarpBoundary = 1.1f;
+    private Vector3 v3PositionWarpFrom;
+    private Vector3 v3PositionWarpTo;
     // private float fForce = 1000f;
     private float fSpeed = 10f;
-    private float anPlayerChildfSpeed;
+    private float fSpeedAnPlayerChild;
+    private float fSpeedWarp = 5f;
     private float fForceBoost = 40f;
     private float fForceLaunch = 5f;
+    private float fTimeDeltaBoost = 0.1f;
     private Rigidbody rbPlayer;
     // private Animator anPlayer;
     public Animator[] anPlayerChildren;
+    private GameObject goPlayerTrail;
     private NavMeshAgent navPlayer;
     private NavMeshPath navPlayerPath;
     // private Material matPlayer;
-    private GameManager gameManager;
     private GameObject goTarget;
-    private List<string> slistLeaveTargetObjective = new List<string>() {"Player", "SafeZoneTarget"};
+    private List<string> slistTargetObjectiveLeave = new List<string>() {"Player", "SafeZoneTarget"};
     private GameObject goEnemy;
     private GameObject goSafeZonePlayer;
     public GameObject goProjectile;
@@ -40,17 +51,21 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        gameManager = GameObject.Find("Game Manager").GetComponent<GameManager>();
+
         rbPlayer = GetComponent<Rigidbody>();
         // anPlayer = GetComponent<Animator>();
         // anPlayerChildren = GetComponentsInChildren<Animator>(); // n.b. This only gets the component of the first child in the tree
+        goPlayerTrail = transform.Find("Trail").gameObject;
         navPlayer = GetComponent<NavMeshAgent>();
         navPlayer.enabled = false; // Only set to true when necessary, otherwise the player will not be able to move off the navmesh i.e. they can't fall off the cube
         navPlayerPath = new NavMeshPath();
         // matPlayer = GetComponent<Renderer>().material;
-        gameManager = GameObject.Find("Game Manager").GetComponent<GameManager>();
+
         goTarget = GameObject.FindWithTag("Target");
         goEnemy = GameObject.FindWithTag("Enemy");
         goSafeZonePlayer = GameObject.FindWithTag("SafeZonePlayer");
+
         bSafe = !goSafeZonePlayer;
         guiNumProjectile = GameObject.Find("Value : Num Projectile").GetComponent<TextMeshProUGUI>();
         guiNumProjectile.text = iNumProjectile.ToString();
@@ -66,7 +81,8 @@ public class PlayerController : MonoBehaviour
 
         // ------------------------------------------------------------------------------------------------
 
-        if (bInPlay
+        if (!navPlayer.enabled
+        &&  bInPlay
         &&  bActive
         &&  gameManager.bActive)
         {
@@ -75,31 +91,29 @@ public class PlayerController : MonoBehaviour
 
             if (Math.Abs(inputHorz) + Math.Abs(inputVert) > 0f)
             {
-                Move(transform.position + ((inputHorz * Vector3.right) + (inputVert * Vector3.forward)).normalized);
                 bInMotionThisFrame = true;
-                if (Input.GetKeyDown(KeyCode.LeftShift))
-                {
-                    StartCoroutine(StartBoost());
-                }
-                else if (bBoost
-                &&  Input.GetKeyUp(KeyCode.LeftShift))
-                {
-                    FinishBoost();
-                }
+                Move(transform.position + ((inputHorz * Vector3.right) + (inputVert * Vector3.forward)).normalized);
             }
             else
             {
                 bInMotionThisFrame = false;
             }
         }
-        else if (goSafeZonePlayer
-        &&  bSafe
-        &&  bInMotionThisFrame)
+        else if (navPlayer.enabled)
         {
             if (navPlayer.remainingDistance <= navPlayer.stoppingDistance)
             {
                 bInMotionThisFrame = false;
+                if (bWarp)
+                {
+                    navPlayer.enabled = false;
+                    rbPlayer.isKinematic = true;
+                }
             }
+        }
+        else if (bWarp)
+        {
+            Warp();
         }
         else
         {
@@ -110,20 +124,18 @@ public class PlayerController : MonoBehaviour
 
         if (bInMotionLastFrame != bInMotionThisFrame)
         {
-            if (!bInMotionLastFrame
-            &&  bInMotionThisFrame)
+            if (bInMotionThisFrame)
             {
-                anPlayerChildfSpeed = 1f;
+                fSpeedAnPlayerChild = 1f;
             }
-            else if (bInMotionLastFrame
-            &&  !bInMotionThisFrame)
+            else
             {
-                anPlayerChildfSpeed = 0f;
+                fSpeedAnPlayerChild = 0f;
             }
             // Only needed if the character model has multiple animated parts
             foreach (Animator anPlayerChild in anPlayerChildren)
             {
-                anPlayerChild.SetFloat("fSpeed", anPlayerChildfSpeed);
+                anPlayerChild.SetFloat("fSpeed", fSpeedAnPlayerChild);
             }
             // anPlayer.SetFloat("Speed_f", 0f);
         }
@@ -149,7 +161,8 @@ public class PlayerController : MonoBehaviour
             // appear at any time, usually two or three. If instantiated via Update() then we get only one, as
             // desired. No idea why, but it seems valid to have both Update() and FixedUpdate() methods
             // present, hence the current code block.
-            if ((iNumProjectile > 0) && Input.GetKeyDown(KeyCode.Space))
+            if ((iNumProjectile > 0)
+            &&  Input.GetKeyDown(KeyCode.Space))
             {
                 Instantiate(goProjectile, transform.position, transform.rotation);
 
@@ -159,7 +172,7 @@ public class PlayerController : MonoBehaviour
                 if (gameManager.bProjectilePathDependentLevel)
                 {
                     if ((iNumProjectile <= iNumProjectileWarning)
-                    &&  (!gameManager.bNumProjectileFlash))
+                    &&  !gameManager.bNumProjectileFlash)
                     {
                         gameManager.StartNumProjectileFlash();
                     }
@@ -198,6 +211,18 @@ public class PlayerController : MonoBehaviour
         transform.position = Vector3.MoveTowards(transform.position, transform.position + v3DirectionMove, fSpeed * Time.deltaTime);
         transform.rotation = Quaternion.LookRotation(v3DirectionLook);
 
+        if (!bLaunch)
+        {
+            if (Input.GetKeyDown(KeyCode.LeftShift))
+            {
+                StartCoroutine(StartBoost());
+            }
+            else if (Input.GetKeyUp(KeyCode.LeftShift) && bBoost)
+            {
+                FinishBoost();
+            }
+        }
+
         Debug.DrawRay(transform.position, v3DirectionMove * 10f, Color.blue);
     }
 
@@ -207,11 +232,10 @@ public class PlayerController : MonoBehaviour
     {
         bBoost = true;
         // matPlayer.EnableKeyword("_EMISSION");
-        transform.Find("Trail").gameObject.SetActive(true);
+        goPlayerTrail.SetActive(true);
         rbPlayer.AddForce(fForceBoost * transform.forward, ForceMode.Impulse);
-
-        yield return new WaitForSeconds(0.1f);
-
+        gameManager.SfxclpPlay("sfxclpBoost");
+        yield return new WaitForSeconds(fTimeDeltaBoost);
         FinishBoost();
     }
 
@@ -221,8 +245,52 @@ public class PlayerController : MonoBehaviour
     {
         bBoost = false;
         // matPlayer.DisableKeyword("_EMISSION");
-        transform.Find("Trail").gameObject.SetActive(false);
+        goPlayerTrail.SetActive(false);
         rbPlayer.velocity = new Vector3(0f, 0f, 0f);
+    }
+
+    // ------------------------------------------------------------------------------------------------
+
+    private void Warp()
+    {
+        if (bWarpDown)
+        {
+            if (bWarpVfx)
+            {
+                bWarpVfx = false;
+                gameManager.VfxclpPlay("vfxclpWarp", new Vector3(v3PositionWarpFrom.x, v3PositionWarpFrom.y + 0.5f, v3PositionWarpFrom.z));
+            }
+            if (transform.position.y > -fWarpBoundary)
+            {
+                transform.Translate(0f, -fSpeedWarp * Time.deltaTime, 0f, Space.World);
+            }
+            else
+            {
+                transform.position = new Vector3(v3PositionWarpTo.x, -fWarpBoundary, v3PositionWarpTo.z);
+                gameManager.SfxclpPlay("sfxclpWarp");
+                bWarpDown = false;
+                bWarpUp = true;
+                bWarpVfx = true;
+            }
+        }
+        else if (bWarpUp)
+        {
+            if (bWarpVfx)
+            {
+                bWarpVfx = false;
+                gameManager.VfxclpPlay("vfxclpWarp", new Vector3(v3PositionWarpTo.x, v3PositionWarpTo.y + 0.5f, v3PositionWarpTo.z));
+            }
+            if (transform.position.y < fWarpBoundary)
+            {
+                transform.Translate(0f, fSpeedWarp * Time.deltaTime, 0f, Space.World);
+            }
+            else
+            {
+                rbPlayer.isKinematic = false;
+                bWarpUp = false;
+                bActive = true;
+            }
+        }
     }
 
     // ------------------------------------------------------------------------------------------------
@@ -233,22 +301,19 @@ public class PlayerController : MonoBehaviour
     {
         if (bActive)
         {
-            if (collision.gameObject.CompareTag("WallDestructible")
-            &&  bBoost)
+            if (collision.gameObject.CompareTag("WallDestructible") && bBoost)
             {
                 collision.gameObject.SetActive(false);
                 gameManager.VfxclpPlay("vfxclpWallDestructible", collision.gameObject.transform.position);
                 gameManager.SfxclpPlay("sfxclpWallDestructible");
             }
-            else if (collision.gameObject.CompareTag("Cube")
-            &&  bLaunch)
+            else if (collision.gameObject.CompareTag("Cube") && bLaunch)
             {
                 bLaunch = false;
                 // matPlayer.DisableKeyword("_EMISSION");
-                transform.Find("Trail").gameObject.SetActive(false);
+                goPlayerTrail.SetActive(false);
             }
-            else if (collision.gameObject.CompareTag("Target")
-            &&  !slistLeaveTargetObjective.Contains(goTarget.GetComponent<TargetController>().sObjective))
+            else if (collision.gameObject.CompareTag("Target") && !slistTargetObjectiveLeave.Contains(goTarget.GetComponent<TargetController>().sObjective))
             {
                 gameManager.SfxclpPlay("sfxclpTargetObjectivePlayer");
                 goTarget.GetComponent<TargetController>().StartObjectivePlayer();
@@ -266,27 +331,10 @@ public class PlayerController : MonoBehaviour
     // Also, a RigidBody component must be on at least one of them, it doesn't matter which one.
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("OffGroundTrigger"))
+        if (other.gameObject.CompareTag("OffGroundTrigger") && !bWarp)
         {
             bInPlay = false;
             gameManager.LevelFailed("That's a long way down ...");
-        }
-        else if (other.gameObject.CompareTag("SafeZonePlayer"))
-        {
-            if (!goTarget
-            ||  goTarget.GetComponent<TargetController>().bSafe)
-            {
-                Destroy(other);
-                bSafe = true;
-                bInMotionThisFrame = true;
-                navPlayer.enabled = true;
-                navPlayer.destination = new Vector3(
-                    goSafeZonePlayer.transform.position.x,
-                    transform.position.y,
-                    goSafeZonePlayer.transform.position.z
-                );
-                gameManager.LevelCleared();
-            }
         }
         else if (other.gameObject.CompareTag("PowerUp"))
         {
@@ -294,20 +342,61 @@ public class PlayerController : MonoBehaviour
             gameManager.SfxclpPlay("sfxclpPowerUp");
             iNumProjectile += other.gameObject.GetComponent<PowerUpController>().iValue;
             guiNumProjectile.text = iNumProjectile.ToString();
-            if ((gameManager.bProjectilePathDependentLevel)
-            &&  (gameManager.bNumProjectileFlash)
+            if (gameManager.bProjectilePathDependentLevel
+            &&  gameManager.bNumProjectileFlash
             &&  (iNumProjectile > iNumProjectileWarning))
             {
                 gameManager.EndNumProjectileFlash();
             }
         }
-        else if (other.gameObject.CompareTag("LaunchPad"))
+        else if (other.gameObject.CompareTag("Launch"))
         {
             bLaunch = true;
-            gameManager.SfxclpPlay("sfxclpLaunchPad");
+            gameManager.SfxclpPlay("sfxclpLaunch");
             // matPlayer.EnableKeyword("_EMISSION");
-            transform.Find("Trail").gameObject.SetActive(true);
+            goPlayerTrail.SetActive(true);
             rbPlayer.AddForce(fForceLaunch * other.gameObject.transform.right, ForceMode.Impulse);
+        }
+        else if (other.gameObject.CompareTag("Warp") && !bWarp)
+        {
+            v3PositionWarpFrom = other.gameObject.transform.position;
+            v3PositionWarpTo = other.gameObject.GetComponent<WarpController>().goWarpPartner.transform.position;
+            bActive = false;
+            bWarp = true;
+            bWarpDown = true;
+            bWarpVfx = true;
+            bInMotionThisFrame = true;
+            navPlayer.enabled = true;
+            navPlayer.destination = new Vector3(
+                v3PositionWarpFrom.x,
+                transform.position.y,
+                v3PositionWarpFrom.z
+            );
+        }
+        else if (other.gameObject.CompareTag("SafeZonePlayer") && (!goTarget || goTarget.GetComponent<TargetController>().bSafe))
+        {
+            Destroy(other);
+            bSafe = true;
+            bInMotionThisFrame = true;
+            navPlayer.enabled = true;
+            navPlayer.destination = new Vector3(
+                goSafeZonePlayer.transform.position.x,
+                transform.position.y,
+                goSafeZonePlayer.transform.position.z
+            );
+            gameManager.LevelCleared();
+        }
+    }
+
+    // ------------------------------------------------------------------------------------------------
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.CompareTag("Warp")
+        &&  bWarp
+        &&  bActive)
+        {
+            bWarp = false;
         }
     }
 
