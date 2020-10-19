@@ -355,12 +355,16 @@ public class PlayerController : MonoBehaviour
 
         sPlayerBuddySwitchEngagedByTarget = goTarget.GetComponent<TargetController>().sPlayerBuddySwitchEngagedByTarget;
 
-        Vector3 v3PositionPlayer = transform.position;
-        Vector3 v3RotationPlayer = transform.eulerAngles;
+        gameManager.VfxclpPlay("vfxclpWarp", new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z));
+        gameManager.VfxclpPlay("vfxclpWarp", new Vector3(goTarget.transform.position.x, goTarget.transform.position.y + 0.5f, goTarget.transform.position.z));
+        gameManager.SfxclpPlay("sfxclpWarp");
+
+        Vector3 v3PositionPlayerOrig = transform.position;
+        Vector3 v3RotationPlayerOrig = transform.eulerAngles;
         transform.position = goTarget.transform.position;
         transform.eulerAngles = goTarget.transform.eulerAngles;
-        goTarget.transform.position = v3PositionPlayer;
-        goTarget.transform.eulerAngles = v3RotationPlayer;
+        goTarget.transform.position = v3PositionPlayerOrig;
+        goTarget.transform.eulerAngles = v3RotationPlayerOrig;
 
         if (!bPlayerBuddySwitched)
         {
