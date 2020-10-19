@@ -23,6 +23,9 @@ TagManager:
   - Cube
   - Warp
   - Launch
+  - PlayerBuddySwitch
+  - PlayerBuddySwitchTrigger
+  - LaunchTrigger
   layers:
   - Default
   - TransparentFX

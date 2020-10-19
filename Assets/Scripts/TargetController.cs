@@ -7,8 +7,9 @@ using UnityEngine.AI;
 public class TargetController : MonoBehaviour
 {
     public bool bInPlay = true;
-    public bool bActive = true;
+    public bool bActive = false;
     public bool bSafe;
+    public string sPlayerBuddySwitchEngagedByTarget = "";
     // public float fForce = 500f;
     public float fSpeed = 5f;
     private float fDistPlayerStop = 3f;
@@ -18,7 +19,7 @@ public class TargetController : MonoBehaviour
     private GameManager gameManager;
     private GameObject goPlayer;
     private GameObject goSafeZoneTarget;
-    public string sObjective;
+    public string sObjective = "None";
     private Vector2 v2DirectionRandom;
     private Vector3 v3DirectionRandom;
     private float fObjectiveRandomTimeStart;
@@ -41,7 +42,6 @@ public class TargetController : MonoBehaviour
         goPlayer = GameObject.FindWithTag("Player");
         goSafeZoneTarget = GameObject.FindWithTag("SafeZoneTarget");
         bSafe = !goSafeZoneTarget;
-        sObjective = "None";
         fObjectiveRandomEmissionAngFreq = 2f * Mathf.PI * fObjectiveRandomEmissionFreq;
         SetDirectionRandom();
     }
@@ -157,6 +157,17 @@ public class TargetController : MonoBehaviour
 
     // ------------------------------------------------------------------------------------------------
 
+    public void FinishObjective()
+    {
+        bActive = false;
+        sObjective = "None";
+        navTarget.enabled = false;
+        matTarget.DisableKeyword("_EMISSION");
+        transform.Find("Trail").gameObject.SetActive(false);
+    }
+
+    // ------------------------------------------------------------------------------------------------
+
     private void OnCollisionEnter(Collision collision)
     {
         if (sObjective == "Random")
@@ -175,6 +186,11 @@ public class TargetController : MonoBehaviour
             navTarget.enabled = false;
             gameManager.LevelFailed("Look after your buddy!");
         }
+        else if (other.gameObject.CompareTag("PlayerBuddySwitch"))
+        {
+            other.gameObject.GetComponent<PlayerBuddySwitchController>().bEngagedByTarget = true;
+            sPlayerBuddySwitchEngagedByTarget = other.gameObject.name;
+        }
         else if (other.gameObject.CompareTag("SafeZoneTarget")
         &&  (sObjective == "Player"))
         {
@@ -189,6 +205,17 @@ public class TargetController : MonoBehaviour
             {
                 gameManager.SfxclpPlay("sfxclpLevelClearedPartial");
             }
+        }
+    }
+
+    // ------------------------------------------------------------------------------------------------
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.CompareTag("PlayerBuddySwitch"))
+        {
+            other.gameObject.GetComponent<PlayerBuddySwitchController>().bEngagedByTarget = false;
+            sPlayerBuddySwitchEngagedByTarget = "";
         }
     }
 

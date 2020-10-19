@@ -23,6 +23,9 @@ public class PlayerController : MonoBehaviour
     private float fWarpBoundary = 1.1f;
     private Vector3 v3PositionWarpFrom;
     private Vector3 v3PositionWarpTo;
+    private bool bPlayerBuddySwitch = false;
+    private bool bPlayerBuddySwitched = false;
+    private string sPlayerBuddySwitchEngagedByTarget;
     // private float fForce = 1000f;
     private float fSpeed = 10f;
     private float fSpeedAnPlayerChild;
@@ -36,7 +39,6 @@ public class PlayerController : MonoBehaviour
     private GameObject goPlayerTrail;
     private NavMeshAgent navPlayer;
     private NavMeshPath navPlayerPath;
-    // private Material matPlayer;
     private GameObject goTarget;
     private List<string> slistTargetObjectiveLeave = new List<string>() {"Player", "SafeZoneTarget"};
     private GameObject goEnemy;
@@ -45,6 +47,8 @@ public class PlayerController : MonoBehaviour
     private int iNumProjectile = 0;
     private int iNumProjectileWarning = 5;
     private TextMeshProUGUI guiNumProjectile;
+    private Color colPlayer;
+    private Color colTarget;
 
     // ------------------------------------------------------------------------------------------------
 
@@ -60,7 +64,6 @@ public class PlayerController : MonoBehaviour
         navPlayer = GetComponent<NavMeshAgent>();
         navPlayer.enabled = false; // Only set to true when necessary, otherwise the player will not be able to move off the navmesh i.e. they can't fall off the cube
         navPlayerPath = new NavMeshPath();
-        // matPlayer = GetComponent<Renderer>().material;
 
         goTarget = GameObject.FindWithTag("Target");
         goEnemy = GameObject.FindWithTag("Enemy");
@@ -69,6 +72,9 @@ public class PlayerController : MonoBehaviour
         bSafe = !goSafeZonePlayer;
         guiNumProjectile = GameObject.Find("Value : Num Projectile").GetComponent<TextMeshProUGUI>();
         guiNumProjectile.text = iNumProjectile.ToString();
+
+        colPlayer = GetComponent<Renderer>().material.GetColor("_Color");
+        colTarget = goTarget.GetComponent<Renderer>().material.GetColor("_Color");
     }
 
     // ------------------------------------------------------------------------------------------------
@@ -81,10 +87,9 @@ public class PlayerController : MonoBehaviour
 
         // ------------------------------------------------------------------------------------------------
 
-        if (!navPlayer.enabled
-        &&  bInPlay
-        &&  bActive
-        &&  gameManager.bActive)
+        if (    bInPlay
+            &&  bActive
+            &&  gameManager.bActive )
         {
             float inputHorz = Input.GetAxis("Horizontal");
             float inputVert = Input.GetAxis("Vertical");
@@ -101,19 +106,15 @@ public class PlayerController : MonoBehaviour
         }
         else if (navPlayer.enabled)
         {
-            if (navPlayer.remainingDistance <= navPlayer.stoppingDistance)
-            {
-                bInMotionThisFrame = false;
-                if (bWarp)
-                {
-                    navPlayer.enabled = false;
-                    rbPlayer.isKinematic = true;
-                }
-            }
+            MoveNavMesh();
         }
         else if (bWarp)
         {
             Warp();
+        }
+        else if (bPlayerBuddySwitch)
+        {
+            PlayerBuddySwitch();
         }
         else
         {
@@ -153,16 +154,16 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (bInPlay
-        &&  bActive
-        &&  gameManager.bActive)
+        if (    bInPlay
+            &&  bActive
+            &&  gameManager.bActive )
         {
             // For some reason, if projectiles are instantiated via FixedUpdate(), then typically more than one
             // appear at any time, usually two or three. If instantiated via Update() then we get only one, as
             // desired. No idea why, but it seems valid to have both Update() and FixedUpdate() methods
             // present, hence the current code block.
-            if ((iNumProjectile > 0)
-            &&  Input.GetKeyDown(KeyCode.Space))
+            if (    (iNumProjectile > 0)
+                &&  Input.GetKeyDown(KeyCode.Space) )
             {
                 Instantiate(goProjectile, transform.position, transform.rotation);
 
@@ -171,8 +172,8 @@ public class PlayerController : MonoBehaviour
 
                 if (gameManager.bProjectilePathDependentLevel)
                 {
-                    if ((iNumProjectile <= iNumProjectileWarning)
-                    &&  !gameManager.bNumProjectileFlash)
+                    if (    (iNumProjectile <= iNumProjectileWarning)
+                        &&  !gameManager.bNumProjectileFlash )
                     {
                         gameManager.StartNumProjectileFlash();
                     }
@@ -211,16 +212,15 @@ public class PlayerController : MonoBehaviour
         transform.position = Vector3.MoveTowards(transform.position, transform.position + v3DirectionMove, fSpeed * Time.deltaTime);
         transform.rotation = Quaternion.LookRotation(v3DirectionLook);
 
-        if (!bLaunch)
+        if (    Input.GetKeyDown(KeyCode.LeftShift)
+            &&  !bLaunch )
         {
-            if (Input.GetKeyDown(KeyCode.LeftShift))
-            {
-                StartCoroutine(StartBoost());
-            }
-            else if (Input.GetKeyUp(KeyCode.LeftShift) && bBoost)
-            {
-                FinishBoost();
-            }
+            StartCoroutine(StartBoost());
+        }
+        else if (   Input.GetKeyUp(KeyCode.LeftShift)
+                &&  bBoost )
+        {
+            FinishBoost();
         }
 
         Debug.DrawRay(transform.position, v3DirectionMove * 10f, Color.blue);
@@ -231,7 +231,6 @@ public class PlayerController : MonoBehaviour
     IEnumerator StartBoost()
     {
         bBoost = true;
-        // matPlayer.EnableKeyword("_EMISSION");
         goPlayerTrail.SetActive(true);
         rbPlayer.AddForce(fForceBoost * transform.forward, ForceMode.Impulse);
         gameManager.SfxclpPlay("sfxclpBoost");
@@ -244,9 +243,27 @@ public class PlayerController : MonoBehaviour
     private void FinishBoost()
     {
         bBoost = false;
-        // matPlayer.DisableKeyword("_EMISSION");
         goPlayerTrail.SetActive(false);
         rbPlayer.velocity = new Vector3(0f, 0f, 0f);
+    }
+
+    // ------------------------------------------------------------------------------------------------
+
+    private void MoveNavMesh()
+    {
+        if (navPlayer.remainingDistance <= navPlayer.stoppingDistance)
+        {
+            bInMotionThisFrame = false;
+            if (bWarp)
+            {
+                navPlayer.enabled = false;
+                rbPlayer.isKinematic = true;
+            }
+            else if (bPlayerBuddySwitch)
+            {
+                navPlayer.enabled = false;
+            }
+        }
     }
 
     // ------------------------------------------------------------------------------------------------
@@ -295,25 +312,95 @@ public class PlayerController : MonoBehaviour
 
     // ------------------------------------------------------------------------------------------------
 
+    private void PlayerBuddySwitch()
+    {
+
+        // From first player-buddy switch attempt:
+
+        // This first attempt at the player-buddy switch required both a PlayerController and a
+        // TargetController on both the player and the target (buddy). But as the player retained the
+        // "Player" tag and the target retained the "Target" tag, various other features of the game still
+        // didn't work quite right. I was about to start solving these issues when I realised the
+        // alternative approach of physically switching the player and target locations as well as their
+        // colours, simply to make it appear like the player and target swapped control abilities but
+        // retained their locations. This currently seems to work well, no noticeable delay. Only possible
+        // as the same player and target models are in use.
+
+        // if (gameObject.tag == "Player")
+        // {
+        //     goTarget.GetComponent<TargetController>().enabled = false;
+        //     goTarget.GetComponent<TargetController>().bActive = false;
+        //     goTarget.GetComponent<TargetController>().sObjective = "None";
+        //     goTarget.GetComponent<PlayerController>().enabled = true;
+        //     goTarget.GetComponent<PlayerController>().bActive = true;
+        //     goTarget.GetComponent<PlayerController>().iNumProjectile = iNumProjectile;
+        //     goTarget.GetComponent<NavMeshAgent>().enabled = false;
+        //
+        //     goPlayer.GetComponent<TargetController>().enabled = true;
+        //     goPlayer.GetComponent<PlayerController>().enabled = false;
+        // }
+        // else
+        // {
+        //     goPlayer.GetComponent<TargetController>().enabled = false;
+        //     goPlayer.GetComponent<TargetController>().bActive = false;
+        //     goPlayer.GetComponent<TargetController>().sObjective = "None";
+        //     goPlayer.GetComponent<PlayerController>().enabled = true;
+        //     goPlayer.GetComponent<PlayerController>().bActive = true;
+        //     goPlayer.GetComponent<PlayerController>().iNumProjectile = iNumProjectile;
+        //     goPlayer.GetComponent<NavMeshAgent>().enabled = false;
+        //
+        //     goTarget.GetComponent<TargetController>().enabled = true;
+        //     goTarget.GetComponent<PlayerController>().enabled = false;
+        // }
+
+        sPlayerBuddySwitchEngagedByTarget = goTarget.GetComponent<TargetController>().sPlayerBuddySwitchEngagedByTarget;
+
+        Vector3 v3PositionPlayer = transform.position;
+        Vector3 v3RotationPlayer = transform.eulerAngles;
+        transform.position = goTarget.transform.position;
+        transform.eulerAngles = goTarget.transform.eulerAngles;
+        goTarget.transform.position = v3PositionPlayer;
+        goTarget.transform.eulerAngles = v3RotationPlayer;
+
+        if (!bPlayerBuddySwitched)
+        {
+            GetComponent<Renderer>().material.SetColor("_Color", colTarget);
+            goTarget.GetComponent<Renderer>().material.SetColor("_Color", colPlayer);
+        }
+        else
+        {
+            GetComponent<Renderer>().material.SetColor("_Color", colPlayer);
+            goTarget.GetComponent<Renderer>().material.SetColor("_Color", colTarget);
+        }
+
+        bActive = true;
+        bPlayerBuddySwitch = (sPlayerBuddySwitchEngagedByTarget != "");
+        bPlayerBuddySwitched = !bPlayerBuddySwitched;
+    }
+
+    // ------------------------------------------------------------------------------------------------
+
     // This requires a Collider component on both objects, and "Is Trigger" disabled on both of them.
     // Also, a RigidBody component must be on at least this object, the other doesn't matter.
     private void OnCollisionEnter(Collision collision)
     {
         if (bActive)
         {
-            if (collision.gameObject.CompareTag("WallDestructible") && bBoost)
+            if (    collision.gameObject.CompareTag("Cube")
+                &&  bLaunch )
+            {
+                bLaunch = false;
+                goPlayerTrail.SetActive(false);
+            }
+            else if (   collision.gameObject.CompareTag("WallDestructible")
+                    &&  bBoost )
             {
                 collision.gameObject.SetActive(false);
                 gameManager.VfxclpPlay("vfxclpWallDestructible", collision.gameObject.transform.position);
                 gameManager.SfxclpPlay("sfxclpWallDestructible");
             }
-            else if (collision.gameObject.CompareTag("Cube") && bLaunch)
-            {
-                bLaunch = false;
-                // matPlayer.DisableKeyword("_EMISSION");
-                goPlayerTrail.SetActive(false);
-            }
-            else if (collision.gameObject.CompareTag("Target") && !slistTargetObjectiveLeave.Contains(goTarget.GetComponent<TargetController>().sObjective))
+            else if (   collision.gameObject.CompareTag("Target")
+                    &&  !slistTargetObjectiveLeave.Contains(goTarget.GetComponent<TargetController>().sObjective) )
             {
                 gameManager.SfxclpPlay("sfxclpTargetObjectivePlayer");
                 goTarget.GetComponent<TargetController>().StartObjectivePlayer();
@@ -331,7 +418,8 @@ public class PlayerController : MonoBehaviour
     // Also, a RigidBody component must be on at least one of them, it doesn't matter which one.
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("OffGroundTrigger") && !bWarp)
+        if (    other.gameObject.CompareTag("OffGroundTrigger")
+            &&  !bWarp )
         {
             bInPlay = false;
             gameManager.LevelFailed("That's a long way down ...");
@@ -342,29 +430,29 @@ public class PlayerController : MonoBehaviour
             gameManager.SfxclpPlay("sfxclpPowerUp");
             iNumProjectile += other.gameObject.GetComponent<PowerUpController>().iValue;
             guiNumProjectile.text = iNumProjectile.ToString();
-            if (gameManager.bProjectilePathDependentLevel
-            &&  gameManager.bNumProjectileFlash
-            &&  (iNumProjectile > iNumProjectileWarning))
+            if (    (gameManager.bProjectilePathDependentLevel)
+                &&  (gameManager.bNumProjectileFlash)
+                &&  (iNumProjectile > iNumProjectileWarning) )
             {
                 gameManager.EndNumProjectileFlash();
             }
         }
-        else if (other.gameObject.CompareTag("Launch"))
+        else if (other.gameObject.CompareTag("LaunchTrigger"))
         {
             bLaunch = true;
             gameManager.SfxclpPlay("sfxclpLaunch");
-            // matPlayer.EnableKeyword("_EMISSION");
             goPlayerTrail.SetActive(true);
             rbPlayer.AddForce(fForceLaunch * other.gameObject.transform.right, ForceMode.Impulse);
         }
-        else if (other.gameObject.CompareTag("Warp") && !bWarp)
+        else if (   other.gameObject.CompareTag("Warp")
+                &&  !bWarp )
         {
             v3PositionWarpFrom = other.gameObject.transform.position;
             v3PositionWarpTo = other.gameObject.GetComponent<WarpController>().goWarpPartner.transform.position;
-            bActive = false;
             bWarp = true;
             bWarpDown = true;
             bWarpVfx = true;
+            bActive = false;
             bInMotionThisFrame = true;
             navPlayer.enabled = true;
             navPlayer.destination = new Vector3(
@@ -373,10 +461,34 @@ public class PlayerController : MonoBehaviour
                 v3PositionWarpFrom.z
             );
         }
-        else if (other.gameObject.CompareTag("SafeZonePlayer") && (!goTarget || goTarget.GetComponent<TargetController>().bSafe))
+        // From first player-buddy switch attempt:
+        // else if (   other.gameObject.CompareTag("PlayerBuddySwitch")
+        //         && (!other.gameObject.GetComponent<PlayerBuddySwitchController>().sTriggeredBy == "")
+        //         &&  goTarget )
+        else if (   other.gameObject.CompareTag("PlayerBuddySwitch")
+                &&  !other.gameObject.GetComponent<PlayerBuddySwitchController>().bEngagedByTarget
+                &&  !bPlayerBuddySwitch
+                &&  goTarget )
+        {
+            // From first player-buddy switch attempt:
+            // other.gameObject.GetComponent<PlayerBuddySwitchController>().sTriggeredBy = gameObject.tag;
+            goTarget.GetComponent<TargetController>().FinishObjective();
+            bPlayerBuddySwitch = true;
+            bActive = false;
+            bInMotionThisFrame = true;
+            navPlayer.enabled = true;
+            navPlayer.destination = new Vector3(
+                other.gameObject.transform.position.x,
+                transform.position.y,
+                other.gameObject.transform.position.z
+            );
+        }
+        else if (   other.gameObject.CompareTag("SafeZonePlayer")
+                &&  (!goTarget || goTarget.GetComponent<TargetController>().bSafe) )
         {
             Destroy(other);
             bSafe = true;
+            bActive = false;
             bInMotionThisFrame = true;
             navPlayer.enabled = true;
             navPlayer.destination = new Vector3(
@@ -392,11 +504,28 @@ public class PlayerController : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.gameObject.CompareTag("Warp")
-        &&  bWarp
-        &&  bActive)
+        // From first player-buddy switch attempt:
+
+        // if (    (other.gameObject.CompareTag("PlayerBuddySwitch"))
+        //     &&  (other.gameObject.GetComponent<PlayerBuddySwitchController>().sTriggeredBy == gameObject.tag)
+        //     &&  (   (GetComponent<PlayerController>().enabled && GetComponent<PlayerController>().bActive)
+        //         ||  (GetComponent<TargetController>().enabled && GetComponent<TargetController>().bActive) ) )
+        // {
+        //     other.gameObject.GetComponent<PlayerBuddySwitchController>().sTriggeredBy = "";
+        // }
+
+        if (    other.gameObject.CompareTag("Warp")
+            &&  bActive
+            &&  bWarp )
         {
             bWarp = false;
+        }
+        else if (   other.gameObject.CompareTag("PlayerBuddySwitch")
+                &&  (other.gameObject.name == sPlayerBuddySwitchEngagedByTarget)
+                &&  bActive
+                &&  bPlayerBuddySwitch )
+        {
+            bPlayerBuddySwitch = false;
         }
     }
 

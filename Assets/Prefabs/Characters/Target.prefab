@@ -344,8 +344,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bInPlay: 1
-  bActive: 1
+  bActive: 0
   bSafe: 0
+  fSpeed: 5
   sObjective: 
 --- !u!114 &6939492379494027688
 MonoBehaviour:

@@ -50,7 +50,8 @@ public class ProjectileController : MonoBehaviour
         {
             if (!other.gameObject.CompareTag("Player"))
             {
-                // We set this flag immediately as otherwise the projectile could be triggered by something else before it is destroyed
+                // We set this flag immediately as otherwise the projectile could be triggered by something else
+                // before it is destroyed
                 bTriggered = true;
             }
 
@@ -90,7 +91,7 @@ public class ProjectileController : MonoBehaviour
                 }
             }
 
-            if (!other.gameObject.CompareTag("Player"))
+            if (bTriggered)
             {
                 Destroy(gameObject);
             }
