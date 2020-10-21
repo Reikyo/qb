@@ -5,12 +5,13 @@ using MyFunctions;
 
 public class LevelController : MonoBehaviour
 {
-    // private SpawnManager spawnManager;
+    private int iLevel;
+    private SpawnManager spawnManager;
     private CubeController cubeController;
 
     public bool bProjectilePathDependentLevel = false;
-    public GameObject[] goArrSpawns;
-    public Vector3[] v3ArrSpawnPositions;
+    // public GameObject[] goArrSpawns;
+    // public Vector3[] v3ArrSpawnPositions;
     private GameObject[] goArrWallsDestructible;
     private GameObject[] goArrWallsSlider;
     private GameObject[] goArrWallsSpinner;
@@ -31,47 +32,18 @@ public class LevelController : MonoBehaviour
     private bool bChangeStatePositionY = false;
     private bool bChangeStatePositionZ = false;
 
-// Level 1
-//   Player         (0, 0, -20)
-//   SafeZonePlayer (0, 0, 20)
-// Level 2
-//   Player         (-20, 0, -20)
-//   Enemy          (-5, 0, 0)
-//   SafeZonePlayer (0, 0, 0)
-//   PowerUp        (20, 0, 20)
-// Level 3
-//   Player         (-22, 0, -23)
-//   SafeZonePlayer (-17, 0, -2)
-//   PowerUp        (0, 0, -23)
-// Level 4
-//   Player         (-21, 0, -21)
-//   Target         (0, 0, -21)
-//   Enemy          (21, 0, -21)
-//   SafeZoneTarget (21, 0, 0)
-//   PowerUp        (-21, 0, 20)
-// Level 5
-//   Player         (-22.5, 0, 22.5)
-//   Target         (22.5, 0, -22.5)
-//   SafeZonePlayer (0, 0, -8)
-//   SafeZoneTarget (-7.5, 0, 21.5)
-//   PowerUp        (-2.5, 0, 0)
-// Level 6
-//   Player         (0, 0, -20)
-//   SafeZonePlayer (0, 0, 20)
-
     // ------------------------------------------------------------------------------------------------
 
     // Start is called before the first frame update
     void Start()
     {
-        // spawnManager = GameObject.Find("Spawn Manager").GetComponent<SpawnManager>();
+        spawnManager = GameObject.Find("Spawn Manager").GetComponent<SpawnManager>();
         cubeController = GameObject.Find("Cube").GetComponent<CubeController>();
 
         transform.position = v3PositionInstantiate;
 
         fMetresPerSecY = (v3PositionPlay.y - v3PositionInstantiate.y) / fTransitionTime;
         fMetresPerSecZ = (v3PositionPlay.z - v3PositionInstantiate.z) / fTransitionTime;
-
     }
 
     // ------------------------------------------------------------------------------------------------
@@ -110,7 +82,8 @@ public class LevelController : MonoBehaviour
             &&  !bChangeStatePositionZ)
             {
                 bChangeStateStartLevel = false;
-                Activate();
+                // Activate();
+                spawnManager.Instantiate(iLevel);
             }
         }
 
@@ -155,8 +128,9 @@ public class LevelController : MonoBehaviour
 
     // ------------------------------------------------------------------------------------------------
 
-    public void StartLevel()
+    public void StartLevel(int iLevelGiven)
     {
+        iLevel = iLevelGiven;
         gameObject.SetActive(true);
         goArrWallsDestructible = GameObject.FindGameObjectsWithTag("WallDestructible");
         goArrWallsSlider = GameObject.FindGameObjectsWithTag("WallSlider");
@@ -170,8 +144,8 @@ public class LevelController : MonoBehaviour
 
     public void FinishLevel()
     {
-        // spawnManager.Destroy();
-        Deactivate();
+        spawnManager.Destroy();
+        // Deactivate();
         bChangeStateFinishLevel = true;
         bChangeStatePositionY = true;
         bChangeStatePositionZ = true;
@@ -179,46 +153,46 @@ public class LevelController : MonoBehaviour
 
     // ------------------------------------------------------------------------------------------------
 
-    private void Activate()
-    {
-        // spawnManager.Instantiate(goArrSpawns, v3ArrSpawnPositions);
-
-        for (int goArrSpawnsIdx=0; goArrSpawnsIdx<goArrSpawns.Length; goArrSpawnsIdx++)
-        {
-            Instantiate(
-                goArrSpawns[goArrSpawnsIdx],
-                new Vector3(
-                    v3ArrSpawnPositions[goArrSpawnsIdx].x,
-                    goArrSpawns[goArrSpawnsIdx].transform.position.y,
-                    v3ArrSpawnPositions[goArrSpawnsIdx].z
-                ),
-                goArrSpawns[goArrSpawnsIdx].transform.rotation
-            );
-        }
-    }
+    // private void Activate()
+    // {
+    //     // spawnManager.Instantiate(goArrSpawns, v3ArrSpawnPositions);
+    //
+    //     for (int goArrSpawnsIdx=0; goArrSpawnsIdx<goArrSpawns.Length; goArrSpawnsIdx++)
+    //     {
+    //         Instantiate(
+    //             goArrSpawns[goArrSpawnsIdx],
+    //             new Vector3(
+    //                 v3ArrSpawnPositions[goArrSpawnsIdx].x,
+    //                 goArrSpawns[goArrSpawnsIdx].transform.position.y,
+    //                 v3ArrSpawnPositions[goArrSpawnsIdx].z
+    //             ),
+    //             goArrSpawns[goArrSpawnsIdx].transform.rotation
+    //         );
+    //     }
+    // }
 
     // ------------------------------------------------------------------------------------------------
 
-    private void Deactivate()
-    {
-        foreach (string sTag in new List<string>() {
-            "Player",
-            "Target",
-            "Enemy",
-            "SafeZonePlayer",
-            "SafeZoneTarget",
-            "PowerUp"
-        })
-        {
-            GameObject go = GameObject.FindWithTag(sTag);
-            if (go)
-            {
-                // We must deactivate all game objects or they will not be found by the FindWithTag method on reload
-                go.SetActive(false);
-                Destroy(go);
-            }
-        }
-    }
+    // private void Deactivate()
+    // {
+    //     foreach (string sTag in new List<string>() {
+    //         "Player",
+    //         "Target",
+    //         "Enemy",
+    //         "SafeZonePlayer",
+    //         "SafeZoneTarget",
+    //         "PowerUp"
+    //     })
+    //     {
+    //         GameObject go = GameObject.FindWithTag(sTag);
+    //         if (go)
+    //         {
+    //             // We must deactivate all game objects or they will not be found by the FindWithTag method on reload
+    //             go.SetActive(false);
+    //             Destroy(go);
+    //         }
+    //     }
+    // }
 
     // ------------------------------------------------------------------------------------------------
 
@@ -236,8 +210,10 @@ public class LevelController : MonoBehaviour
         {
             goWallSpinner.GetComponent<WallSpinnerController>().Reset();
         }
-        Deactivate();
-        Activate();
+        // Deactivate();
+        // Activate();
+        spawnManager.Destroy();
+        spawnManager.Instantiate(iLevel);
     }
 
     // ------------------------------------------------------------------------------------------------
@@ -246,7 +222,7 @@ public class LevelController : MonoBehaviour
     {
         foreach (GameObject goWallSlider in goArrWallsSlider)
         {
-            goWallSlider.GetComponent<WallSliderController>().Trigger();
+            goWallSlider.GetComponent<WallSliderController>().Trigger(false);
         }
     }
 

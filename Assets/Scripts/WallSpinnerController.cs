@@ -87,9 +87,12 @@ public class WallSpinnerController : MonoBehaviour
 
     // ------------------------------------------------------------------------------------------------
 
-    public void Trigger(int iDirectionGiven=0)
+    public void Trigger(int iDirectionGiven=0, bool bSfx=true)
     {
-        gameManager.SfxclpPlay("sfxclpWallSpinner");
+        if (bSfx)
+        {
+            gameManager.SfxclpPlay("sfxclpWallSpinner");
+        }
         bChangeState = true;
         if (iDirectionGiven == 0)
         {
@@ -116,7 +119,7 @@ public class WallSpinnerController : MonoBehaviour
     {
         if (rotRotationYCurrent != rotRotationYStart)
         {
-            Trigger();
+            Trigger(0, false);
         }
     }
 

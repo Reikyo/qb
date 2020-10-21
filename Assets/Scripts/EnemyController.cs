@@ -18,6 +18,7 @@ public class EnemyController : MonoBehaviour
     private GameObject goTarget;
     private List<string> slistLeaveTargetObjective = new List<string>() {"Random", "SafeZoneTarget"};
     private GameObject goPlayer;
+    public GameObject goWallSlider;
     public string sObjective;
     // public ParticleSystem psInactive;
     private GameObject goInactive;
@@ -118,6 +119,10 @@ public class EnemyController : MonoBehaviour
         gameManager.SfxclpPlay("sfxclpEnemySleep");
         // psInactive.Play();
         goInactive.SetActive(true);
+        if (goWallSlider)
+        {
+            goWallSlider.GetComponent<WallSliderController>().Trigger();
+        }
         yield return new WaitForSeconds(fWaitTime);
         // psInactive.Stop();
         // yield return new WaitForSeconds(7f);
@@ -125,6 +130,10 @@ public class EnemyController : MonoBehaviour
         goInactive.SetActive(false);
         bActive = true;
         navEnemy.enabled = true;
+        if (goWallSlider)
+        {
+            goWallSlider.GetComponent<WallSliderController>().Trigger();
+        }
     }
 
     // ------------------------------------------------------------------------------------------------

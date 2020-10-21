@@ -10,6 +10,8 @@ public class WallSliderController : MonoBehaviour
     public enum positionY {down, up};
     public positionY posPositionYStart = positionY.down;
     private positionY posPositionYCurrent = positionY.down;
+    public bool bPositionYCurrentDown = true;
+    public bool bPositionYCurrentUp = false;
 
     private float fMetresPositionYLower = 2f;
     private float fMetresPositionYUpper = 6f;
@@ -56,10 +58,14 @@ public class WallSliderController : MonoBehaviour
                 if (iDirection == 1)
                 {
                     posPositionYCurrent = positionY.up;
+                    bPositionYCurrentDown = false;
+                    bPositionYCurrentUp = true;
                 }
                 else
                 {
                     posPositionYCurrent = positionY.down;
+                    bPositionYCurrentDown = true;
+                    bPositionYCurrentUp = false;
                 }
             }
         }
@@ -67,9 +73,12 @@ public class WallSliderController : MonoBehaviour
 
     // ------------------------------------------------------------------------------------------------
 
-    public void Trigger()
+    public void Trigger(bool bSfx=true)
     {
-        gameManager.SfxclpPlay("sfxclpWallSlider");
+        if (bSfx)
+        {
+            gameManager.SfxclpPlay("sfxclpWallSlider");
+        }
         bChangeState = true;
         if (iDirection == -1)
         {
@@ -89,7 +98,7 @@ public class WallSliderController : MonoBehaviour
     {
         if (posPositionYCurrent != posPositionYStart)
         {
-            Trigger();
+            Trigger(false);
         }
     }
 

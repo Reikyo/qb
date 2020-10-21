@@ -74,7 +74,10 @@ public class PlayerController : MonoBehaviour
         guiNumProjectile.text = iNumProjectile.ToString();
 
         colPlayer = GetComponent<Renderer>().material.GetColor("_Color");
-        colTarget = goTarget.GetComponent<Renderer>().material.GetColor("_Color");
+        if (goTarget)
+        {
+            colTarget = goTarget.GetComponent<Renderer>().material.GetColor("_Color");
+        }
     }
 
     // ------------------------------------------------------------------------------------------------
@@ -232,6 +235,7 @@ public class PlayerController : MonoBehaviour
     {
         bBoost = true;
         goPlayerTrail.SetActive(true);
+        transform.Translate(1.0f * -Vector3.forward);
         rbPlayer.AddForce(fForceBoost * transform.forward, ForceMode.Impulse);
         gameManager.SfxclpPlay("sfxclpBoost");
         yield return new WaitForSeconds(fTimeDeltaBoost);
@@ -451,19 +455,22 @@ public class PlayerController : MonoBehaviour
         else if (   other.gameObject.CompareTag("Warp")
                 &&  !bWarp )
         {
-            v3PositionWarpFrom = other.gameObject.transform.position;
-            v3PositionWarpTo = other.gameObject.GetComponent<WarpController>().goWarpPartner.transform.position;
-            bWarp = true;
-            bWarpDown = true;
-            bWarpVfx = true;
-            bActive = false;
-            bInMotionThisFrame = true;
-            navPlayer.enabled = true;
-            navPlayer.destination = new Vector3(
-                v3PositionWarpFrom.x,
-                transform.position.y,
-                v3PositionWarpFrom.z
-            );
+            if (other.gameObject.GetComponent<WarpController>().goWarpPartner)
+            {
+                v3PositionWarpFrom = other.gameObject.transform.position;
+                v3PositionWarpTo = other.gameObject.GetComponent<WarpController>().goWarpPartner.transform.position;
+                bWarp = true;
+                bWarpDown = true;
+                bWarpVfx = true;
+                bActive = false;
+                bInMotionThisFrame = true;
+                navPlayer.enabled = true;
+                navPlayer.destination = new Vector3(
+                    v3PositionWarpFrom.x,
+                    transform.position.y,
+                    v3PositionWarpFrom.z
+                );
+            }
         }
         // From first player-buddy switch attempt:
         // else if (   other.gameObject.CompareTag("PlayerBuddySwitch")

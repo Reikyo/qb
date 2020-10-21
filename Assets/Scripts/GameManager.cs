@@ -101,9 +101,17 @@ public class GameManager : MonoBehaviour
         // ------------------------------------------------------------------------------------------------
 
         // Temporarily allow level to be cleared for testing purposes:
-        if (Input.GetKeyDown(KeyCode.L))
+        if (Input.GetKeyDown(KeyCode.C))
         {
             LevelCleared();
+        }
+
+        // ------------------------------------------------------------------------------------------------
+
+        // Temporarily allow level to be failed for testing purposes:
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            LevelFailed();
         }
 
         // ------------------------------------------------------------------------------------------------
@@ -182,12 +190,13 @@ public class GameManager : MonoBehaviour
 
     // ------------------------------------------------------------------------------------------------
 
-    public void LevelFailed(string sGuiLevelFailedHelpText)
+    public void LevelFailed(string sGuiLevelFailedHelpText="")
     {
         if (bActive)
         {
             bActive = false;
             guiLevelFailedHelp.text = sGuiLevelFailedHelpText;
+            goScreenHUD.SetActive(false);
             goScreenLevelFailed.SetActive(true);
             // sfxsrcGameManager.PlayOneShot(sfxclpNames["sfxclpLevelFailed"]);
             sfxsrcGameManager.PlayOneShot(sfxclpLevelFailed);
@@ -234,7 +243,7 @@ public class GameManager : MonoBehaviour
         }
         // GameObject go = Instantiate(vfxclpNames[strVfxclpName], v3Position, vfxclpNames[strVfxclpName].transform.rotation);
         GameObject go = Instantiate(vfxclpName, v3Position, vfxclpName.transform.rotation);
-        // StartCoroutine(WaitUntilDestroy(go, 0.5f));
+        StartCoroutine(WaitUntilDestroy(go, 10f));
     }
 
     // ------------------------------------------------------------------------------------------------

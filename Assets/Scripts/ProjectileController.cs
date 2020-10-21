@@ -76,6 +76,7 @@ public class ProjectileController : MonoBehaviour
             else if (other.gameObject.CompareTag("WallSlider"))
             {
                 cubeController.TriggerWallsSlider();
+                gameManager.SfxclpPlay("sfxclpWallSlider");
             }
             else if (other.gameObject.CompareTag("WallSpinnerTrigger"))
             {
