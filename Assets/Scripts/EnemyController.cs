@@ -5,6 +5,8 @@ using UnityEngine.AI;
 
 public class EnemyController : MonoBehaviour
 {
+    private GameManager gameManager;
+
     public bool bInPlay = true;
     public bool bActive = true;
     // private float fForce = 500f;
@@ -14,11 +16,10 @@ public class EnemyController : MonoBehaviour
     private Rigidbody rbEnemy;
     // private Animator anEnemy;
     private NavMeshAgent navEnemy;
-    private GameManager gameManager;
     private GameObject goTarget;
     private List<string> slistLeaveTargetObjective = new List<string>() {"Random", "SafeZoneTarget"};
     private GameObject goPlayer;
-    public GameObject goWallSlider;
+    public GameObject goWallTimed;
     public string sObjective;
     // public ParticleSystem psInactive;
     private GameObject goInactive;
@@ -28,10 +29,11 @@ public class EnemyController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        gameManager = GameObject.Find("Game Manager").GetComponent<GameManager>();
+
         rbEnemy = GetComponent<Rigidbody>();
         // anEnemy = GetComponent<Animator>();
         navEnemy = GetComponent<NavMeshAgent>();
-        gameManager = GameObject.Find("Game Manager").GetComponent<GameManager>();
         goTarget = GameObject.FindWithTag("Target");
         goPlayer = GameObject.FindWithTag("Player");
         goInactive = transform.Find("FX_Dust_Prefab_01 1").gameObject;
@@ -119,9 +121,11 @@ public class EnemyController : MonoBehaviour
         gameManager.SfxclpPlay("sfxclpEnemySleep");
         // psInactive.Play();
         goInactive.SetActive(true);
-        if (goWallSlider)
+        if (goWallTimed)
         {
-            goWallSlider.GetComponent<WallSliderController>().Trigger();
+            goWallTimed.SetActive(false);
+            gameManager.VfxclpPlay("vfxclpWallTimed", goWallTimed.transform.position);
+            gameManager.SfxclpPlay("vfxclpWallTimed");
         }
         yield return new WaitForSeconds(fWaitTime);
         // psInactive.Stop();
@@ -130,9 +134,11 @@ public class EnemyController : MonoBehaviour
         goInactive.SetActive(false);
         bActive = true;
         navEnemy.enabled = true;
-        if (goWallSlider)
+        if (goWallTimed)
         {
-            goWallSlider.GetComponent<WallSliderController>().Trigger();
+            goWallTimed.SetActive(true);
+            gameManager.VfxclpPlay("vfxclpWallTimed", goWallTimed.transform.position);
+            gameManager.SfxclpPlay("vfxclpWallTimed");
         }
     }
 

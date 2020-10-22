@@ -6,6 +6,8 @@ using UnityEngine.AI;
 
 public class TargetController : MonoBehaviour
 {
+    private GameManager gameManager;
+
     public bool bInPlay = true;
     public bool bActive = false;
     public bool bSafe;
@@ -16,7 +18,6 @@ public class TargetController : MonoBehaviour
     private Rigidbody rbTarget;
     private NavMeshAgent navTarget;
     private Material matTarget;
-    private GameManager gameManager;
     private GameObject goPlayer;
     private GameObject goSafeZoneTarget;
     public string sObjective = "None";
@@ -35,10 +36,11 @@ public class TargetController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        gameManager = GameObject.Find("Game Manager").GetComponent<GameManager>();
+
         rbTarget = GetComponent<Rigidbody>();
         navTarget = GetComponent<NavMeshAgent>();
         matTarget = GetComponent<Renderer>().material;
-        gameManager = GameObject.Find("Game Manager").GetComponent<GameManager>();
         goPlayer = GameObject.FindWithTag("Player");
         goSafeZoneTarget = GameObject.FindWithTag("SafeZoneTarget");
         bSafe = !goSafeZoneTarget;

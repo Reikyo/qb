@@ -4924,6 +4924,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bInPlay: 1
   bActive: 1
+  goWallTimed: {fileID: 0}
   sObjective: Target
 --- !u!114 &5372751787709200268
 MonoBehaviour:

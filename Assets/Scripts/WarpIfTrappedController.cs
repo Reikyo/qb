@@ -5,9 +5,9 @@ using UnityEngine;
 public class WarpIfTrappedController : MonoBehaviour
 {
     private GameObject goPlayer;
-    public GameObject[] golistWallSlider;
+    public GameObject[] golistWallTimed;
     public GameObject[] golistWarp;
-    private int iNumWallSliderDown = 0;
+    private int iNumWallTimedActive = 0;
     private bool bWarp = false;
 
     // ------------------------------------------------------------------------------------------------
@@ -34,15 +34,15 @@ public class WarpIfTrappedController : MonoBehaviour
         {
             if (!bWarp)
             {
-                iNumWallSliderDown = 0;
-                foreach (GameObject goWallSlider in golistWallSlider)
+                iNumWallTimedActive = 0;
+                foreach (GameObject goWallTimed in golistWallTimed)
                 {
-                    if (goWallSlider.GetComponent<WallSliderController>().bPositionYCurrentDown)
+                    if (goWallTimed.activeSelf)
                     {
-                        iNumWallSliderDown += 1;
+                        iNumWallTimedActive += 1;
                     }
                 }
-                if (iNumWallSliderDown == golistWallSlider.Length)
+                if (iNumWallTimedActive == golistWallTimed.Length)
                 {
                     bWarp = true;
                     foreach (GameObject goWarp in golistWarp)
@@ -54,7 +54,7 @@ public class WarpIfTrappedController : MonoBehaviour
         }
         else if (bWarp)
         {
-            iNumWallSliderDown = 0;
+            iNumWallTimedActive = 0;
             bWarp = false;
             foreach (GameObject goWarp in golistWarp)
             {

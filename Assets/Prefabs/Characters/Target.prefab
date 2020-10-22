@@ -346,6 +346,7 @@ MonoBehaviour:
   bInPlay: 1
   bActive: 0
   bSafe: 0
+  sPlayerBuddySwitchEngagedByTarget: 
   fSpeed: 5
   sObjective: 
 --- !u!114 &6939492379494027688

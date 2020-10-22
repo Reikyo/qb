@@ -99,9 +99,9 @@ public class SpawnManager : MonoBehaviour
                 // goEnemy1.name = "Enemy (1)"; // Associated with "Wall Horizontal (6) (3)"
                 // goEnemy2.name = "Enemy (2)"; // Associated with "Wall Horizontal (6) (4)"
                 // goEnemy3.name = "Enemy (3)"; // Associated with "Wall Horizontal (6) (5)"
-                goEnemy1.GetComponent<EnemyController>().goWallSlider = GameObject.Find("Wall Horizontal (6) (3)");
-                goEnemy2.GetComponent<EnemyController>().goWallSlider = GameObject.Find("Wall Horizontal (6) (4)");
-                goEnemy3.GetComponent<EnemyController>().goWallSlider = GameObject.Find("Wall Horizontal (6) (5)");
+                goEnemy1.GetComponent<EnemyController>().goWallTimed = GameObject.Find("Wall Horizontal (6) (3)");
+                goEnemy2.GetComponent<EnemyController>().goWallTimed = GameObject.Find("Wall Horizontal (6) (4)");
+                goEnemy3.GetComponent<EnemyController>().goWallTimed = GameObject.Find("Wall Horizontal (6) (5)");
                 break;
             case 2:
                 // Level 3

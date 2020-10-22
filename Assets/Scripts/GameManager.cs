@@ -28,6 +28,7 @@ public class GameManager : MonoBehaviour
     // private Dictionary<string, GameObject> vfxclpNames = new Dictionary<string, GameObject>();
     public GameObject vfxclpWarp; // CFX3_MagicAura_B_Runic 1
     public GameObject vfxclpWallDestructible; // FX_Fireworks_Yellow_Large 1
+    public GameObject vfxclpWallTimed; // FX_Fireworks_Yellow_Large 1
 
     private AudioSource sfxsrcGameManager;
     private AudioClip sfxclpName;
@@ -42,6 +43,7 @@ public class GameManager : MonoBehaviour
     public AudioClip sfxclpLaunch; // DM-CGS-34
     public AudioClip sfxclpWarp; // DM-CGS-42
     public AudioClip sfxclpWallDestructible; // DM-CGS-32
+    public AudioClip sfxclpWallTimed; // DM-CGS-32
     public AudioClip sfxclpWallSlider; // DM-CGS-38
     public AudioClip sfxclpWallSpinner; // DM-CGS-37
     public AudioClip sfxclpSwitch; // DM-CGS-19
@@ -239,6 +241,7 @@ public class GameManager : MonoBehaviour
         switch(strVfxclpName)
         {
             case "vfxclpWallDestructible": vfxclpName = vfxclpWallDestructible; break;
+            case "vfxclpWallTimed": vfxclpName = vfxclpWallTimed; break;
             case "vfxclpWarp": vfxclpName = vfxclpWarp; break;
         }
         // GameObject go = Instantiate(vfxclpNames[strVfxclpName], v3Position, vfxclpNames[strVfxclpName].transform.rotation);
@@ -262,6 +265,7 @@ public class GameManager : MonoBehaviour
             case "sfxclpLaunch": sfxclpName = sfxclpLaunch; break;
             case "sfxclpWarp": sfxclpName = sfxclpWarp; break;
             case "sfxclpWallDestructible": sfxclpName = sfxclpWallDestructible; break;
+            case "sfxclpWallTimed": sfxclpName = sfxclpWallTimed; break;
             case "sfxclpWallSlider": sfxclpName = sfxclpWallSlider; break;
             case "sfxclpWallSpinner": sfxclpName = sfxclpWallSpinner; break;
             case "sfxclpSwitch": sfxclpName = sfxclpSwitch; break;
