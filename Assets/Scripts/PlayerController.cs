@@ -255,8 +255,15 @@ public class PlayerController : MonoBehaviour
 
     private void MoveNavMesh()
     {
-        if (navPlayer.remainingDistance <= navPlayer.stoppingDistance)
+        // This commented line should work, and has been seen to work, but for some reason it doesn't
+        // always work, hence the manual calculation ...
+        // if (navPlayer.remainingDistance <= navPlayer.stoppingDistance)
+        if (Math.Pow(Math.Pow(transform.position.x - navPlayer.destination.x, 2f) + Math.Pow(transform.position.z - navPlayer.destination.z, 2f), 0.5f) <= navPlayer.stoppingDistance)
         {
+            // Debug.Log(transform.position);
+            // Debug.Log(navPlayer.destination);
+            // Debug.Log(navPlayer.remainingDistance);
+            // Debug.Log(navPlayer.stoppingDistance);
             bInMotionThisFrame = false;
             if (bWarp)
             {
@@ -470,6 +477,9 @@ public class PlayerController : MonoBehaviour
                     transform.position.y,
                     v3PositionWarpFrom.z
                 );
+                // Debug.Log(transform.position);
+                // Debug.Log(transform.position.y);
+                // Debug.Log(navPlayer.destination);
             }
         }
         // From first player-buddy switch attempt:

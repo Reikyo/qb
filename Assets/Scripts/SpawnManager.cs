@@ -104,10 +104,15 @@ public class SpawnManager : MonoBehaviour
                 goEnemy3.GetComponent<EnemyController>().goWallTimed = GameObject.Find("Wall Horizontal (6) (5)");
                 break;
             case 2:
+                // Level 3 0
+                // goPlayer = Instantiate(goPrefabPlayer, new Vector3(-22f, goPrefabPlayer.transform.position.y, -23f), goPrefabPlayer.transform.rotation);
+                // goSafeZonePlayer = Instantiate(goPrefabSafeZonePlayer, new Vector3(-17f, goPrefabSafeZonePlayer.transform.position.y, -2f), goPrefabSafeZonePlayer.transform.rotation);
+                // goPowerUp = Instantiate(goPrefabPowerUp, new Vector3(0f, goPrefabPowerUp.transform.position.y, -23f), goPrefabPowerUp.transform.rotation);
                 // Level 3
-                goPlayer = Instantiate(goPrefabPlayer, new Vector3(-22f, goPrefabPlayer.transform.position.y, -23f), goPrefabPlayer.transform.rotation);
-                goSafeZonePlayer = Instantiate(goPrefabSafeZonePlayer, new Vector3(-17f, goPrefabSafeZonePlayer.transform.position.y, -2f), goPrefabSafeZonePlayer.transform.rotation);
-                goPowerUp = Instantiate(goPrefabPowerUp, new Vector3(0f, goPrefabPowerUp.transform.position.y, -23f), goPrefabPowerUp.transform.rotation);
+                goPlayer = Instantiate(goPrefabPlayer, new Vector3(-7.35f, goPrefabPlayer.transform.position.y, -22.05f), goPrefabPlayer.transform.rotation);
+                goTarget = Instantiate(goPrefabTarget, new Vector3(7.35f, goPrefabTarget.transform.position.y, -22.05f), goPrefabTarget.transform.rotation);
+                // goSafeZonePlayer = Instantiate(goPrefabSafeZonePlayer, new Vector3(-12.25f, goPrefabSafeZonePlayer.transform.position.y, 1.75f), goPrefabSafeZonePlayer.transform.rotation);
+                // goSafeZoneTarget = Instantiate(goPrefabSafeZoneTarget, new Vector3(12.25f, goPrefabSafeZoneTarget.transform.position.y, 1.75f), goPrefabSafeZoneTarget.transform.rotation);
                 break;
             case 3:
                 // Level 4

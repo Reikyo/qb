@@ -13,8 +13,8 @@ public class WallSliderController : MonoBehaviour
     public bool bPositionYCurrentDown = true;
     public bool bPositionYCurrentUp = false;
 
-    private float fMetresPositionYLower = 2f;
-    private float fMetresPositionYUpper = 6f;
+    public float fMetresPositionYLower = 2f;
+    public float fMetresPositionYUpper = 6f;
     private float fMetresPositionYTarget;
 
     private float fMetresPerSecY;

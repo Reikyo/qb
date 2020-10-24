@@ -5,7 +5,7 @@ using UnityEngine;
 public class SwitchTriggerController : MonoBehaviour
 {
     public enum trigger {state1to2, state2to1};
-    public trigger trigType;
+    public trigger triggerType;
     private SwitchController switchController;
 
     // ------------------------------------------------------------------------------------------------
@@ -28,7 +28,7 @@ public class SwitchTriggerController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (trigType == trigger.state1to2)
+        if (triggerType == trigger.state1to2)
         {
             switchController.Trigger("state1to2", other.gameObject.tag);
         }
@@ -38,7 +38,7 @@ public class SwitchTriggerController : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (trigType == trigger.state2to1)
+        if (triggerType == trigger.state2to1)
         {
             switchController.Trigger("state2to1", other.gameObject.tag);
         }

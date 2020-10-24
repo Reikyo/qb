@@ -6,9 +6,17 @@ public class SwitchController : MonoBehaviour
 {
     private GameManager gameManager;
 
-    public GameObject goDevice;
+    public enum switcher {stationary, translate, rotate};
+    public switcher switcherType;
+
+    public GameObject[] goArrDevice;
     public List<string> slistOkayTriggerCharacters = new List<string>() {"Player", "Target"};
     public string sTriggerCharacter = "";
+
+    // private float fMetresToTranslate = XXXf;
+    // private float fMetresTranslated = XXXf;
+    // private float fMetresPerSec = XXXf;
+    // private float fMetresPerFrame;
 
     private float fDegreesToRotate = 30f;
     private float fDegreesRotated = 0f;
@@ -38,39 +46,61 @@ public class SwitchController : MonoBehaviour
     {
         if (bChangeState1to2)
         {
-            bChangeState1to2 = Rotate(bChangeState1to2);
             if (bState1)
             {
                 bState1 = false;
                 gameManager.SfxclpPlay("sfxclpSwitch");
             }
+            switch (switcherType)
+            {
+                case switcher.stationary:
+                    bChangeState1to2 = false;
+                    break;
+                // case switcher.translate:
+                //     bChangeState1to2 = Translate(bChangeState1to2);
+                //     break;
+                case switcher.rotate:
+                    bChangeState1to2 = Rotate(bChangeState1to2);
+                    break;
+            }
             if (!bChangeState1to2)
             {
                 bState2 = true;
                 iDirection = 1;
-                if (goDevice)
+                if (goArrDevice.Length > 0)
                 {
-                    DeviceTrigger(goDevice);
+                    DeviceTrigger(goArrDevice);
                 }
             }
         }
         else if (bChangeState2to1)
         {
-            bChangeState2to1 = Rotate(bChangeState2to1);
             if (bState2)
             {
                 bState2 = false;
                 gameManager.SfxclpPlay("sfxclpSwitch");
-                if (goDevice)
+                if (goArrDevice.Length > 0)
                 {
-                    DeviceTrigger(goDevice);
+                    DeviceTrigger(goArrDevice);
                 }
+            }
+            switch (switcherType)
+            {
+                case switcher.stationary:
+                    bChangeState2to1 = false;
+                    break;
+                // case switcher.translate:
+                //     bChangeState2to1 = Translate(bChangeState2to1);
+                //     break;
+                case switcher.rotate:
+                    bChangeState2to1 = Rotate(bChangeState2to1);
+                    break;
             }
             if (!bChangeState2to1)
             {
-                sTriggerCharacter = "";
                 bState1 = true;
                 iDirection = -1;
+                sTriggerCharacter = "";
             }
         }
     }
@@ -79,16 +109,16 @@ public class SwitchController : MonoBehaviour
 
     public void Trigger(string sChangeState, string sTriggerCharacterGiven)
     {
-        if ((sChangeState == "state1to2")
-        &&  bState1
-        &&  slistOkayTriggerCharacters.Contains(sTriggerCharacterGiven))
+        if (    (sChangeState == "state1to2")
+            &&  bState1
+            &&  slistOkayTriggerCharacters.Contains(sTriggerCharacterGiven) )
         {
             sTriggerCharacter = sTriggerCharacterGiven;
             bChangeState1to2 = true;
         }
-        else if ((sChangeState == "state2to1")
-        &&  !bState1
-        &&  (sTriggerCharacterGiven == sTriggerCharacter))
+        else if (   (sChangeState == "state2to1")
+                &&  !bState1
+                &&  (sTriggerCharacterGiven == sTriggerCharacter) )
         {
             bChangeState2to1 = true;
         }
@@ -96,18 +126,29 @@ public class SwitchController : MonoBehaviour
 
     // ------------------------------------------------------------------------------------------------
 
-    private void DeviceTrigger(GameObject goDevice)
+    private void DeviceTrigger(GameObject[] goArrDevice)
     {
-        switch(goDevice.tag)
+        foreach (GameObject goDevice in goArrDevice)
         {
-            case "WallSlider":
-                goDevice.GetComponent<WallSliderController>().Trigger();
-                break;
-            case "WallSpinner":
-                goDevice.GetComponent<WallSpinnerController>().Trigger();
-                break;
+            switch(goDevice.tag)
+            {
+                case "WallSlider":
+                    goDevice.GetComponent<WallSliderController>().Trigger();
+                    break;
+                case "WallSpinner":
+                    goDevice.GetComponent<WallSpinnerController>().Trigger();
+                    break;
+            }
         }
     }
+
+    // ------------------------------------------------------------------------------------------------
+
+    // private bool Translate(bool bChangeState)
+    // {
+    //     <CODE HERE, SHOULD BE SIMILAR TO ROTATE CODE BELOW>
+    //     return(bChangeState);
+    // }
 
     // ------------------------------------------------------------------------------------------------
 
