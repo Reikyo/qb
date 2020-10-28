@@ -1,10 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class PowerUpController : MonoBehaviour
 {
-    public int iValue = 20;
+    public int iNumProjectile = 20;
+    public TextMeshProUGUI guiLabel1;
+    public TextMeshProUGUI guiLabel2;
+    public TextMeshProUGUI guiLabel3;
 
     private float fDegreesPerSecond = 90f;
     private float fDegreesPerFrame;
@@ -15,6 +19,9 @@ public class PowerUpController : MonoBehaviour
     void Start()
     {
         fDegreesPerFrame = fDegreesPerSecond * Time.deltaTime;
+        guiLabel1.text = iNumProjectile.ToString() + "\n*";
+        guiLabel2.text = iNumProjectile.ToString() + "\n*";
+        guiLabel3.text = iNumProjectile.ToString() + "\n*";
     }
 
     // ------------------------------------------------------------------------------------------------

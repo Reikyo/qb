@@ -26,6 +26,15 @@ TagManager:
   - PlayerBuddySwitch
   - PlayerBuddySwitchTrigger
   - LaunchTrigger
+  - Switcher
+  - Launcher
+  - Warper
+  - LauncherTriggerOn
+  - SwitcherTriggerOn
+  - SwitcherTriggerOff
+  - WallSpinnerTriggerOn
+  - Exchanger
+  - WallTimed
   layers:
   - Default
   - TransparentFX

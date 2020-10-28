@@ -7,9 +7,12 @@ public class WallSpinnerController : MonoBehaviour
 {
     private GameManager gameManager;
 
-    public enum rotationY {horizontal, vertical};
-    public rotationY rotRotationYStart = rotationY.horizontal;
-    private rotationY rotRotationYCurrent = rotationY.horizontal;
+    // public enum rotationY {horizontal, vertical};
+    // public rotationY rotRotationYStart = rotationY.horizontal;
+    // private rotationY rotRotationYCurrent = rotationY.horizontal;
+
+    public enum activator {projectile, switcher, both};
+    public activator activatorSpinner;
 
     private float fDegreesRotationY = 0f;
     private float fDegreesRotationYLower = 0f;
@@ -93,30 +96,35 @@ public class WallSpinnerController : MonoBehaviour
 
     // ------------------------------------------------------------------------------------------------
 
-    public void Trigger(int iDirectionGiven=0, bool bSfx=true)
+    public void Trigger(string sActivator, int iDirectionGiven=0, bool bSfx=true)
     {
-        if (bSfx)
+        if (    (activatorSpinner == activator.both)
+            ||  ((sActivator == "projectile") && (activatorSpinner == activator.projectile))
+            ||  ((sActivator == "switcher") && (activatorSpinner == activator.switcher)) )
         {
-            gameManager.SfxclpPlay("sfxclpWallSpinner");
-        }
-        bChangeState = true;
-        if (iDirectionGiven == 0)
-        {
-            if (iDirection == -1)
+            if (bSfx)
             {
-                iDirection = 1;
+                gameManager.SfxclpPlay("sfxclpWallSpinner");
+            }
+            bChangeState = true;
+            if (iDirectionGiven == 0)
+            {
+                if (iDirection == -1)
+                {
+                    iDirection = 1;
+                }
+                else
+                {
+                    iDirection = -1;
+                }
             }
             else
             {
-                iDirection = -1;
+                iDirection = iDirectionGiven;
             }
+            iDirectionSum += iDirection;
+            fDegreesRotationYTarget += iDirection * fDegreesRotationYUpper;
         }
-        else
-        {
-            iDirection = iDirectionGiven;
-        }
-        iDirectionSum += iDirection;
-        fDegreesRotationYTarget += iDirection * fDegreesRotationYUpper;
     }
 
     // ------------------------------------------------------------------------------------------------

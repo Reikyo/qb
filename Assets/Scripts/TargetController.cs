@@ -188,7 +188,7 @@ public class TargetController : MonoBehaviour
             navTarget.enabled = false;
             gameManager.LevelFailed("Look after your buddy!");
         }
-        else if (other.gameObject.CompareTag("PlayerBuddySwitch"))
+        else if (other.gameObject.CompareTag("Exchanger"))
         {
             other.gameObject.GetComponent<PlayerBuddySwitchController>().bEngagedByTarget = true;
             sPlayerBuddySwitchEngagedByTarget = other.gameObject.name;
@@ -214,7 +214,7 @@ public class TargetController : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.gameObject.CompareTag("PlayerBuddySwitch"))
+        if (other.gameObject.CompareTag("Exchanger"))
         {
             other.gameObject.GetComponent<PlayerBuddySwitchController>().bEngagedByTarget = false;
             sPlayerBuddySwitchEngagedByTarget = "";

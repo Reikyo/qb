@@ -443,7 +443,7 @@ public class PlayerController : MonoBehaviour
         {
             Destroy(other.gameObject);
             gameManager.SfxclpPlay("sfxclpPowerUp");
-            iNumProjectile += other.gameObject.GetComponent<PowerUpController>().iValue;
+            iNumProjectile += other.gameObject.GetComponent<PowerUpController>().iNumProjectile;
             guiNumProjectile.text = iNumProjectile.ToString();
             if (    (gameManager.bProjectilePathDependentLevel)
                 &&  (gameManager.bNumProjectileFlash)
@@ -452,14 +452,14 @@ public class PlayerController : MonoBehaviour
                 gameManager.EndNumProjectileFlash();
             }
         }
-        else if (other.gameObject.CompareTag("LaunchTrigger"))
+        else if (other.gameObject.CompareTag("LauncherTriggerOn"))
         {
             bLaunch = true;
             gameManager.SfxclpPlay("sfxclpLaunch");
             goPlayerTrail.SetActive(true);
             rbPlayer.AddForce(fForceLaunch * other.gameObject.transform.right, ForceMode.Impulse);
         }
-        else if (   other.gameObject.CompareTag("Warp")
+        else if (   other.gameObject.CompareTag("Warper")
                 &&  !bWarp )
         {
             if (other.gameObject.GetComponent<WarpController>().goWarpPartner)
@@ -483,10 +483,10 @@ public class PlayerController : MonoBehaviour
             }
         }
         // From first player-buddy switch attempt:
-        // else if (   other.gameObject.CompareTag("PlayerBuddySwitch")
+        // else if (   other.gameObject.CompareTag("Exchanger")
         //         && (!other.gameObject.GetComponent<PlayerBuddySwitchController>().sTriggeredBy == "")
         //         &&  goTarget )
-        else if (   other.gameObject.CompareTag("PlayerBuddySwitch")
+        else if (   other.gameObject.CompareTag("Exchanger")
                 &&  !other.gameObject.GetComponent<PlayerBuddySwitchController>().bEngagedByTarget
                 &&  !bPlayerBuddySwitch
                 &&  goTarget )
@@ -527,7 +527,7 @@ public class PlayerController : MonoBehaviour
     {
         // From first player-buddy switch attempt:
 
-        // if (    (other.gameObject.CompareTag("PlayerBuddySwitch"))
+        // if (    (other.gameObject.CompareTag("Exchanger"))
         //     &&  (other.gameObject.GetComponent<PlayerBuddySwitchController>().sTriggeredBy == gameObject.tag)
         //     &&  (   (GetComponent<PlayerController>().enabled && GetComponent<PlayerController>().bActive)
         //         ||  (GetComponent<TargetController>().enabled && GetComponent<TargetController>().bActive) ) )
@@ -535,13 +535,13 @@ public class PlayerController : MonoBehaviour
         //     other.gameObject.GetComponent<PlayerBuddySwitchController>().sTriggeredBy = "";
         // }
 
-        if (    other.gameObject.CompareTag("Warp")
+        if (    other.gameObject.CompareTag("Warper")
             &&  bActive
             &&  bWarp )
         {
             bWarp = false;
         }
-        else if (   other.gameObject.CompareTag("PlayerBuddySwitch")
+        else if (   other.gameObject.CompareTag("Exchanger")
                 &&  (other.gameObject.name == sPlayerBuddySwitchEngagedByTarget)
                 &&  bActive
                 &&  bPlayerBuddySwitch )

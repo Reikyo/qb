@@ -12,9 +12,10 @@ public class LevelController : MonoBehaviour
     public bool bProjectilePathDependentLevel = false;
     // public GameObject[] goArrSpawns;
     // public Vector3[] v3ArrSpawnPositions;
-    private GameObject[] goArrWallsDestructible;
-    private GameObject[] goArrWallsSlider;
-    private GameObject[] goArrWallsSpinner;
+    private GameObject[] goArrWallDestructible;
+    private GameObject[] goArrWallTimed;
+    private GameObject[] goArrWallSlider;
+    private GameObject[] goArrWallSpinner;
 
     private Vector3 v3PositionInstantiate = new Vector3(0f, -5f, 1f);
     private Vector3 v3PositionPlay = new Vector3(0f, 0f, 0f);
@@ -132,9 +133,10 @@ public class LevelController : MonoBehaviour
     {
         iLevel = iLevelGiven;
         gameObject.SetActive(true);
-        goArrWallsDestructible = GameObject.FindGameObjectsWithTag("WallDestructible");
-        goArrWallsSlider = GameObject.FindGameObjectsWithTag("WallSlider");
-        goArrWallsSpinner = GameObject.FindGameObjectsWithTag("WallSpinner");
+        goArrWallDestructible = GameObject.FindGameObjectsWithTag("WallDestructible");
+        goArrWallTimed = GameObject.FindGameObjectsWithTag("WallTimed");
+        goArrWallSlider = GameObject.FindGameObjectsWithTag("WallSlider");
+        goArrWallSpinner = GameObject.FindGameObjectsWithTag("WallSpinner");
         bChangeStateStartLevel = true;
         bChangeStatePositionY = true;
         bChangeStatePositionZ = true;
@@ -198,15 +200,19 @@ public class LevelController : MonoBehaviour
 
     public void Reset()
     {
-        foreach (GameObject goWallDestructible in goArrWallsDestructible)
+        foreach (GameObject goWallDestructible in goArrWallDestructible)
         {
             goWallDestructible.SetActive(true);
         }
-        foreach (GameObject goWallSlider in goArrWallsSlider)
+        foreach (GameObject goWallTimed in goArrWallTimed)
+        {
+            goWallTimed.SetActive(true);
+        }
+        foreach (GameObject goWallSlider in goArrWallSlider)
         {
             goWallSlider.GetComponent<WallSliderController>().Reset();
         }
-        foreach (GameObject goWallSpinner in goArrWallsSpinner)
+        foreach (GameObject goWallSpinner in goArrWallSpinner)
         {
             goWallSpinner.GetComponent<WallSpinnerController>().Reset();
         }
@@ -218,9 +224,9 @@ public class LevelController : MonoBehaviour
 
     // ------------------------------------------------------------------------------------------------
 
-    public void TriggerWallsSlider()
+    public void TriggerAllWallSlider()
     {
-        foreach (GameObject goWallSlider in goArrWallsSlider)
+        foreach (GameObject goWallSlider in goArrWallSlider)
         {
             goWallSlider.GetComponent<WallSliderController>().Trigger(false);
         }

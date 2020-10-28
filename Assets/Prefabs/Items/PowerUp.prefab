@@ -124,6 +124,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c3560a8157544c3ea5a785d7908d476, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  iValue: 20
+  guiLabel1: {fileID: 5575638586805792495}
+  guiLabel2: {fileID: 2847729153049419829}
+  guiLabel3: {fileID: 6524680499457197817}
 --- !u!1 &5374523033656156402
 GameObject:
   m_ObjectHideFlags: 0
@@ -295,7 +299,7 @@ GameObject:
   - component: {fileID: 3037924986137863614}
   - component: {fileID: 3439698845019974355}
   m_Layer: 5
-  m_Name: Label 2
+  m_Name: Label (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -394,7 +398,7 @@ GameObject:
   - component: {fileID: 2273651464690727264}
   - component: {fileID: 4193231478901352665}
   m_Layer: 5
-  m_Name: Label 1
+  m_Name: Label (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -493,7 +497,7 @@ GameObject:
   - component: {fileID: 2924767601936365713}
   - component: {fileID: 2424025633065800317}
   m_Layer: 5
-  m_Name: Label 3
+  m_Name: Label (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

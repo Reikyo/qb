@@ -136,7 +136,7 @@ public class SwitchController : MonoBehaviour
                     goDevice.GetComponent<WallSliderController>().Trigger();
                     break;
                 case "WallSpinner":
-                    goDevice.GetComponent<WallSpinnerController>().Trigger();
+                    goDevice.GetComponent<WallSpinnerController>().Trigger("switcher");
                     break;
             }
         }

@@ -963,7 +963,7 @@ GameObject:
   - component: {fileID: 6509780028161023080}
   m_Layer: 0
   m_Name: Cube
-  m_TagString: Untagged
+  m_TagString: Cube
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 8
@@ -1073,15 +1073,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ad8e1afe93894eb48f0f00634dad13d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bFirstLevelStart: 0
-  bNextLevelStart: 0
-  goLevels:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  iLevel: 5
+  guiLevel: {fileID: 0}
+  guiNumProjectile: {fileID: 0}
+  goArrLevels: []
 --- !u!1 &6709851741219264996
 GameObject:
   m_ObjectHideFlags: 0
