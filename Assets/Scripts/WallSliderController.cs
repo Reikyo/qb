@@ -1,17 +1,26 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 using MyFunctions;
 
 public class WallSliderController : MonoBehaviour
 {
     private GameManager gameManager;
+    private NavMeshSurface navNavMesh;
 
-    public enum positionY {down, up};
-    public positionY posPositionYStart = positionY.down;
-    private positionY posPositionYCurrent = positionY.down;
-    public bool bPositionYCurrentDown = true;
-    public bool bPositionYCurrentUp = false;
+    public enum activator {both, projectile, switcher};
+    public activator activatorType;
+
+    public enum switcherTrigger {both, state1to2, state2to1};
+    public switcherTrigger switcherTriggerType;
+
+    public enum direction {x, y, z};
+    public direction directionType;
+
+    public enum positionY {lower, upper};
+    public positionY posPositionYStart = positionY.lower;
+    private positionY posPositionYCurrent = positionY.lower;
 
     public float fMetresPositionYLower = 2f;
     public float fMetresPositionYUpper = 6f;
@@ -20,7 +29,7 @@ public class WallSliderController : MonoBehaviour
     private float fMetresPerSecY;
     private float fMetresPerFrameY;
 
-    private float fTransitionTime = 0.5f;
+    public float fTransitionTime = 0.5f;
 
     private int iDirection = -1;
 
@@ -32,6 +41,7 @@ public class WallSliderController : MonoBehaviour
     void Start()
     {
         gameManager = GameObject.Find("Game Manager").GetComponent<GameManager>();
+        navNavMesh = GameObject.Find("Nav Mesh").GetComponent<NavMeshSurface>();
 
         fMetresPerSecY = (fMetresPositionYUpper - fMetresPositionYLower) / fTransitionTime;
 
@@ -46,26 +56,48 @@ public class WallSliderController : MonoBehaviour
         if (bChangeState)
         {
             fMetresPerFrameY = fMetresPerSecY * Time.deltaTime;
-            bChangeState = MyFunctions.Move.Translate(
-                gameObject,
-                "y",
-                iDirection * fMetresPerFrameY,
-                transform.position.y,
-                fMetresPositionYTarget
-            );
+            switch (directionType)
+            {
+                case direction.x:
+                    bChangeState = MyFunctions.Move.Translate(
+                        gameObject,
+                        "x",
+                        iDirection * fMetresPerFrameY,
+                        transform.position.x,
+                        fMetresPositionYTarget
+                    );
+                    break;
+                case direction.y:
+                    bChangeState = MyFunctions.Move.Translate(
+                        gameObject,
+                        "y",
+                        iDirection * fMetresPerFrameY,
+                        transform.position.y,
+                        fMetresPositionYTarget
+                    );
+                    break;
+                case direction.z:
+                    bChangeState = MyFunctions.Move.Translate(
+                        gameObject,
+                        "z",
+                        iDirection * fMetresPerFrameY,
+                        transform.position.z,
+                        fMetresPositionYTarget
+                    );
+                    break;
+            }
             if (!bChangeState)
             {
+                // We need to build the navmesh when a translator moves if it has a surface which is supposed to be
+                // part of the navmesh, so let's just do it in all cases anyway:
+                navNavMesh.BuildNavMesh();
                 if (iDirection == 1)
                 {
-                    posPositionYCurrent = positionY.up;
-                    bPositionYCurrentDown = false;
-                    bPositionYCurrentUp = true;
+                    posPositionYCurrent = positionY.upper;
                 }
                 else
                 {
-                    posPositionYCurrent = positionY.down;
-                    bPositionYCurrentDown = true;
-                    bPositionYCurrentUp = false;
+                    posPositionYCurrent = positionY.lower;
                 }
             }
         }
@@ -73,22 +105,34 @@ public class WallSliderController : MonoBehaviour
 
     // ------------------------------------------------------------------------------------------------
 
-    public void Trigger(bool bSfx=true)
+    public void Trigger(string sActivator="", string sSwitcherTrigger="", bool bSfx=true)
     {
-        if (bSfx)
+        if (    (activatorType == activator.both)
+            ||  ((activatorType == activator.projectile) && (sActivator == "projectile"))
+            ||  ((activatorType == activator.switcher) && (sActivator == "switcher")) )
         {
-            gameManager.SfxclpPlay("sfxclpWallSlider");
-        }
-        bChangeState = true;
-        if (iDirection == -1)
-        {
-            iDirection = 1;
-            fMetresPositionYTarget = fMetresPositionYUpper;
-        }
-        else
-        {
-            iDirection = -1;
-            fMetresPositionYTarget = fMetresPositionYLower;
+            if (    (sActivator == "projectile")
+                ||  (   (sActivator == "switcher")
+                    &&  (switcherTriggerType == switcherTrigger.both)
+                    ||  ((switcherTriggerType == switcherTrigger.state1to2) && (sSwitcherTrigger == "state1to2"))
+                    ||  ((switcherTriggerType == switcherTrigger.state2to1) && (sSwitcherTrigger == "state2to1")) ) )
+            {
+                if (bSfx)
+                {
+                    gameManager.SfxclpPlay("sfxclpTranslator");
+                }
+                bChangeState = true;
+                if (iDirection == -1)
+                {
+                    iDirection = 1;
+                    fMetresPositionYTarget = fMetresPositionYUpper;
+                }
+                else
+                {
+                    iDirection = -1;
+                    fMetresPositionYTarget = fMetresPositionYLower;
+                }
+            }
         }
     }
 
@@ -98,7 +142,17 @@ public class WallSliderController : MonoBehaviour
     {
         if (posPositionYCurrent != posPositionYStart)
         {
-            Trigger(false);
+            bChangeState = true;
+            if (iDirection == -1)
+            {
+                iDirection = 1;
+                fMetresPositionYTarget = fMetresPositionYUpper;
+            }
+            else
+            {
+                iDirection = -1;
+                fMetresPositionYTarget = fMetresPositionYLower;
+            }
         }
     }
 

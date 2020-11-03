@@ -244,9 +244,9 @@ public class CubeController : MonoBehaviour
 
     // ------------------------------------------------------------------------------------------------
 
-    public void TriggerAllWallSlider()
+    public void TriggerAllTranslator()
     {
-        levelController.TriggerAllWallSlider();
+        levelController.TriggerAllTranslator();
     }
 
     // ------------------------------------------------------------------------------------------------

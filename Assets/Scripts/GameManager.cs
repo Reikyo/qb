@@ -44,8 +44,8 @@ public class GameManager : MonoBehaviour
     public AudioClip sfxclpWarp; // DM-CGS-42
     public AudioClip sfxclpWallDestructible; // DM-CGS-32
     public AudioClip sfxclpWallTimed; // DM-CGS-32
-    public AudioClip sfxclpWallSlider; // DM-CGS-38
-    public AudioClip sfxclpWallSpinner; // DM-CGS-37
+    public AudioClip sfxclpTranslator; // DM-CGS-38
+    public AudioClip sfxclpRotator; // DM-CGS-37
     public AudioClip sfxclpSwitch; // DM-CGS-19
     public AudioClip sfxclpTargetObjectivePlayer; // DM-CGS-24
     public AudioClip sfxclpTargetObjectiveRandom; // DM-CGS-25
@@ -78,8 +78,8 @@ public class GameManager : MonoBehaviour
         // sfxclpNames.Add("sfxclpLaunch", sfxclpLaunch);
         // sfxclpNames.Add("sfxclpWarp", sfxclpWarp);
         // sfxclpNames.Add("sfxclpWallDestructible", sfxclpWallDestructible);
-        // sfxclpNames.Add("sfxclpWallSlider", sfxclpWallSlider);
-        // sfxclpNames.Add("sfxclpWallSpinner", sfxclpWallSpinner);
+        // sfxclpNames.Add("sfxclpTranslator", sfxclpTranslator);
+        // sfxclpNames.Add("sfxclpRotator", sfxclpRotator);
         // sfxclpNames.Add("sfxclpSwitch", sfxclpSwitch);
         // sfxclpNames.Add("sfxclpTargetObjectivePlayer", sfxclpTargetObjectivePlayer);
         // sfxclpNames.Add("sfxclpTargetObjectiveRandom", sfxclpTargetObjectiveRandom);
@@ -266,8 +266,8 @@ public class GameManager : MonoBehaviour
             case "sfxclpWarp": sfxclpName = sfxclpWarp; break;
             case "sfxclpWallDestructible": sfxclpName = sfxclpWallDestructible; break;
             case "sfxclpWallTimed": sfxclpName = sfxclpWallTimed; break;
-            case "sfxclpWallSlider": sfxclpName = sfxclpWallSlider; break;
-            case "sfxclpWallSpinner": sfxclpName = sfxclpWallSpinner; break;
+            case "sfxclpTranslator": sfxclpName = sfxclpTranslator; break;
+            case "sfxclpRotator": sfxclpName = sfxclpRotator; break;
             case "sfxclpSwitch": sfxclpName = sfxclpSwitch; break;
             case "sfxclpTargetObjectivePlayer": sfxclpName = sfxclpTargetObjectivePlayer; break;
             case "sfxclpTargetObjectiveRandom": sfxclpName = sfxclpTargetObjectiveRandom; break;

@@ -35,6 +35,10 @@ TagManager:
   - WallSpinnerTriggerOn
   - Exchanger
   - WallTimed
+  - Translator
+  - Rotator
+  - RotatorTriggerOn
+  - Level
   layers:
   - Default
   - TransparentFX

@@ -69,7 +69,7 @@ public class SwitchController : MonoBehaviour
                 iDirection = 1;
                 if (goArrDevice.Length > 0)
                 {
-                    DeviceTrigger(goArrDevice);
+                    DeviceTrigger(goArrDevice, "state1to2");
                 }
             }
         }
@@ -81,7 +81,7 @@ public class SwitchController : MonoBehaviour
                 gameManager.SfxclpPlay("sfxclpSwitch");
                 if (goArrDevice.Length > 0)
                 {
-                    DeviceTrigger(goArrDevice);
+                    DeviceTrigger(goArrDevice, "state2to1");
                 }
             }
             switch (switcherType)
@@ -107,16 +107,16 @@ public class SwitchController : MonoBehaviour
 
     // ------------------------------------------------------------------------------------------------
 
-    public void Trigger(string sChangeState, string sTriggerCharacterGiven)
+    public void Trigger(string sSwitcherTrigger, string sTriggerCharacterGiven)
     {
-        if (    (sChangeState == "state1to2")
+        if (    (sSwitcherTrigger == "state1to2")
             &&  bState1
             &&  slistOkayTriggerCharacters.Contains(sTriggerCharacterGiven) )
         {
             sTriggerCharacter = sTriggerCharacterGiven;
             bChangeState1to2 = true;
         }
-        else if (   (sChangeState == "state2to1")
+        else if (   (sSwitcherTrigger == "state2to1")
                 &&  !bState1
                 &&  (sTriggerCharacterGiven == sTriggerCharacter) )
         {
@@ -126,17 +126,17 @@ public class SwitchController : MonoBehaviour
 
     // ------------------------------------------------------------------------------------------------
 
-    private void DeviceTrigger(GameObject[] goArrDevice)
+    private void DeviceTrigger(GameObject[] goArrDevice, string sSwitcherTrigger)
     {
         foreach (GameObject goDevice in goArrDevice)
         {
             switch(goDevice.tag)
             {
-                case "WallSlider":
-                    goDevice.GetComponent<WallSliderController>().Trigger();
+                case "Translator":
+                    goDevice.GetComponent<WallSliderController>().Trigger("switcher", sSwitcherTrigger);
                     break;
-                case "WallSpinner":
-                    goDevice.GetComponent<WallSpinnerController>().Trigger("switcher");
+                case "Rotator":
+                    goDevice.GetComponent<WallSpinnerController>().Trigger("switcher", sSwitcherTrigger);
                     break;
             }
         }

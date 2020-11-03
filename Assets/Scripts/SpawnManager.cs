@@ -164,6 +164,8 @@ public class SpawnManager : MonoBehaviour
                 // goSafeZoneTarget = Instantiate(goPrefabSafeZoneTarget, new Vector3(-7.5f, goPrefabSafeZoneTarget.transform.position.y, 21.5f), goPrefabSafeZoneTarget.transform.rotation);
                 // goPowerUp = Instantiate(goPrefabPowerUp, new Vector3(-22.5f, goPrefabPowerUp.transform.position.y, 0f), goPrefabPowerUp.transform.rotation);
                 // Level 4
+                goPlayer = Instantiate(goPrefabPlayer, new Vector3(15f, goPrefabPlayer.transform.position.y, -10f), goPrefabPlayer.transform.rotation);
+                goTarget = Instantiate(goPrefabTarget, new Vector3(-15f, goPrefabTarget.transform.position.y, 10f), goPrefabTarget.transform.rotation);
                 break;
             case 5:
                 // Level 5 0

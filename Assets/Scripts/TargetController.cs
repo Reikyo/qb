@@ -11,7 +11,8 @@ public class TargetController : MonoBehaviour
     public bool bInPlay = true;
     public bool bActive = false;
     public bool bSafe;
-    public string sPlayerBuddySwitchEngagedByTarget = "";
+    public string sNameExchangerEngagedByTarget = "";
+    private string sNameTranslatorEngagedByTarget = "";
     // public float fForce = 500f;
     public float fSpeed = 5f;
     private float fDistPlayerStop = 3f;
@@ -176,6 +177,27 @@ public class TargetController : MonoBehaviour
         {
             SetDirectionRandom();
         }
+        else if (   collision.gameObject.CompareTag("Translator")
+                &&  (transform.position.x >= (collision.gameObject.transform.position.x - 2.5f))
+                &&  (transform.position.x <= (collision.gameObject.transform.position.x + 2.5f))
+                &&  (transform.position.z >= (collision.gameObject.transform.position.z - 2.5f))
+                &&  (transform.position.z <= (collision.gameObject.transform.position.z + 2.5f)) )
+        {
+            transform.parent = collision.gameObject.transform;
+            sNameTranslatorEngagedByTarget = collision.gameObject.name; // We keep track of this as otherwise timing means we could exit from one translator and enter another, but have the exit trigger fulfilled second, so no parent then assigned
+        }
+    }
+
+    // ------------------------------------------------------------------------------------------------
+
+    private void OnCollisionExit(Collision collision)
+    {
+        if (    collision.gameObject.CompareTag("Translator")
+            &&  collision.gameObject.name == sNameTranslatorEngagedByTarget )
+        {
+            transform.parent = null;
+            sNameTranslatorEngagedByTarget = "";
+        }
     }
 
     // ------------------------------------------------------------------------------------------------
@@ -191,7 +213,7 @@ public class TargetController : MonoBehaviour
         else if (other.gameObject.CompareTag("Exchanger"))
         {
             other.gameObject.GetComponent<PlayerBuddySwitchController>().bEngagedByTarget = true;
-            sPlayerBuddySwitchEngagedByTarget = other.gameObject.name;
+            sNameExchangerEngagedByTarget = other.gameObject.name;
         }
         else if (other.gameObject.CompareTag("SafeZoneTarget")
         &&  (sObjective == "Player"))
@@ -217,7 +239,7 @@ public class TargetController : MonoBehaviour
         if (other.gameObject.CompareTag("Exchanger"))
         {
             other.gameObject.GetComponent<PlayerBuddySwitchController>().bEngagedByTarget = false;
-            sPlayerBuddySwitchEngagedByTarget = "";
+            sNameExchangerEngagedByTarget = "";
         }
     }
 

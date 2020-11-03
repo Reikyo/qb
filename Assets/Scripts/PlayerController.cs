@@ -12,6 +12,8 @@ public class PlayerController : MonoBehaviour
     public bool bInPlay = true;
     public bool bActive = true;
     public bool bSafe;
+    private bool bMoveAuto = false;
+    private bool bWait = false;
     private bool bInMotionLastFrame = false;
     private bool bInMotionThisFrame = false;
     private bool bBoost = false;
@@ -19,13 +21,14 @@ public class PlayerController : MonoBehaviour
     private bool bWarp = false;
     private bool bWarpDown = false;
     private bool bWarpUp = false;
-    private bool bWarpVfx = false;
+    private bool bWarpStageStart = false;
     private float fWarpBoundary = 1.1f;
     private Vector3 v3PositionWarpFrom;
     private Vector3 v3PositionWarpTo;
     private bool bPlayerBuddySwitch = false;
     private bool bPlayerBuddySwitched = false;
-    private string sPlayerBuddySwitchEngagedByTarget;
+    private string sNameExchangerEngagedByTarget;
+    private string sNameTranslatorEngagedByPlayer = "";
     // private float fForce = 1000f;
     private float fSpeed = 10f;
     private float fSpeedAnPlayerChild;
@@ -107,15 +110,21 @@ public class PlayerController : MonoBehaviour
                 bInMotionThisFrame = false;
             }
         }
+        else if (bMoveAuto)
+        {
+            MoveAuto();
+        }
         else if (navPlayer.enabled)
         {
             MoveNavMesh();
         }
-        else if (bWarp)
+        else if (   !bWait
+                &&  bWarp )
         {
             Warp();
         }
-        else if (bPlayerBuddySwitch)
+        else if (   !bWait
+                &&  bPlayerBuddySwitch )
         {
             PlayerBuddySwitch();
         }
@@ -215,15 +224,18 @@ public class PlayerController : MonoBehaviour
         transform.position = Vector3.MoveTowards(transform.position, transform.position + v3DirectionMove, fSpeed * Time.deltaTime);
         transform.rotation = Quaternion.LookRotation(v3DirectionLook);
 
-        if (    Input.GetKeyDown(KeyCode.LeftShift)
-            &&  !bLaunch )
+        if (bActive)
         {
-            StartCoroutine(StartBoost());
-        }
-        else if (   Input.GetKeyUp(KeyCode.LeftShift)
-                &&  bBoost )
-        {
-            FinishBoost();
+            if (    Input.GetKeyDown(KeyCode.LeftShift)
+                &&  !bLaunch )
+            {
+                StartCoroutine(StartBoost());
+            }
+            else if (   Input.GetKeyUp(KeyCode.LeftShift)
+                    &&  bBoost )
+            {
+                FinishBoost();
+            }
         }
 
         Debug.DrawRay(transform.position, v3DirectionMove * 10f, Color.blue);
@@ -249,6 +261,21 @@ public class PlayerController : MonoBehaviour
         bBoost = false;
         goPlayerTrail.SetActive(false);
         rbPlayer.velocity = new Vector3(0f, 0f, 0f);
+    }
+
+    // ------------------------------------------------------------------------------------------------
+
+    private void MoveAuto()
+    {
+        if (Math.Pow(Math.Pow(transform.position.x - v3PositionWarpFrom.x, 2f) + Math.Pow(transform.position.z - v3PositionWarpFrom.z, 2f), 0.5f) > (fSpeed * Time.deltaTime))
+        {
+            Move(new Vector3(v3PositionWarpFrom.x, transform.position.y, v3PositionWarpFrom.z));
+        }
+        else
+        {
+            bInMotionThisFrame = false;
+            bMoveAuto = false;
+        }
     }
 
     // ------------------------------------------------------------------------------------------------
@@ -279,36 +306,48 @@ public class PlayerController : MonoBehaviour
 
     // ------------------------------------------------------------------------------------------------
 
+    IEnumerator Wait()
+    {
+        bActive = false;
+        bWait = true;
+        yield return new WaitForSeconds(1f);
+        bActive = true;
+        bWait = false;
+    }
+
+    // ------------------------------------------------------------------------------------------------
+
     private void Warp()
     {
         if (bWarpDown)
         {
-            if (bWarpVfx)
+            if (bWarpStageStart)
             {
-                bWarpVfx = false;
+                bWarpStageStart = false;
                 gameManager.VfxclpPlay("vfxclpWarp", new Vector3(v3PositionWarpFrom.x, v3PositionWarpFrom.y + 0.5f, v3PositionWarpFrom.z));
+                rbPlayer.isKinematic = true; // Suspends regular physics and allows the character to move into the floor
             }
-            if (transform.position.y > -fWarpBoundary)
+            if (transform.position.y > v3PositionWarpFrom.y - fWarpBoundary)
             {
                 transform.Translate(0f, -fSpeedWarp * Time.deltaTime, 0f, Space.World);
             }
             else
             {
-                transform.position = new Vector3(v3PositionWarpTo.x, -fWarpBoundary, v3PositionWarpTo.z);
+                transform.position = new Vector3(v3PositionWarpTo.x, v3PositionWarpTo.y - fWarpBoundary, v3PositionWarpTo.z);
                 gameManager.SfxclpPlay("sfxclpWarp");
                 bWarpDown = false;
                 bWarpUp = true;
-                bWarpVfx = true;
+                bWarpStageStart = true;
             }
         }
         else if (bWarpUp)
         {
-            if (bWarpVfx)
+            if (bWarpStageStart)
             {
-                bWarpVfx = false;
+                bWarpStageStart = false;
                 gameManager.VfxclpPlay("vfxclpWarp", new Vector3(v3PositionWarpTo.x, v3PositionWarpTo.y + 0.5f, v3PositionWarpTo.z));
             }
-            if (transform.position.y < fWarpBoundary)
+            if (transform.position.y < v3PositionWarpTo.y + fWarpBoundary)
             {
                 transform.Translate(0f, fSpeedWarp * Time.deltaTime, 0f, Space.World);
             }
@@ -317,6 +356,7 @@ public class PlayerController : MonoBehaviour
                 rbPlayer.isKinematic = false;
                 bWarpUp = false;
                 bActive = true;
+                StartCoroutine(Wait());
             }
         }
     }
@@ -364,7 +404,7 @@ public class PlayerController : MonoBehaviour
         //     goTarget.GetComponent<PlayerController>().enabled = false;
         // }
 
-        sPlayerBuddySwitchEngagedByTarget = goTarget.GetComponent<TargetController>().sPlayerBuddySwitchEngagedByTarget;
+        sNameExchangerEngagedByTarget = goTarget.GetComponent<TargetController>().sNameExchangerEngagedByTarget;
 
         gameManager.VfxclpPlay("vfxclpWarp", new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z));
         gameManager.VfxclpPlay("vfxclpWarp", new Vector3(goTarget.transform.position.x, goTarget.transform.position.y + 0.5f, goTarget.transform.position.z));
@@ -376,6 +416,7 @@ public class PlayerController : MonoBehaviour
         transform.eulerAngles = goTarget.transform.eulerAngles;
         goTarget.transform.position = v3PositionPlayerOrig;
         goTarget.transform.eulerAngles = v3RotationPlayerOrig;
+        rbPlayer.velocity = new Vector3(0f, 0f, 0f);
 
         if (!bPlayerBuddySwitched)
         {
@@ -388,9 +429,10 @@ public class PlayerController : MonoBehaviour
             goTarget.GetComponent<Renderer>().material.SetColor("_Color", colTarget);
         }
 
-        bActive = true;
-        bPlayerBuddySwitch = (sPlayerBuddySwitchEngagedByTarget != "");
+        bPlayerBuddySwitch = (sNameExchangerEngagedByTarget != "");
         bPlayerBuddySwitched = !bPlayerBuddySwitched;
+
+        StartCoroutine(Wait());
     }
 
     // ------------------------------------------------------------------------------------------------
@@ -414,6 +456,15 @@ public class PlayerController : MonoBehaviour
                 gameManager.VfxclpPlay("vfxclpWallDestructible", collision.gameObject.transform.position);
                 gameManager.SfxclpPlay("sfxclpWallDestructible");
             }
+            else if (   collision.gameObject.CompareTag("Translator")
+                    &&  (transform.position.x >= (collision.gameObject.transform.position.x - 2.5f))
+                    &&  (transform.position.x <= (collision.gameObject.transform.position.x + 2.5f))
+                    &&  (transform.position.z >= (collision.gameObject.transform.position.z - 2.5f))
+                    &&  (transform.position.z <= (collision.gameObject.transform.position.z + 2.5f)) )
+            {
+                transform.parent = collision.gameObject.transform;
+                sNameTranslatorEngagedByPlayer = collision.gameObject.name; // We keep track of this as otherwise timing means we could exit from one translator and enter another, but have the exit trigger fulfilled second, so no parent then assigned
+            }
             else if (   collision.gameObject.CompareTag("Target")
                     &&  !slistTargetObjectiveLeave.Contains(goTarget.GetComponent<TargetController>().sObjective) )
             {
@@ -424,6 +475,18 @@ public class PlayerController : MonoBehaviour
                     goEnemy.GetComponent<EnemyController>().sObjective = "Target";
                 }
             }
+        }
+    }
+
+    // ------------------------------------------------------------------------------------------------
+
+    private void OnCollisionExit(Collision collision)
+    {
+        if (    collision.gameObject.CompareTag("Translator")
+            &&  collision.gameObject.name == sNameTranslatorEngagedByPlayer )
+        {
+            transform.parent = null;
+            sNameTranslatorEngagedByPlayer = "";
         }
     }
 
@@ -468,18 +531,16 @@ public class PlayerController : MonoBehaviour
                 v3PositionWarpTo = other.gameObject.GetComponent<WarpController>().goWarpPartner.transform.position;
                 bWarp = true;
                 bWarpDown = true;
-                bWarpVfx = true;
+                bWarpStageStart = true;
                 bActive = false;
                 bInMotionThisFrame = true;
-                navPlayer.enabled = true;
-                navPlayer.destination = new Vector3(
-                    v3PositionWarpFrom.x,
-                    transform.position.y,
-                    v3PositionWarpFrom.z
-                );
-                // Debug.Log(transform.position);
-                // Debug.Log(transform.position.y);
-                // Debug.Log(navPlayer.destination);
+                bMoveAuto = true;
+                // navPlayer.enabled = true;
+                // navPlayer.destination = new Vector3(
+                //     v3PositionWarpFrom.x,
+                //     transform.position.y,
+                //     v3PositionWarpFrom.z
+                // );
             }
         }
         // From first player-buddy switch attempt:
@@ -494,15 +555,17 @@ public class PlayerController : MonoBehaviour
             // From first player-buddy switch attempt:
             // other.gameObject.GetComponent<PlayerBuddySwitchController>().sTriggeredBy = gameObject.tag;
             goTarget.GetComponent<TargetController>().FinishObjective();
+            v3PositionWarpFrom = other.gameObject.transform.position;
             bPlayerBuddySwitch = true;
             bActive = false;
             bInMotionThisFrame = true;
-            navPlayer.enabled = true;
-            navPlayer.destination = new Vector3(
-                other.gameObject.transform.position.x,
-                transform.position.y,
-                other.gameObject.transform.position.z
-            );
+            bMoveAuto = true;
+            // navPlayer.enabled = true;
+            // navPlayer.destination = new Vector3(
+            //     other.gameObject.transform.position.x,
+            //     transform.position.y,
+            //     other.gameObject.transform.position.z
+            // );
         }
         else if (   other.gameObject.CompareTag("SafeZonePlayer")
                 &&  (!goTarget || goTarget.GetComponent<TargetController>().bSafe) )
@@ -542,7 +605,7 @@ public class PlayerController : MonoBehaviour
             bWarp = false;
         }
         else if (   other.gameObject.CompareTag("Exchanger")
-                &&  (other.gameObject.name == sPlayerBuddySwitchEngagedByTarget)
+                &&  (other.gameObject.name == sNameExchangerEngagedByTarget)
                 &&  bActive
                 &&  bPlayerBuddySwitch )
         {

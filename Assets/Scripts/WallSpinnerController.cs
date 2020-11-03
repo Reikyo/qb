@@ -11,8 +11,11 @@ public class WallSpinnerController : MonoBehaviour
     // public rotationY rotRotationYStart = rotationY.horizontal;
     // private rotationY rotRotationYCurrent = rotationY.horizontal;
 
-    public enum activator {projectile, switcher, both};
-    public activator activatorSpinner;
+    public enum activator {both, projectile, switcher};
+    public activator activatorType;
+
+    public enum switcherTrigger {both, state1to2, state2to1};
+    public switcherTrigger switcherTriggerType;
 
     private float fDegreesRotationY = 0f;
     private float fDegreesRotationYLower = 0f;
@@ -22,7 +25,7 @@ public class WallSpinnerController : MonoBehaviour
     private float fDegreesPerSecY;
     private float fDegreesPerFrameY;
 
-    private float fTransitionTime = 0.5f;
+    public float fTransitionTime = 0.5f;
 
     public int iDirection = -1;
     private int iDirectionSum = 0;
@@ -96,34 +99,41 @@ public class WallSpinnerController : MonoBehaviour
 
     // ------------------------------------------------------------------------------------------------
 
-    public void Trigger(string sActivator, int iDirectionGiven=0, bool bSfx=true)
+    public void Trigger(string sActivator="", string sSwitcherTrigger="", int iDirectionGiven=0, bool bSfx=true)
     {
-        if (    (activatorSpinner == activator.both)
-            ||  ((sActivator == "projectile") && (activatorSpinner == activator.projectile))
-            ||  ((sActivator == "switcher") && (activatorSpinner == activator.switcher)) )
+        if (    (activatorType == activator.both)
+            ||  ((activatorType == activator.projectile) && (sActivator == "projectile"))
+            ||  ((activatorType == activator.switcher) && (sActivator == "switcher")) )
         {
-            if (bSfx)
+            if (    (sActivator == "projectile")
+                ||  (   (sActivator == "switcher")
+                    &&  (switcherTriggerType == switcherTrigger.both)
+                    ||  ((switcherTriggerType == switcherTrigger.state1to2) && (sSwitcherTrigger == "state1to2"))
+                    ||  ((switcherTriggerType == switcherTrigger.state2to1) && (sSwitcherTrigger == "state2to1")) ) )
             {
-                gameManager.SfxclpPlay("sfxclpWallSpinner");
-            }
-            bChangeState = true;
-            if (iDirectionGiven == 0)
-            {
-                if (iDirection == -1)
+                if (bSfx)
                 {
-                    iDirection = 1;
+                    gameManager.SfxclpPlay("sfxclpRotator");
+                }
+                bChangeState = true;
+                if (iDirectionGiven == 0)
+                {
+                    if (iDirection == -1)
+                    {
+                        iDirection = 1;
+                    }
+                    else
+                    {
+                        iDirection = -1;
+                    }
                 }
                 else
                 {
-                    iDirection = -1;
+                    iDirection = iDirectionGiven;
                 }
+                iDirectionSum += iDirection;
+                fDegreesRotationYTarget += iDirection * fDegreesRotationYUpper;
             }
-            else
-            {
-                iDirection = iDirectionGiven;
-            }
-            iDirectionSum += iDirection;
-            fDegreesRotationYTarget += iDirection * fDegreesRotationYUpper;
         }
     }
 

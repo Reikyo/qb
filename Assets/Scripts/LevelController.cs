@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 using MyFunctions;
 
 public class LevelController : MonoBehaviour
@@ -8,14 +9,15 @@ public class LevelController : MonoBehaviour
     private int iLevel;
     private SpawnManager spawnManager;
     private CubeController cubeController;
+    private NavMeshSurface navNavMesh;
 
     public bool bProjectilePathDependentLevel = false;
     // public GameObject[] goArrSpawns;
     // public Vector3[] v3ArrSpawnPositions;
     private GameObject[] goArrWallDestructible;
     private GameObject[] goArrWallTimed;
-    private GameObject[] goArrWallSlider;
-    private GameObject[] goArrWallSpinner;
+    private GameObject[] goArrTranslator;
+    private GameObject[] goArrRotator;
 
     private Vector3 v3PositionInstantiate = new Vector3(0f, -5f, 1f);
     private Vector3 v3PositionPlay = new Vector3(0f, 0f, 0f);
@@ -40,6 +42,7 @@ public class LevelController : MonoBehaviour
     {
         spawnManager = GameObject.Find("Spawn Manager").GetComponent<SpawnManager>();
         cubeController = GameObject.Find("Cube").GetComponent<CubeController>();
+        navNavMesh = GameObject.Find("Nav Mesh").GetComponent<NavMeshSurface>();
 
         transform.position = v3PositionInstantiate;
 
@@ -84,6 +87,7 @@ public class LevelController : MonoBehaviour
             {
                 bChangeStateStartLevel = false;
                 // Activate();
+                navNavMesh.BuildNavMesh();
                 spawnManager.Instantiate(iLevel);
             }
         }
@@ -135,8 +139,8 @@ public class LevelController : MonoBehaviour
         gameObject.SetActive(true);
         goArrWallDestructible = GameObject.FindGameObjectsWithTag("WallDestructible");
         goArrWallTimed = GameObject.FindGameObjectsWithTag("WallTimed");
-        goArrWallSlider = GameObject.FindGameObjectsWithTag("WallSlider");
-        goArrWallSpinner = GameObject.FindGameObjectsWithTag("WallSpinner");
+        goArrTranslator = GameObject.FindGameObjectsWithTag("Translator");
+        goArrRotator = GameObject.FindGameObjectsWithTag("Rotator");
         bChangeStateStartLevel = true;
         bChangeStatePositionY = true;
         bChangeStatePositionZ = true;
@@ -208,13 +212,13 @@ public class LevelController : MonoBehaviour
         {
             goWallTimed.SetActive(true);
         }
-        foreach (GameObject goWallSlider in goArrWallSlider)
+        foreach (GameObject goTranslator in goArrTranslator)
         {
-            goWallSlider.GetComponent<WallSliderController>().Reset();
+            goTranslator.GetComponent<WallSliderController>().Reset();
         }
-        foreach (GameObject goWallSpinner in goArrWallSpinner)
+        foreach (GameObject goRotator in goArrRotator)
         {
-            goWallSpinner.GetComponent<WallSpinnerController>().Reset();
+            goRotator.GetComponent<WallSpinnerController>().Reset();
         }
         // Deactivate();
         // Activate();
@@ -224,11 +228,11 @@ public class LevelController : MonoBehaviour
 
     // ------------------------------------------------------------------------------------------------
 
-    public void TriggerAllWallSlider()
+    public void TriggerAllTranslator()
     {
-        foreach (GameObject goWallSlider in goArrWallSlider)
+        foreach (GameObject goTranslator in goArrTranslator)
         {
-            goWallSlider.GetComponent<WallSliderController>().Trigger(false);
+            goTranslator.GetComponent<WallSliderController>().Trigger("", "", false);
         }
     }
 
