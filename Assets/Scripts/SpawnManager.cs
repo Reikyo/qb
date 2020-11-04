@@ -172,6 +172,7 @@ public class SpawnManager : MonoBehaviour
                 // goPlayer = Instantiate(goPrefabPlayer, new Vector3(0f, goPrefabPlayer.transform.position.y, -20f), goPrefabPlayer.transform.rotation);
                 // goSafeZonePlayer = Instantiate(goPrefabSafeZonePlayer, new Vector3(0f, goPrefabSafeZonePlayer.transform.position.y, 20f), goPrefabSafeZonePlayer.transform.rotation);
                 // Level 5
+                goPlayer = Instantiate(goPrefabPlayer, new Vector3(0f, goPrefabPlayer.transform.position.y, -20f), goPrefabPlayer.transform.rotation);
                 break;
         }
     }
