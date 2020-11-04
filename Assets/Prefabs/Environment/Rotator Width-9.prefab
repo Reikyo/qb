@@ -225,7 +225,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2005249131597343279}
-  - component: {fileID: 8471818997171770970}
+  - component: {fileID: 114530781341275380}
   m_Layer: 0
   m_Name: Rotator Width-9
   m_TagString: Rotator
@@ -254,7 +254,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8471818997171770970
+--- !u!114 &114530781341275380
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -263,7 +263,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2798311417787172107}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 74ba925a0f84a476f9b0e2e5814c10e0, type: 3}
+  m_Script: {fileID: 11500000, guid: 9067f69ebfe9f4b168cd23ff1a3474b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   activatorType: 0

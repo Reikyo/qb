@@ -84,11 +84,11 @@ public class ProjectileController : MonoBehaviour
 
                 if (fDot > 0)
                 {
-                    other.transform.parent.GetComponent<WallSpinnerController>().Trigger("projectile", "", 1);
+                    other.transform.parent.GetComponent<RotatorController>().Trigger("projectile", "", 1);
                 }
                 else if (fDot < 0)
                 {
-                    other.transform.parent.GetComponent<WallSpinnerController>().Trigger("projectile", "", -1);
+                    other.transform.parent.GetComponent<RotatorController>().Trigger("projectile", "", -1);
                 }
             }
 

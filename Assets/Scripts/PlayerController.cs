@@ -46,12 +46,15 @@ public class PlayerController : MonoBehaviour
     private List<string> slistTargetObjectiveLeave = new List<string>() {"Player", "SafeZoneTarget"};
     private GameObject goEnemy;
     private GameObject goSafeZonePlayer;
+    private GameObject goSafeZoneTarget;
     public GameObject goProjectile;
     private int iNumProjectile = 0;
     private int iNumProjectileWarning = 5;
     private TextMeshProUGUI guiNumProjectile;
     private Color colPlayer;
     private Color colTarget;
+    private Color colSafeZonePlayer;
+    private Color colSafeZoneTarget;
 
     // ------------------------------------------------------------------------------------------------
 
@@ -71,6 +74,7 @@ public class PlayerController : MonoBehaviour
         goTarget = GameObject.FindWithTag("Target");
         goEnemy = GameObject.FindWithTag("Enemy");
         goSafeZonePlayer = GameObject.FindWithTag("SafeZonePlayer");
+        goSafeZoneTarget = GameObject.FindWithTag("SafeZoneTarget");
 
         bSafe = !goSafeZonePlayer;
         guiNumProjectile = GameObject.Find("Value : Num Projectile").GetComponent<TextMeshProUGUI>();
@@ -80,6 +84,14 @@ public class PlayerController : MonoBehaviour
         if (goTarget)
         {
             colTarget = goTarget.GetComponent<Renderer>().material.GetColor("_Color");
+        }
+        if (goSafeZonePlayer)
+        {
+            colSafeZonePlayer = goSafeZonePlayer.GetComponent<SpriteRenderer>().color;
+        }
+        if (goSafeZoneTarget)
+        {
+            colSafeZoneTarget = goSafeZoneTarget.GetComponent<SpriteRenderer>().color;
         }
     }
 
@@ -429,6 +441,25 @@ public class PlayerController : MonoBehaviour
             goTarget.GetComponent<Renderer>().material.SetColor("_Color", colTarget);
         }
 
+        if (    goSafeZonePlayer
+            &&  goSafeZoneTarget )
+        {
+            Vector3 v3PositionSafeZonePlayerOrig = goSafeZonePlayer.transform.position;
+            goSafeZonePlayer.transform.position = goSafeZoneTarget.transform.position;
+            goSafeZoneTarget.transform.position = v3PositionSafeZonePlayerOrig;
+
+            if (!bPlayerBuddySwitched)
+            {
+                goSafeZonePlayer.GetComponent<SpriteRenderer>().color = colSafeZoneTarget;
+                goSafeZoneTarget.GetComponent<SpriteRenderer>().color = colSafeZonePlayer;
+            }
+            else
+            {
+                goSafeZonePlayer.GetComponent<SpriteRenderer>().color = colSafeZonePlayer;
+                goSafeZoneTarget.GetComponent<SpriteRenderer>().color = colSafeZoneTarget;
+            }
+        }
+
         bPlayerBuddySwitch = (sNameExchangerEngagedByTarget != "");
         bPlayerBuddySwitched = !bPlayerBuddySwitched;
 
@@ -568,9 +599,9 @@ public class PlayerController : MonoBehaviour
             // );
         }
         else if (   other.gameObject.CompareTag("SafeZonePlayer")
-                &&  (!goTarget || goTarget.GetComponent<TargetController>().bSafe) )
+                &&  (!goTarget || goTarget.GetComponent<TargetController>().bSafe)
+                &&  !bSafe )
         {
-            Destroy(other);
             bSafe = true;
             bActive = false;
             bInMotionThisFrame = true;

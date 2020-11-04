@@ -133,10 +133,10 @@ public class SwitchController : MonoBehaviour
             switch(goDevice.tag)
             {
                 case "Translator":
-                    goDevice.GetComponent<WallSliderController>().Trigger("switcher", sSwitcherTrigger);
+                    goDevice.GetComponent<TranslatorController>().Trigger("switcher", sSwitcherTrigger);
                     break;
                 case "Rotator":
-                    goDevice.GetComponent<WallSpinnerController>().Trigger("switcher", sSwitcherTrigger);
+                    goDevice.GetComponent<RotatorController>().Trigger("switcher", sSwitcherTrigger);
                     break;
             }
         }

@@ -215,10 +215,10 @@ public class TargetController : MonoBehaviour
             other.gameObject.GetComponent<PlayerBuddySwitchController>().bEngagedByTarget = true;
             sNameExchangerEngagedByTarget = other.gameObject.name;
         }
-        else if (other.gameObject.CompareTag("SafeZoneTarget")
-        &&  (sObjective == "Player"))
+        else if (   other.gameObject.CompareTag("SafeZoneTarget")
+                &&  (sObjective == "Player")
+                &&  !bSafe )
         {
-            Destroy(other);
             bSafe = true;
             sObjective = "SafeZoneTarget";
             if (goPlayer.GetComponent<PlayerController>().bSafe)

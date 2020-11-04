@@ -214,11 +214,11 @@ public class LevelController : MonoBehaviour
         }
         foreach (GameObject goTranslator in goArrTranslator)
         {
-            goTranslator.GetComponent<WallSliderController>().Reset();
+            goTranslator.GetComponent<TranslatorController>().Reset();
         }
         foreach (GameObject goRotator in goArrRotator)
         {
-            goRotator.GetComponent<WallSpinnerController>().Reset();
+            goRotator.GetComponent<RotatorController>().Reset();
         }
         // Deactivate();
         // Activate();
@@ -232,7 +232,7 @@ public class LevelController : MonoBehaviour
     {
         foreach (GameObject goTranslator in goArrTranslator)
         {
-            goTranslator.GetComponent<WallSliderController>().Trigger("", "", false);
+            goTranslator.GetComponent<TranslatorController>().Trigger("", "", false);
         }
     }
 
