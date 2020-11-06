@@ -44,7 +44,7 @@ public class PlayerController : MonoBehaviour
     private NavMeshAgent navPlayer;
     private NavMeshPath navPlayerPath;
     private GameObject goTarget;
-    private List<string> slistTargetObjectiveLeave = new List<string>() {"Player", "SafeZoneTarget"};
+    private List<string> sListTargetObjectiveLeave = new List<string>() {"Player", "SafeZoneTarget"};
     private GameObject[] goArrEnemy;
     private GameObject goSafeZonePlayer;
     private GameObject goSafeZoneTarget;
@@ -498,7 +498,7 @@ public class PlayerController : MonoBehaviour
                 sNameTranslatorEngagedByPlayer = collision.gameObject.name; // We keep track of this as otherwise timing means we could exit from one translator and enter another, but have the exit trigger fulfilled second, so no parent then assigned
             }
             else if (   collision.gameObject.CompareTag("Target")
-                    &&  !slistTargetObjectiveLeave.Contains(goTarget.GetComponent<TargetController>().sObjective) )
+                    &&  !sListTargetObjectiveLeave.Contains(goTarget.GetComponent<TargetController>().sObjective) )
             {
                 gameManager.SfxclpPlay("sfxclpTargetObjectivePlayer");
                 goTarget.GetComponent<TargetController>().StartObjectivePlayer();

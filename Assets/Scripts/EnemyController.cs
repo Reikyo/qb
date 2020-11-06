@@ -17,7 +17,7 @@ public class EnemyController : MonoBehaviour
     // private Animator anEnemy;
     private NavMeshAgent navEnemy;
     private GameObject goTarget;
-    private List<string> slistLeaveTargetObjective = new List<string>() {"Random", "SafeZoneTarget"};
+    private List<string> sListLeaveTargetObjective = new List<string>() {"Random", "SafeZoneTarget"};
     private GameObject goPlayer;
     public GameObject goWallTimed;
     public string sObjective;
@@ -161,7 +161,7 @@ public class EnemyController : MonoBehaviour
     {
         if (bActive
         &&  collision.gameObject.CompareTag("Target")
-        &&  !slistLeaveTargetObjective.Contains(goTarget.GetComponent<TargetController>().sObjective))
+        &&  !sListLeaveTargetObjective.Contains(goTarget.GetComponent<TargetController>().sObjective))
         {
             // anEnemy.SetTrigger("tAttack1");
             gameManager.SfxclpPlay("sfxclpEnemyAttack1");

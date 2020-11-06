@@ -10,7 +10,7 @@ public class SwitchController : MonoBehaviour
     public switcher switcherType;
 
     public GameObject[] goArrDevice;
-    public List<string> slistOkayTriggerCharacters = new List<string>() {"Player", "Target"};
+    public List<string> sListOkayTriggerCharacters = new List<string>() {"Player", "Target"};
     public string sTriggerCharacter = "";
 
     // private float fMetresToTranslate = XXXf;
@@ -111,7 +111,7 @@ public class SwitchController : MonoBehaviour
     {
         if (    (sSwitcherTrigger == "state1to2")
             &&  bState1
-            &&  slistOkayTriggerCharacters.Contains(sTriggerCharacterGiven) )
+            &&  sListOkayTriggerCharacters.Contains(sTriggerCharacterGiven) )
         {
             sTriggerCharacter = sTriggerCharacterGiven;
             bChangeState1to2 = true;

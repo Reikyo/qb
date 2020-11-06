@@ -5,8 +5,8 @@ using UnityEngine;
 public class WarpIfTrappedController : MonoBehaviour
 {
     private GameObject goPlayer;
-    public GameObject[] golistWallTimed;
-    public GameObject[] golistWarp;
+    public GameObject[] goArrWallTimed;
+    public GameObject[] goArrWarp;
     private int iNumWallTimedActive = 0;
     private bool bWarp = false;
 
@@ -35,17 +35,17 @@ public class WarpIfTrappedController : MonoBehaviour
             if (!bWarp)
             {
                 iNumWallTimedActive = 0;
-                foreach (GameObject goWallTimed in golistWallTimed)
+                foreach (GameObject goWallTimed in goArrWallTimed)
                 {
                     if (goWallTimed.activeSelf)
                     {
                         iNumWallTimedActive += 1;
                     }
                 }
-                if (iNumWallTimedActive == golistWallTimed.Length)
+                if (iNumWallTimedActive == goArrWallTimed.Length)
                 {
                     bWarp = true;
-                    foreach (GameObject goWarp in golistWarp)
+                    foreach (GameObject goWarp in goArrWarp)
                     {
                         goWarp.SetActive(true);
                     }
@@ -56,7 +56,7 @@ public class WarpIfTrappedController : MonoBehaviour
         {
             iNumWallTimedActive = 0;
             bWarp = false;
-            foreach (GameObject goWarp in golistWarp)
+            foreach (GameObject goWarp in goArrWarp)
             {
                 goWarp.SetActive(false);
             }
