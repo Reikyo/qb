@@ -34,7 +34,7 @@ public class DestroyOutOfBounds : MonoBehaviour
                 {
                     enemyController.goWallTimed.SetActive(false);
                     gameManager.VfxclpPlay("vfxclpWallTimed", enemyController.goWallTimed.transform.position);
-                    gameManager.SfxclpPlay("vfxclpWallTimed");
+                    gameManager.SfxclpPlay("sfxclpWallTimed");
                 }
             }
             Destroy(gameObject);

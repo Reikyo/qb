@@ -4,15 +4,17 @@ using UnityEngine;
 
 public class CreditsController : MonoBehaviour
 {
-    private float fSpeed = 5f;
-    private float fPositionYStop = 50f; // World-space value
+    private GameManager gameManager;
+
+    private float fSpeed = 2.5f;
+    private float fPositionYStop = 55f; // World-space value
 
     // ------------------------------------------------------------------------------------------------
 
     // Start is called before the first frame update
     void Start()
     {
-
+        gameManager = GameObject.Find("Game Manager").GetComponent<GameManager>();
     }
 
     // ------------------------------------------------------------------------------------------------
@@ -27,6 +29,7 @@ public class CreditsController : MonoBehaviour
         else
         {
             transform.parent.Find("Button : Restart").gameObject.SetActive(true);
+            gameManager.bActiveScreenButton = true;
         }
     }
 

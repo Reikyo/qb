@@ -122,6 +122,7 @@ public class LevelController : MonoBehaviour
             &&  !bChangeStatePositionZ)
             {
                 bChangeStateFinishLevel = false;
+                Reset(true, false); // Reset the level environment in case the player plays through all levels again after finishing the game
                 gameObject.SetActive(false);
                 cubeController.StartNextLevelContinue();
             }
@@ -202,28 +203,37 @@ public class LevelController : MonoBehaviour
 
     // ------------------------------------------------------------------------------------------------
 
-    public void Reset()
+    public void Reset(
+        bool bResetEnvironment=true,
+        bool bResetCharacters=true
+    )
     {
-        foreach (GameObject goWallDestructible in goArrWallDestructible)
+        if (bResetEnvironment)
         {
-            goWallDestructible.SetActive(true);
+            foreach (GameObject goWallDestructible in goArrWallDestructible)
+            {
+                goWallDestructible.SetActive(true);
+            }
+            foreach (GameObject goWallTimed in goArrWallTimed)
+            {
+                goWallTimed.SetActive(true);
+            }
+            foreach (GameObject goTranslator in goArrTranslator)
+            {
+                goTranslator.GetComponent<TranslatorController>().Reset();
+            }
+            foreach (GameObject goRotator in goArrRotator)
+            {
+                goRotator.GetComponent<RotatorController>().Reset();
+            }
         }
-        foreach (GameObject goWallTimed in goArrWallTimed)
+        if (bResetCharacters)
         {
-            goWallTimed.SetActive(true);
+            // Deactivate();
+            // Activate();
+            spawnManager.Destroy();
+            spawnManager.Instantiate(iLevel);
         }
-        foreach (GameObject goTranslator in goArrTranslator)
-        {
-            goTranslator.GetComponent<TranslatorController>().Reset();
-        }
-        foreach (GameObject goRotator in goArrRotator)
-        {
-            goRotator.GetComponent<RotatorController>().Reset();
-        }
-        // Deactivate();
-        // Activate();
-        spawnManager.Destroy();
-        spawnManager.Instantiate(iLevel);
     }
 
     // ------------------------------------------------------------------------------------------------

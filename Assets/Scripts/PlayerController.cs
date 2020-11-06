@@ -30,12 +30,13 @@ public class PlayerController : MonoBehaviour
     private string sNameExchangerEngagedByTarget;
     private string sNameTranslatorEngagedByPlayer = "";
     // private float fForce = 1000f;
-    private float fSpeed = 10f;
+    private float fSpeed = 12f;
     private float fSpeedAnPlayerChild;
     private float fSpeedWarp = 5f;
     private float fForceBoost = 40f;
     private float fForceLaunch = 5f;
     private float fTimeDeltaBoost = 0.1f;
+    private float fTimeDeltaWait = 0.5f;
     private Rigidbody rbPlayer;
     // private Animator anPlayer;
     public Animator[] anPlayerChildren;
@@ -44,7 +45,7 @@ public class PlayerController : MonoBehaviour
     private NavMeshPath navPlayerPath;
     private GameObject goTarget;
     private List<string> slistTargetObjectiveLeave = new List<string>() {"Player", "SafeZoneTarget"};
-    private GameObject goEnemy;
+    private GameObject[] goArrEnemy;
     private GameObject goSafeZonePlayer;
     private GameObject goSafeZoneTarget;
     public GameObject goProjectile;
@@ -72,7 +73,7 @@ public class PlayerController : MonoBehaviour
         navPlayerPath = new NavMeshPath();
 
         goTarget = GameObject.FindWithTag("Target");
-        goEnemy = GameObject.FindWithTag("Enemy");
+        goArrEnemy = GameObject.FindGameObjectsWithTag("Enemy");
         goSafeZonePlayer = GameObject.FindWithTag("SafeZonePlayer");
         goSafeZoneTarget = GameObject.FindWithTag("SafeZoneTarget");
 
@@ -322,7 +323,7 @@ public class PlayerController : MonoBehaviour
     {
         bActive = false;
         bWait = true;
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(fTimeDeltaWait);
         bActive = true;
         bWait = false;
     }
@@ -420,7 +421,7 @@ public class PlayerController : MonoBehaviour
 
         gameManager.VfxclpPlay("vfxclpWarp", new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z));
         gameManager.VfxclpPlay("vfxclpWarp", new Vector3(goTarget.transform.position.x, goTarget.transform.position.y + 0.5f, goTarget.transform.position.z));
-        gameManager.SfxclpPlay("sfxclpWarp");
+        gameManager.SfxclpPlay("sfxclpExchange");
 
         Vector3 v3PositionPlayerOrig = transform.position;
         Vector3 v3RotationPlayerOrig = transform.eulerAngles;
@@ -501,9 +502,12 @@ public class PlayerController : MonoBehaviour
             {
                 gameManager.SfxclpPlay("sfxclpTargetObjectivePlayer");
                 goTarget.GetComponent<TargetController>().StartObjectivePlayer();
-                if (goEnemy)
+                foreach (GameObject goEnemy in goArrEnemy)
                 {
-                    goEnemy.GetComponent<EnemyController>().sObjective = "Target";
+                    if (goEnemy)
+                    {
+                        goEnemy.GetComponent<EnemyController>().sObjective = "Target";
+                    }
                 }
             }
         }

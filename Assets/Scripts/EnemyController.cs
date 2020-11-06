@@ -10,7 +10,7 @@ public class EnemyController : MonoBehaviour
     public bool bInPlay = true;
     public bool bActive = true;
     // private float fForce = 500f;
-    private float fSpeed = 6f;
+    // public float fSpeed = 6f;
     private float fForcePush = 5f;
     private float fWaitTime = 10f;
     private Rigidbody rbEnemy;
@@ -125,7 +125,7 @@ public class EnemyController : MonoBehaviour
         {
             goWallTimed.SetActive(false);
             gameManager.VfxclpPlay("vfxclpWallTimed", goWallTimed.transform.position);
-            gameManager.SfxclpPlay("vfxclpWallTimed");
+            gameManager.SfxclpPlay("sfxclpWallTimed");
         }
         yield return new WaitForSeconds(fWaitTime);
         // psInactive.Stop();
@@ -138,7 +138,7 @@ public class EnemyController : MonoBehaviour
         {
             goWallTimed.SetActive(true);
             gameManager.VfxclpPlay("vfxclpWallTimed", goWallTimed.transform.position);
-            gameManager.SfxclpPlay("vfxclpWallTimed");
+            gameManager.SfxclpPlay("sfxclpWallTimed");
         }
     }
 

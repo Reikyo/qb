@@ -8,6 +8,7 @@ using TMPro;
 public class GameManager : MonoBehaviour
 {
     public bool bActive = false;
+    public bool bActiveScreenButton = false;
     public bool bProjectilePathDependentLevel = false;
 
     public GameObject goScreenTitle;
@@ -42,6 +43,7 @@ public class GameManager : MonoBehaviour
     public AudioClip sfxclpProjectile; // DM-CGS-20
     public AudioClip sfxclpLaunch; // DM-CGS-34
     public AudioClip sfxclpWarp; // DM-CGS-42
+    public AudioClip sfxclpExchange; // DM-CGS-16
     public AudioClip sfxclpWallDestructible; // DM-CGS-32
     public AudioClip sfxclpWallTimed; // DM-CGS-32
     public AudioClip sfxclpTranslator; // DM-CGS-38
@@ -89,7 +91,9 @@ public class GameManager : MonoBehaviour
 
         goSpawnManager = GameObject.Find("Spawn Manager");
         cubeController = GameObject.Find("Cube").GetComponent<CubeController>();
+
         goScreenTitle.SetActive(true);
+        bActiveScreenButton = true;
 
         fNumProjectileFlashAngFreq = 2f * Mathf.PI * fNumProjectileFlashFreq;
     }
@@ -102,18 +106,27 @@ public class GameManager : MonoBehaviour
 
         // ------------------------------------------------------------------------------------------------
 
-        // Temporarily allow level to be cleared for testing purposes:
-        if (Input.GetKeyDown(KeyCode.C))
+        if (bActiveScreenButton)
         {
-            LevelCleared();
+            if (    Input.GetKeyDown(KeyCode.Return)
+                ||  Input.GetKeyDown(KeyCode.Space) )
+            {
+                GameStart();
+            }
         }
-
-        // ------------------------------------------------------------------------------------------------
-
-        // Temporarily allow level to be failed for testing purposes:
-        if (Input.GetKeyDown(KeyCode.F))
+        else
         {
-            LevelFailed();
+            // Temporarily allow level to be cleared for testing purposes:
+            if (Input.GetKeyDown(KeyCode.C))
+            {
+                LevelCleared();
+            }
+
+            // Temporarily allow level to be failed for testing purposes:
+            if (Input.GetKeyDown(KeyCode.F))
+            {
+                LevelFailed();
+            }
         }
 
         // ------------------------------------------------------------------------------------------------
@@ -130,15 +143,15 @@ public class GameManager : MonoBehaviour
 
     // ------------------------------------------------------------------------------------------------
 
-    public void GameStart(string screen)
+    public void GameStart()
     {
         sfxsrcGameManager.PlayOneShot(sfxclpButton);
-        if (screen == "Screen : Title")
+        if (goScreenTitle.activeSelf)
         {
             goScreenTitle.SetActive(false);
             cubeController.StartFirstLevel();
         }
-        else if (screen == "Screen : Level Cleared")
+        else if (goScreenLevelCleared.activeSelf)
         {
             goScreenLevelCleared.SetActive(false);
             cubeController.StartNextLevel();
@@ -148,19 +161,20 @@ public class GameManager : MonoBehaviour
             // Insert objects
             // Instantiate characters and items
         }
-        else if (screen == "Screen : Level Failed")
+        else if (goScreenLevelFailed.activeSelf)
         {
             goScreenLevelFailed.SetActive(false);
             cubeController.RestartThisLevel();
             // goSpawnManager.GetComponent<SpawnManager>().Destroy();
             // goSpawnManager.GetComponent<SpawnManager>().Instantiate();
         }
-        else if (screen == "Screen : Credits")
+        else if (goScreenCredits.activeSelf)
         {
             goScreenCredits.SetActive(false);
             cubeController.StartNextLevel();
         }
         bActive = true;
+        bActiveScreenButton = false;
         goScreenHUD.SetActive(true);
         bProjectilePathDependentLevel = cubeController.GetbProjectilePathDependentLevel();
     }
@@ -176,10 +190,12 @@ public class GameManager : MonoBehaviour
             if (cubeController.GetiLevel() < 5)
             {
                 goScreenLevelCleared.SetActive(true);
+                bActiveScreenButton = true;
             }
             else
             {
                 goScreenCredits.SetActive(true);
+                // bActiveScreenButton = true; // This is now set in the credits controller itself when the button actually appears
             }
             // sfxsrcGameManager.PlayOneShot(sfxclpNames["sfxclpLevelCleared"]);
             sfxsrcGameManager.PlayOneShot(sfxclpLevelCleared);
@@ -200,6 +216,7 @@ public class GameManager : MonoBehaviour
             guiLevelFailedHelp.text = sGuiLevelFailedHelpText;
             goScreenHUD.SetActive(false);
             goScreenLevelFailed.SetActive(true);
+            bActiveScreenButton = true;
             // sfxsrcGameManager.PlayOneShot(sfxclpNames["sfxclpLevelFailed"]);
             sfxsrcGameManager.PlayOneShot(sfxclpLevelFailed);
             if (bNumProjectileFlash)
@@ -264,6 +281,7 @@ public class GameManager : MonoBehaviour
             case "sfxclpProjectile": sfxclpName = sfxclpProjectile; break;
             case "sfxclpLaunch": sfxclpName = sfxclpLaunch; break;
             case "sfxclpWarp": sfxclpName = sfxclpWarp; break;
+            case "sfxclpExchange": sfxclpName = sfxclpExchange; break;
             case "sfxclpWallDestructible": sfxclpName = sfxclpWallDestructible; break;
             case "sfxclpWallTimed": sfxclpName = sfxclpWallTimed; break;
             case "sfxclpTranslator": sfxclpName = sfxclpTranslator; break;

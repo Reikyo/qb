@@ -226,6 +226,7 @@ MonoBehaviour:
   bInPlay: 1
   bActive: 1
   bSafe: 0
+  fSpeed: 12
   anPlayerChildren: []
   goProjectile: {fileID: 3262308912846389460, guid: 7ef6ed067bb4141f99938800b9352366,
     type: 3}
@@ -251,7 +252,7 @@ NavMeshAgent:
   m_Enabled: 0
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 10
+  m_Speed: 12
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120

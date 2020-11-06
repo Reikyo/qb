@@ -14,12 +14,15 @@ public class TargetController : MonoBehaviour
     public string sNameExchangerEngagedByTarget = "";
     private string sNameTranslatorEngagedByTarget = "";
     // public float fForce = 500f;
-    public float fSpeed = 5f;
+    private float fSpeed;
+    private float fSpeedObjectivePlayer = 10f;
+    private float fSpeedObjectiveRandom = 5f;
     private float fDistPlayerStop = 3f;
     private Rigidbody rbTarget;
     private NavMeshAgent navTarget;
     private Material matTarget;
     private GameObject goPlayer;
+    private GameObject[] goArrEnemy;
     private GameObject goSafeZoneTarget;
     public string sObjective = "None";
     private Vector2 v2DirectionRandom;
@@ -43,9 +46,12 @@ public class TargetController : MonoBehaviour
         navTarget = GetComponent<NavMeshAgent>();
         matTarget = GetComponent<Renderer>().material;
         goPlayer = GameObject.FindWithTag("Player");
+        goArrEnemy = GameObject.FindGameObjectsWithTag("Enemy");
         goSafeZoneTarget = GameObject.FindWithTag("SafeZoneTarget");
         bSafe = !goSafeZoneTarget;
         fObjectiveRandomEmissionAngFreq = 2f * Mathf.PI * fObjectiveRandomEmissionFreq;
+        navTarget.speed = fSpeedObjectivePlayer;
+        fSpeed = fSpeedObjectiveRandom;
         SetDirectionRandom();
     }
 
@@ -140,6 +146,7 @@ public class TargetController : MonoBehaviour
     {
         bActive = true;
         sObjective = "Player";
+        // fSpeed = fSpeedObjectivePlayer;
         navTarget.enabled = true;
         matTarget.DisableKeyword("_EMISSION");
         transform.Find("Trail").gameObject.SetActive(false);
@@ -151,6 +158,7 @@ public class TargetController : MonoBehaviour
     {
         bActive = true;
         sObjective = "Random";
+        // fSpeed = fSpeedObjectiveRandom;
         navTarget.enabled = false;
         matTarget.EnableKeyword("_EMISSION");
         transform.Find("Trail").gameObject.SetActive(true);
@@ -193,7 +201,7 @@ public class TargetController : MonoBehaviour
     private void OnCollisionExit(Collision collision)
     {
         if (    collision.gameObject.CompareTag("Translator")
-            &&  collision.gameObject.name == sNameTranslatorEngagedByTarget )
+            &&  (collision.gameObject.name == sNameTranslatorEngagedByTarget) )
         {
             transform.parent = null;
             sNameTranslatorEngagedByTarget = "";
@@ -228,6 +236,13 @@ public class TargetController : MonoBehaviour
             else
             {
                 gameManager.SfxclpPlay("sfxclpLevelClearedPartial");
+                foreach (GameObject goEnemy in goArrEnemy)
+                {
+                    if (goEnemy)
+                    {
+                        goEnemy.GetComponent<EnemyController>().sObjective = "Player";
+                    }
+                }
             }
         }
     }
