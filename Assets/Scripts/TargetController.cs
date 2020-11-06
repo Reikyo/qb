@@ -62,12 +62,12 @@ public class TargetController : MonoBehaviour
     {
         // Game Manager bActive check intentionally left out here, so that target can still move further
         // into the safe zone even after that action triggers the level clearing
-        if (bInPlay
-        &&  bActive)
+        if (    bInPlay
+            &&  bActive )
         {
-            if ((sObjective == "Player")
-            &&  goPlayer
-            &&  goPlayer.GetComponent<PlayerController>().bInPlay)
+            if (    (sObjective == "Player")
+                &&  goPlayer
+                &&  goPlayer.GetComponent<PlayerController>().bInPlay )
             {
                 // Vector3 v3Objective = goPlayer.transform.position;
                 // Vector3 v3Direction = (v3Objective - transform.position).normalized;

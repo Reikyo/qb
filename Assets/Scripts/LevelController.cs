@@ -82,8 +82,8 @@ public class LevelController : MonoBehaviour
                     v3PositionPlay.z
                 );
             }
-            if (!bChangeStatePositionY
-            &&  !bChangeStatePositionZ)
+            if (    !bChangeStatePositionY
+                &&  !bChangeStatePositionZ )
             {
                 bChangeStateStartLevel = false;
                 // Activate();
@@ -118,8 +118,8 @@ public class LevelController : MonoBehaviour
                     v3PositionInstantiate.z
                 );
             }
-            if (!bChangeStatePositionY
-            &&  !bChangeStatePositionZ)
+            if (    !bChangeStatePositionY
+                &&  !bChangeStatePositionZ )
             {
                 bChangeStateFinishLevel = false;
                 Reset(true, false); // Reset the level environment in case the player plays through all levels again after finishing the game

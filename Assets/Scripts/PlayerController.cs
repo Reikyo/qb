@@ -543,8 +543,8 @@ public class PlayerController : MonoBehaviour
             gameManager.SfxclpPlay("sfxclpPowerUp");
             iNumProjectile += other.gameObject.GetComponent<PowerUpController>().iNumProjectile;
             guiNumProjectile.text = iNumProjectile.ToString();
-            if (    (gameManager.bProjectilePathDependentLevel)
-                &&  (gameManager.bNumProjectileFlash)
+            if (    gameManager.bProjectilePathDependentLevel
+                &&  gameManager.bNumProjectileFlash
                 &&  (iNumProjectile > iNumProjectileWarning) )
             {
                 gameManager.EndNumProjectileFlash();

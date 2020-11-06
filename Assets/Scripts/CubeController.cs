@@ -103,9 +103,9 @@ public class CubeController : MonoBehaviour
                 bChangeStateEulerAngleX = tuple.Item1;
                 v3EulerAngles.x = tuple.Item2;
             }
-            if (!bChangeStatePositionY
-            &&  !bChangeStatePositionZ
-            &&  !bChangeStateEulerAngleX)
+            if (    !bChangeStatePositionY
+                &&  !bChangeStatePositionZ
+                &&  !bChangeStateEulerAngleX )
             {
                 bChangeStateStartFirstLevel = false;
                 Activate();

@@ -57,22 +57,22 @@ public class EnemyController : MonoBehaviour
     // FixedUpdate is called once per frame
     void FixedUpdate()
     {
-        if (bInPlay
-        &&  bActive
-        &&  gameManager.bActive)
+        if (    bInPlay
+            &&  bActive
+            &&  gameManager.bActive )
         {
-            if ((sObjective == "Target")
-            &&  goTarget
-            &&  goTarget.GetComponent<TargetController>().bInPlay)
+            if (    (sObjective == "Target")
+                &&  goTarget
+                &&  goTarget.GetComponent<TargetController>().bInPlay )
             {
                 // Vector3 v3DirectionMove = (goTarget.transform.position - transform.position).normalized;
                 // transform.Translate(fSpeed * Time.deltaTime * v3DirectionMove, Space.World);
                 // Move(goTarget.transform.position);
                 navEnemy.destination = goTarget.transform.position;
             }
-            else if ((sObjective == "Player")
-            &&  goPlayer
-            &&  goPlayer.GetComponent<PlayerController>().bInPlay)
+            else if (   (sObjective == "Player")
+                    &&  goPlayer
+                    &&  goPlayer.GetComponent<PlayerController>().bInPlay )
             {
                 // Vector3 v3DirectionMove = (goPlayer.transform.position - transform.position).normalized;
                 // transform.Translate(fSpeed * Time.deltaTime * v3DirectionMove, Space.World);
@@ -159,9 +159,9 @@ public class EnemyController : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (bActive
-        &&  collision.gameObject.CompareTag("Target")
-        &&  !sListLeaveTargetObjective.Contains(goTarget.GetComponent<TargetController>().sObjective))
+        if (    bActive
+            &&  collision.gameObject.CompareTag("Target")
+            &&  !sListLeaveTargetObjective.Contains(goTarget.GetComponent<TargetController>().sObjective) )
         {
             // anEnemy.SetTrigger("tAttack1");
             gameManager.SfxclpPlay("sfxclpEnemyAttack1");
@@ -169,8 +169,8 @@ public class EnemyController : MonoBehaviour
             goTarget.GetComponent<TargetController>().StartObjectiveRandom();
             sObjective = "Player";
         }
-        else if (bActive
-        &&  collision.gameObject.CompareTag("Player"))
+        else if (   bActive
+                &&  collision.gameObject.CompareTag("Player") )
         {
             // anEnemy.SetTrigger("tAttack2");
             gameManager.SfxclpPlay("sfxclpEnemyAttack2");

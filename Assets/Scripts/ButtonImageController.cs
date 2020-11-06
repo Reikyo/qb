@@ -26,13 +26,13 @@ public class ButtonImageController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if ((Input.GetKeyDown(keyCode1) && !Input.GetKey(keyCode2))
-        ||  (Input.GetKeyDown(keyCode2) && !Input.GetKey(keyCode1)))
+        if (    (Input.GetKeyDown(keyCode1) && !Input.GetKey(keyCode2))
+            ||  (Input.GetKeyDown(keyCode2) && !Input.GetKey(keyCode1)) )
         {
             imgBackground.color = colKeyDown;
         }
-        else if ((Input.GetKeyUp(keyCode1) && !Input.GetKey(keyCode2))
-        ||       (Input.GetKeyUp(keyCode2) && !Input.GetKey(keyCode1)))
+        else if (   (Input.GetKeyUp(keyCode1) && !Input.GetKey(keyCode2))
+                ||  (Input.GetKeyUp(keyCode2) && !Input.GetKey(keyCode1)) )
         {
             imgBackground.color = colKeyUp;
         }
