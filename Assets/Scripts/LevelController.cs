@@ -19,7 +19,7 @@ public class LevelController : MonoBehaviour
     private GameObject[] goArrTranslator;
     private GameObject[] goArrRotator;
 
-    private Vector3 v3PositionInstantiate = new Vector3(0f, -5f, 1f);
+    private Vector3 v3PositionInstantiate = new Vector3(0f, -10f, 1f);
     private Vector3 v3PositionPlay = new Vector3(0f, 0f, 0f);
 
     private float fMetresPerSecY;
