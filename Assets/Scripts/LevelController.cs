@@ -1,3 +1,4 @@
+using System;
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -46,8 +47,8 @@ public class LevelController : MonoBehaviour
 
         transform.position = v3PositionInstantiate;
 
-        fMetresPerSecY = (v3PositionPlay.y - v3PositionInstantiate.y) / fTransitionTime;
-        fMetresPerSecZ = (v3PositionPlay.z - v3PositionInstantiate.z) / fTransitionTime;
+        fMetresPerSecY = Math.Abs((v3PositionPlay.y - v3PositionInstantiate.y) / fTransitionTime);
+        fMetresPerSecZ = Math.Abs((v3PositionPlay.z - v3PositionInstantiate.z) / fTransitionTime);
     }
 
     // ------------------------------------------------------------------------------------------------
@@ -67,7 +68,6 @@ public class LevelController : MonoBehaviour
                     gameObject,
                     "y",
                     fMetresPerFrameY,
-                    transform.position.y,
                     v3PositionPlay.y
                 );
             }
@@ -78,7 +78,6 @@ public class LevelController : MonoBehaviour
                     gameObject,
                     "z",
                     fMetresPerFrameZ,
-                    transform.position.z,
                     v3PositionPlay.z
                 );
             }
@@ -86,6 +85,7 @@ public class LevelController : MonoBehaviour
                 &&  !bChangeStatePositionZ )
             {
                 bChangeStateStartLevel = false;
+                // Reset(true, false);
                 // Activate();
                 navNavMesh.BuildNavMesh();
                 spawnManager.Instantiate(iLevel);
@@ -102,8 +102,7 @@ public class LevelController : MonoBehaviour
                 bChangeStatePositionY = MyFunctions.Move.Translate(
                     gameObject,
                     "y",
-                    -fMetresPerFrameY,
-                    transform.position.y,
+                    fMetresPerFrameY,
                     v3PositionInstantiate.y
                 );
             }
@@ -113,8 +112,7 @@ public class LevelController : MonoBehaviour
                 bChangeStatePositionZ = MyFunctions.Move.Translate(
                     gameObject,
                     "z",
-                    -fMetresPerFrameZ,
-                    transform.position.z,
+                    fMetresPerFrameZ,
                     v3PositionInstantiate.z
                 );
             }

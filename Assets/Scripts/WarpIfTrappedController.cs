@@ -15,7 +15,7 @@ public class WarpIfTrappedController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        goPlayer = GameObject.FindWithTag("Player");
+
     }
 
     // ------------------------------------------------------------------------------------------------
@@ -27,10 +27,10 @@ public class WarpIfTrappedController : MonoBehaviour
         {
             goPlayer = GameObject.FindWithTag("Player");
         }
-        if (    (goPlayer.transform.position.x >= 0f)
-            &&  (goPlayer.transform.position.x <= 4.9f)
-            &&  (goPlayer.transform.position.z >= -14.7)
-            &&  (goPlayer.transform.position.z <= -4.9) )
+        else if (   (goPlayer.transform.position.x >= 0f)
+                &&  (goPlayer.transform.position.x <= 4.9f)
+                &&  (goPlayer.transform.position.z >= -14.7)
+                &&  (goPlayer.transform.position.z <= -4.9) )
         {
             if (!bWarp)
             {

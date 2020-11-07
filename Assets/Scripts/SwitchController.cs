@@ -46,61 +46,83 @@ public class SwitchController : MonoBehaviour
     {
         if (bChangeState1to2)
         {
-            if (bState1)
+            if (switcherType == switcher.stationary)
             {
-                bState1 = false;
+                bChangeState1to2 = false;
+                sTriggerCharacter = "";
                 gameManager.SfxclpPlay("sfxclpSwitch");
-            }
-            switch (switcherType)
-            {
-                case switcher.stationary:
-                    bChangeState1to2 = false;
-                    break;
-                // case switcher.translate:
-                //     bChangeState1to2 = Translate(bChangeState1to2);
-                //     break;
-                case switcher.rotate:
-                    bChangeState1to2 = Rotate(bChangeState1to2);
-                    break;
-            }
-            if (!bChangeState1to2)
-            {
-                bState2 = true;
-                iDirection = 1;
                 if (goArrDevice.Length > 0)
                 {
                     DeviceTrigger(goArrDevice, "state1to2");
                 }
             }
+            else
+            {
+                if (bState1)
+                {
+                    bState1 = false;
+                    gameManager.SfxclpPlay("sfxclpSwitch");
+                }
+
+                if (switcherType == switcher.translate)
+                {
+                    // bChangeState1to2 = Translate(bChangeState1to2);
+                }
+                else if (switcherType == switcher.rotate)
+                {
+                    bChangeState1to2 = Rotate(bChangeState1to2);
+                }
+
+                if (!bChangeState1to2)
+                {
+                    bState2 = true;
+                    iDirection = 1;
+                    if (goArrDevice.Length > 0)
+                    {
+                        DeviceTrigger(goArrDevice, "state1to2");
+                    }
+                }
+            }
         }
         else if (bChangeState2to1)
         {
-            if (bState2)
+            if (switcherType == switcher.stationary)
             {
-                bState2 = false;
+                bChangeState2to1 = false;
+                sTriggerCharacter = "";
                 gameManager.SfxclpPlay("sfxclpSwitch");
                 if (goArrDevice.Length > 0)
                 {
                     DeviceTrigger(goArrDevice, "state2to1");
                 }
             }
-            switch (switcherType)
+            else
             {
-                case switcher.stationary:
-                    bChangeState2to1 = false;
-                    break;
-                // case switcher.translate:
-                //     bChangeState2to1 = Translate(bChangeState2to1);
-                //     break;
-                case switcher.rotate:
+                if (bState2)
+                {
+                    bState2 = false;
+                    gameManager.SfxclpPlay("sfxclpSwitch");
+                    if (goArrDevice.Length > 0)
+                    {
+                        DeviceTrigger(goArrDevice, "state2to1");
+                    }
+                }
+
+                if (switcherType == switcher.translate)
+                {
+                    // bChangeState2to1 = Translate(bChangeState2to1);
+                }
+                else if (switcherType == switcher.rotate)
+                {
                     bChangeState2to1 = Rotate(bChangeState2to1);
-                    break;
-            }
-            if (!bChangeState2to1)
-            {
-                bState1 = true;
-                iDirection = -1;
-                sTriggerCharacter = "";
+                }
+
+                if (!bChangeState2to1)
+                {
+                    bState1 = true;
+                    iDirection = -1;
+                    sTriggerCharacter = "";
+                }
             }
         }
     }

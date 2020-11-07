@@ -15,23 +15,24 @@ public class TranslatorController : MonoBehaviour
     public enum switcherTrigger {both, state1to2, state2to1};
     public switcherTrigger switcherTriggerType;
 
-    public enum direction {x, y, z};
-    public direction directionType;
+    public enum axis {x, y, z};
+    public axis axisType;
+    private string sAxis;
 
-    public enum positionY {lower, upper};
-    public positionY posPositionYStart = positionY.lower;
-    private positionY posPositionYCurrent = positionY.lower;
+    public enum position {lower, upper};
+    public position posPositionStart;
+    public position posPositionTarget;
+    public position posPositionCurrent;
 
-    public float fMetresPositionYLower = 2f;
-    public float fMetresPositionYUpper = 6f;
-    private float fMetresPositionYTarget;
+    public float fMetresPositionLower = 2f;
+    public float fMetresPositionUpper = 6f;
+    private float fMetresPositionStart;
+    private float fMetresPositionTarget;
 
-    private float fMetresPerSecY;
-    private float fMetresPerFrameY;
+    private float fMetresPerSec;
+    private float fMetresPerFrame;
 
     public float fTransitionTime = 0.5f;
-
-    private int iDirection = -1;
 
     private bool bChangeState = false;
 
@@ -43,9 +44,32 @@ public class TranslatorController : MonoBehaviour
         gameManager = GameObject.Find("Game Manager").GetComponent<GameManager>();
         navNavMesh = GameObject.Find("Nav Mesh").GetComponent<NavMeshSurface>();
 
-        fMetresPerSecY = (fMetresPositionYUpper - fMetresPositionYLower) / fTransitionTime;
+        posPositionTarget = posPositionStart;
+        posPositionCurrent = posPositionStart;
 
-        Reset();
+        if (posPositionStart == position.lower)
+        {
+            fMetresPositionStart = fMetresPositionLower;
+        }
+        else
+        {
+            fMetresPositionStart = fMetresPositionUpper;
+        }
+
+        fMetresPerSec = (fMetresPositionUpper - fMetresPositionLower) / fTransitionTime;
+
+        switch (axisType)
+        {
+            case axis.x:
+                sAxis = "x";
+                break;
+            case axis.y:
+                sAxis = "y";
+                break;
+            case axis.z:
+                sAxis = "z";
+                break;
+        }
     }
 
     // ------------------------------------------------------------------------------------------------
@@ -55,50 +79,19 @@ public class TranslatorController : MonoBehaviour
     {
         if (bChangeState)
         {
-            fMetresPerFrameY = fMetresPerSecY * Time.deltaTime;
-            switch (directionType)
-            {
-                case direction.x:
-                    bChangeState = MyFunctions.Move.Translate(
-                        gameObject,
-                        "x",
-                        iDirection * fMetresPerFrameY,
-                        transform.position.x,
-                        fMetresPositionYTarget
-                    );
-                    break;
-                case direction.y:
-                    bChangeState = MyFunctions.Move.Translate(
-                        gameObject,
-                        "y",
-                        iDirection * fMetresPerFrameY,
-                        transform.position.y,
-                        fMetresPositionYTarget
-                    );
-                    break;
-                case direction.z:
-                    bChangeState = MyFunctions.Move.Translate(
-                        gameObject,
-                        "z",
-                        iDirection * fMetresPerFrameY,
-                        transform.position.z,
-                        fMetresPositionYTarget
-                    );
-                    break;
-            }
+            fMetresPerFrame = fMetresPerSec * Time.deltaTime;
+            bChangeState = MyFunctions.Move.Translate(
+                gameObject,
+                sAxis,
+                fMetresPerFrame,
+                fMetresPositionTarget
+            );
             if (!bChangeState)
             {
                 // We need to build the navmesh when a translator moves if it has a surface which is supposed to be
                 // part of the navmesh, so let's just do it in all cases anyway:
                 navNavMesh.BuildNavMesh();
-                if (iDirection == 1)
-                {
-                    posPositionYCurrent = positionY.upper;
-                }
-                else
-                {
-                    posPositionYCurrent = positionY.lower;
-                }
+                posPositionCurrent = posPositionTarget;
             }
         }
     }
@@ -107,31 +100,30 @@ public class TranslatorController : MonoBehaviour
 
     public void Trigger(string sActivator="", string sSwitcherTrigger="", bool bSfx=true)
     {
-        if (    (activatorType == activator.both)
-            ||  ((activatorType == activator.projectile) && (sActivator == "projectile"))
-            ||  ((activatorType == activator.switcher) && (sActivator == "switcher")) )
+        if (    (sActivator == "reset")
+            ||  (   (sActivator == "projectile")
+                &&  ((activatorType == activator.projectile) || (activatorType == activator.both)) )
+            ||  (   (sActivator == "switcher")
+                &&  ((activatorType == activator.switcher) || (activatorType == activator.both))
+                &&  (   (   (sSwitcherTrigger == "state1to2")
+                        &&  ((switcherTriggerType == switcherTrigger.state1to2) || (switcherTriggerType == switcherTrigger.both)) )
+                    ||  (   (sSwitcherTrigger == "state2to1")
+                        &&  ((switcherTriggerType == switcherTrigger.state2to1) || (switcherTriggerType == switcherTrigger.both)) ) ) ) )
         {
-            if (    (sActivator == "projectile")
-                ||  (   (sActivator == "switcher")
-                    &&  (switcherTriggerType == switcherTrigger.both)
-                    ||  ((switcherTriggerType == switcherTrigger.state1to2) && (sSwitcherTrigger == "state1to2"))
-                    ||  ((switcherTriggerType == switcherTrigger.state2to1) && (sSwitcherTrigger == "state2to1")) ) )
+            bChangeState = true;
+            if (bSfx)
             {
-                if (bSfx)
-                {
-                    gameManager.SfxclpPlay("sfxclpTranslator");
-                }
-                bChangeState = true;
-                if (iDirection == -1)
-                {
-                    iDirection = 1;
-                    fMetresPositionYTarget = fMetresPositionYUpper;
-                }
-                else
-                {
-                    iDirection = -1;
-                    fMetresPositionYTarget = fMetresPositionYLower;
-                }
+                gameManager.SfxclpPlay("sfxclpTranslator");
+            }
+            if (posPositionTarget == position.lower)
+            {
+                posPositionTarget = position.upper;
+                fMetresPositionTarget = fMetresPositionUpper;
+            }
+            else
+            {
+                posPositionTarget = position.lower;
+                fMetresPositionTarget = fMetresPositionLower;
             }
         }
     }
@@ -140,18 +132,51 @@ public class TranslatorController : MonoBehaviour
 
     public void Reset()
     {
-        if (posPositionYCurrent != posPositionYStart)
+        // switch (axisType)
+        // {
+        //     case axis.x:
+        //         fMetresPositionLower += transform.parent.transform.position.x;
+        //         fMetresPositionUpper += transform.parent.transform.position.x;
+        //         fMetresPositionStart += transform.parent.transform.position.x;
+        //         break;
+        //     case axis.y:
+        //         fMetresPositionLower += transform.parent.transform.position.y;
+        //         fMetresPositionUpper += transform.parent.transform.position.y;
+        //         fMetresPositionStart += transform.parent.transform.position.y;
+        //         break;
+        //     case axis.z:
+        //         fMetresPositionLower += transform.parent.transform.position.z;
+        //         fMetresPositionUpper += transform.parent.transform.position.z;
+        //         fMetresPositionStart += transform.parent.transform.position.z;
+        //         break;
+        // }
+        if (posPositionCurrent != posPositionStart)
         {
-            bChangeState = true;
-            if (iDirection == -1)
+            posPositionCurrent = posPositionStart;
+            posPositionTarget = posPositionStart;
+            switch (axisType)
             {
-                iDirection = 1;
-                fMetresPositionYTarget = fMetresPositionYUpper;
-            }
-            else
-            {
-                iDirection = -1;
-                fMetresPositionYTarget = fMetresPositionYLower;
+                case axis.x:
+                    transform.position = new Vector3(
+                        transform.parent.transform.position.x + fMetresPositionStart,
+                        transform.position.y,
+                        transform.position.z
+                    );
+                    break;
+                case axis.y:
+                    transform.position = new Vector3(
+                        transform.position.x,
+                        transform.parent.transform.position.y + fMetresPositionStart,
+                        transform.position.z
+                    );
+                    break;
+                case axis.z:
+                    transform.position = new Vector3(
+                        transform.position.x,
+                        transform.position.y,
+                        transform.parent.transform.position.z + fMetresPositionStart
+                    );
+                    break;
             }
         }
     }

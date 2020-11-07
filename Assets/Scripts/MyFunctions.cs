@@ -14,23 +14,49 @@ namespace MyFunctions
             GameObject go,
             string sAxis,
             float fMetresPerFrame,
-            float fCurrentPosition,
-            float fTargetPosition
+            float fMetresPositionTarget
         )
         {
-            if (    ((fMetresPerFrame > 0f) && (fTargetPosition > (fCurrentPosition + fMetresPerFrame)))
-                ||  ((fMetresPerFrame < 0f) && (fTargetPosition < (fCurrentPosition + fMetresPerFrame))) )
+            int iDirection;
+            float fMetresPositionDeltaCurrent = 0f;
+
+            // ------------------------------------------------------------------------------------------------
+
+            switch(sAxis)
             {
+                case "x":
+                    fMetresPositionDeltaCurrent = fMetresPositionTarget - go.transform.position.x;
+                    break;
+                case "y":
+                    fMetresPositionDeltaCurrent = fMetresPositionTarget - go.transform.position.y;
+                    break;
+                case "z":
+                    fMetresPositionDeltaCurrent = fMetresPositionTarget - go.transform.position.z;
+                    break;
+            }
+
+            // ------------------------------------------------------------------------------------------------
+
+            if (Math.Abs(fMetresPositionDeltaCurrent) > fMetresPerFrame)
+            {
+                if (fMetresPositionDeltaCurrent > 0f)
+                {
+                    iDirection = 1;
+                }
+                else
+                {
+                    iDirection = -1;
+                }
                 switch(sAxis)
                 {
                     case "x":
-                        go.transform.Translate(fMetresPerFrame, 0f, 0f, Space.World);
+                        go.transform.Translate(iDirection * fMetresPerFrame, 0f, 0f, Space.World);
                         break;
                     case "y":
-                        go.transform.Translate(0f, fMetresPerFrame, 0f, Space.World);
+                        go.transform.Translate(0f, iDirection * fMetresPerFrame, 0f, Space.World);
                         break;
                     case "z":
-                        go.transform.Translate(0f, 0f, fMetresPerFrame, Space.World);
+                        go.transform.Translate(0f, 0f, iDirection * fMetresPerFrame, Space.World);
                         break;
                 }
                 return(true);
@@ -40,17 +66,20 @@ namespace MyFunctions
                 switch(sAxis)
                 {
                     case "x":
-                        go.transform.Translate(fTargetPosition - fCurrentPosition, 0f, 0f, Space.World);
+                        go.transform.Translate(fMetresPositionDeltaCurrent, 0f, 0f, Space.World);
                         break;
                     case "y":
-                        go.transform.Translate(0f, fTargetPosition - fCurrentPosition, 0f, Space.World);
+                        go.transform.Translate(0f, fMetresPositionDeltaCurrent, 0f, Space.World);
                         break;
                     case "z":
-                        go.transform.Translate(0f, 0f, fTargetPosition - fCurrentPosition, Space.World);
+                        go.transform.Translate(0f, 0f, fMetresPositionDeltaCurrent, Space.World);
                         break;
                 }
                 return(false);
             }
+
+            // ------------------------------------------------------------------------------------------------
+
         }
 
         // ------------------------------------------------------------------------------------------------

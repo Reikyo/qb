@@ -1,3 +1,4 @@
+using System;
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -51,8 +52,8 @@ public class CubeController : MonoBehaviour
         transform.eulerAngles = v3EulerAnglesInstantiate;
         v3EulerAngles = v3EulerAnglesInstantiate;
 
-        fMetresPerSecYFirstLevel = (v3PositionFirstLevel.y - v3PositionInstantiate.y) / fTransitionTimeFirstLevel;
-        fMetresPerSecZFirstLevel = (v3PositionFirstLevel.z - v3PositionInstantiate.z) / fTransitionTimeFirstLevel;
+        fMetresPerSecYFirstLevel = Math.Abs((v3PositionFirstLevel.y - v3PositionInstantiate.y) / fTransitionTimeFirstLevel);
+        fMetresPerSecZFirstLevel = Math.Abs((v3PositionFirstLevel.z - v3PositionInstantiate.z) / fTransitionTimeFirstLevel);
 
         fDegreesPerSecXFirstLevel = (v3EulerAnglesFirstLevel.x - v3EulerAnglesInstantiate.x) / fTransitionTimeFirstLevel;
         fDegreesPerSecNextLevel = (v3EulerAnglesNextLevel.z - v3EulerAnglesFirstLevel.z) / fTransitionTimeNextLevel;
@@ -75,7 +76,6 @@ public class CubeController : MonoBehaviour
                     gameObject,
                     "y",
                     fMetresPerFrameYFirstLevel,
-                    transform.position.y,
                     v3PositionFirstLevel.y
                 );
             }
@@ -86,7 +86,6 @@ public class CubeController : MonoBehaviour
                     gameObject,
                     "z",
                     fMetresPerFrameZFirstLevel,
-                    transform.position.z,
                     v3PositionFirstLevel.z
                 );
             }
