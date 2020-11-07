@@ -100,8 +100,7 @@ public class TranslatorController : MonoBehaviour
 
     public void Trigger(string sActivator="", string sSwitcherTrigger="", bool bSfx=true)
     {
-        if (    (sActivator == "reset")
-            ||  (   (sActivator == "projectile")
+        if (    (   (sActivator == "projectile")
                 &&  ((activatorType == activator.projectile) || (activatorType == activator.both)) )
             ||  (   (sActivator == "switcher")
                 &&  ((activatorType == activator.switcher) || (activatorType == activator.both))

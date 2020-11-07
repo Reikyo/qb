@@ -19,6 +19,7 @@ public class LevelController : MonoBehaviour
     private GameObject[] goArrWallTimed;
     private GameObject[] goArrTranslator;
     private GameObject[] goArrRotator;
+    private GameObject[] goArrExchanger;
 
     private Vector3 v3PositionInstantiate = new Vector3(0f, -10f, 1f);
     private Vector3 v3PositionPlay = new Vector3(0f, 0f, 0f);
@@ -140,6 +141,7 @@ public class LevelController : MonoBehaviour
         goArrWallTimed = GameObject.FindGameObjectsWithTag("WallTimed");
         goArrTranslator = GameObject.FindGameObjectsWithTag("Translator");
         goArrRotator = GameObject.FindGameObjectsWithTag("Rotator");
+        goArrExchanger = GameObject.FindGameObjectsWithTag("Exchanger");
         bChangeStateStartLevel = true;
         bChangeStatePositionY = true;
         bChangeStatePositionZ = true;
@@ -223,6 +225,10 @@ public class LevelController : MonoBehaviour
             foreach (GameObject goRotator in goArrRotator)
             {
                 goRotator.GetComponent<RotatorController>().Reset();
+            }
+            foreach (GameObject goExchanger in goArrExchanger)
+            {
+                goExchanger.GetComponent<PlayerBuddySwitchController>().bEngagedByTarget = false;
             }
         }
         if (bResetCharacters)
