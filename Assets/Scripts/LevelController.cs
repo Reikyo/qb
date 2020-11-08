@@ -251,8 +251,8 @@ public class LevelController : MonoBehaviour
             if (    goSafeZonePlayer
                 &&  goSafeZoneTarget )
             {
-                goSafeZonePlayer.transform.position = v3PositionSafeZonePlayerOrig;
-                goSafeZoneTarget.transform.position = v3PositionSafeZoneTargetOrig;
+                goSafeZonePlayer.transform.position = goSafeZonePlayer.transform.parent.transform.position + v3PositionSafeZonePlayerOrig;
+                goSafeZoneTarget.transform.position = goSafeZoneTarget.transform.parent.transform.position + v3PositionSafeZoneTargetOrig;
                 goSafeZonePlayer.GetComponent<SpriteRenderer>().color = colSafeZonePlayer;
                 goSafeZoneTarget.GetComponent<SpriteRenderer>().color = colSafeZoneTarget;
             }
