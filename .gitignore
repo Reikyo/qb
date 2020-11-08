@@ -1,6 +1,16 @@
+.vs
 Assets/Asset\ Store*
 Assets/NavMeshComponents*
 Assets/TextMesh\ Pro*
 Backups
+Build
 Library
+Logs
+obj
+Packages
 Temp
+Assembly-CSharp-Editor.csproj
+Assembly-CSharp.csproj
+NavMeshComponents.csproj
+NavMeshComponentsEditor.csproj
+Project.sln
