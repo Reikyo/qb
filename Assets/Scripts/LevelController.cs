@@ -20,6 +20,12 @@ public class LevelController : MonoBehaviour
     private GameObject[] goArrTranslator;
     private GameObject[] goArrRotator;
     private GameObject[] goArrExchanger;
+    private GameObject goSafeZonePlayer;
+    private GameObject goSafeZoneTarget;
+    private Vector3 v3PositionSafeZonePlayerOrig;
+    private Vector3 v3PositionSafeZoneTargetOrig;
+    private Color colSafeZonePlayer;
+    private Color colSafeZoneTarget;
 
     private Vector3 v3PositionInstantiate = new Vector3(0f, -10f, 1f);
     private Vector3 v3PositionPlay = new Vector3(0f, 0f, 0f);
@@ -45,6 +51,23 @@ public class LevelController : MonoBehaviour
         spawnManager = GameObject.Find("Spawn Manager").GetComponent<SpawnManager>();
         cubeController = GameObject.Find("Cube").GetComponent<CubeController>();
         navNavMesh = GameObject.Find("Nav Mesh").GetComponent<NavMeshSurface>();
+
+        goArrWallDestructible = GameObject.FindGameObjectsWithTag("WallDestructible");
+        goArrWallTimed = GameObject.FindGameObjectsWithTag("WallTimed");
+        goArrTranslator = GameObject.FindGameObjectsWithTag("Translator");
+        goArrRotator = GameObject.FindGameObjectsWithTag("Rotator");
+        goArrExchanger = GameObject.FindGameObjectsWithTag("Exchanger");
+        goSafeZonePlayer = GameObject.FindWithTag("SafeZonePlayer");
+        goSafeZoneTarget = GameObject.FindWithTag("SafeZoneTarget");
+
+        if (    goSafeZonePlayer
+            &&  goSafeZoneTarget )
+        {
+            v3PositionSafeZonePlayerOrig = goSafeZonePlayer.transform.position;
+            v3PositionSafeZoneTargetOrig = goSafeZoneTarget.transform.position;
+            colSafeZonePlayer = goSafeZonePlayer.GetComponent<SpriteRenderer>().color;
+            colSafeZoneTarget = goSafeZoneTarget.GetComponent<SpriteRenderer>().color;
+        }
 
         transform.position = v3PositionInstantiate;
 
@@ -137,11 +160,6 @@ public class LevelController : MonoBehaviour
     {
         iLevel = iLevelGiven;
         gameObject.SetActive(true);
-        goArrWallDestructible = GameObject.FindGameObjectsWithTag("WallDestructible");
-        goArrWallTimed = GameObject.FindGameObjectsWithTag("WallTimed");
-        goArrTranslator = GameObject.FindGameObjectsWithTag("Translator");
-        goArrRotator = GameObject.FindGameObjectsWithTag("Rotator");
-        goArrExchanger = GameObject.FindGameObjectsWithTag("Exchanger");
         bChangeStateStartLevel = true;
         bChangeStatePositionY = true;
         bChangeStatePositionZ = true;
@@ -229,6 +247,14 @@ public class LevelController : MonoBehaviour
             foreach (GameObject goExchanger in goArrExchanger)
             {
                 goExchanger.GetComponent<PlayerBuddySwitchController>().bEngagedByTarget = false;
+            }
+            if (    goSafeZonePlayer
+                &&  goSafeZoneTarget )
+            {
+                goSafeZonePlayer.transform.position = v3PositionSafeZonePlayerOrig;
+                goSafeZoneTarget.transform.position = v3PositionSafeZoneTargetOrig;
+                goSafeZonePlayer.GetComponent<SpriteRenderer>().color = colSafeZonePlayer;
+                goSafeZoneTarget.GetComponent<SpriteRenderer>().color = colSafeZoneTarget;
             }
         }
         if (bResetCharacters)

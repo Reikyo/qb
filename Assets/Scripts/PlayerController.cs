@@ -86,12 +86,10 @@ public class PlayerController : MonoBehaviour
         {
             colTarget = goTarget.GetComponent<Renderer>().material.GetColor("_Color");
         }
-        if (goSafeZonePlayer)
+        if (    goSafeZonePlayer
+            &&  goSafeZoneTarget )
         {
             colSafeZonePlayer = goSafeZonePlayer.GetComponent<SpriteRenderer>().color;
-        }
-        if (goSafeZoneTarget)
-        {
             colSafeZoneTarget = goSafeZoneTarget.GetComponent<SpriteRenderer>().color;
         }
     }
@@ -204,6 +202,11 @@ public class PlayerController : MonoBehaviour
                     }
                     else if (iNumProjectile == 0)
                     {
+                        // TODO: This needs fixing, as sometimes there is a navmesh path available, but not a real path, as
+                        // sometimes we allow walls to be ignored by the navmesh for e.g. enemies to approach a closed
+                        // door. May possibly need to consider having multiple navmeshes. Also checking this condition only
+                        // when the projectile is fired is not good e.g. when we have timed walls, we may have a path at
+                        // projectile time, but then not at some later time but before the player has traversed that path.
                         navPlayer.enabled = true;
                         navPlayer.CalculatePath(goSafeZonePlayer.transform.position, navPlayerPath);
                         navPlayer.enabled = false;

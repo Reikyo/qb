@@ -172,15 +172,6 @@ public class CubeController : MonoBehaviour
 
     public void StartNextLevel()
     {
-        levelController.FinishLevel();
-    }
-
-    // ------------------------------------------------------------------------------------------------
-
-    public void StartNextLevelContinue()
-    {
-        bChangeStateStartNextLevel = true;
-
         if (iLevel % 2 == 0)
         {
             bChangeStateEulerAngleZ = true;
@@ -208,7 +199,15 @@ public class CubeController : MonoBehaviour
             v3EulerAnglesNextLevel = new Vector3(0f, 0f, 90f);
         }
 
+        levelController.FinishLevel();
         levelController = goArrLevels[iLevel].GetComponent<LevelController>();
+    }
+
+    // ------------------------------------------------------------------------------------------------
+
+    public void StartNextLevelContinue()
+    {
+        bChangeStateStartNextLevel = true;
     }
 
     // ------------------------------------------------------------------------------------------------
