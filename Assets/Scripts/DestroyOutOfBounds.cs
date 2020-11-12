@@ -27,13 +27,22 @@ public class DestroyOutOfBounds : MonoBehaviour
             ||  (Math.Abs(transform.position.z) >= fXZLimitExist)
             ||  (transform.position.y <= fYLimitExist) )
         {
-            if (gameObject.tag == "Enemy")
+            if (    (   gameObject.CompareTag("Player")
+                    ||  gameObject.CompareTag("Target") )
+                &&  gameManager.bActive )
+            {
+                gameManager.LevelFailed("That's a long way down ...");
+            }
+            else if (gameObject.CompareTag("Enemy"))
             {
                 EnemyController enemyController = gameObject.GetComponent<EnemyController>();
-                if (enemyController.goWallTimed)
+                if (enemyController.goListWallTimed.Count > 0)
                 {
-                    enemyController.goWallTimed.SetActive(false);
-                    gameManager.VfxclpPlay("vfxclpWallTimed", enemyController.goWallTimed.transform.position);
+                    foreach (GameObject goWallTimed in enemyController.goListWallTimed)
+                    {
+                        goWallTimed.SetActive(false);
+                        gameManager.VfxclpPlay("vfxclpWallTimed", goWallTimed.transform.position);
+                    }
                     gameManager.SfxclpPlay("sfxclpWallTimed");
                 }
             }

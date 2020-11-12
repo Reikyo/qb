@@ -111,11 +111,11 @@ public class SpawnManager : MonoBehaviour
                 // Level 1
                 goPlayer = Instantiate(goPrefabPlayer, new Vector3(-22f, goPrefabPlayer.transform.position.y, -22f), goPrefabPlayer.transform.rotation);
                 goEnemy = Instantiate(goPrefabEnemy, new Vector3(7.5f, goPrefabEnemy.transform.position.y, 17f), goPrefabEnemy.transform.rotation);
-                goEnemy.GetComponent<EnemyController>().goWallTimed = GameObject.Find("Wall Horizontal (6) (3)");
+                goEnemy.GetComponent<EnemyController>().goListWallTimed.Add(GameObject.Find("Wall Horizontal (6) (3)"));
                 goEnemy = Instantiate(goPrefabEnemy, new Vector3(-17f, goPrefabEnemy.transform.position.y, 7.5f), goPrefabEnemy.transform.rotation);
-                goEnemy.GetComponent<EnemyController>().goWallTimed = GameObject.Find("Wall Horizontal (6) (4)");
+                goEnemy.GetComponent<EnemyController>().goListWallTimed.Add(GameObject.Find("Wall Horizontal (6) (4)"));
                 goEnemy = Instantiate(goPrefabEnemy, new Vector3(-7.5f, goPrefabEnemy.transform.position.y, -17f), goPrefabEnemy.transform.rotation);
-                goEnemy.GetComponent<EnemyController>().goWallTimed = GameObject.Find("Wall Horizontal (6) (5)");
+                goEnemy.GetComponent<EnemyController>().goListWallTimed.Add(GameObject.Find("Wall Horizontal (6) (5)"));
                 goPowerUp = Instantiate(goPrefabPowerUp, new Vector3(12f, goPrefabPowerUp.transform.position.y, -12.5f), goPrefabPowerUp.transform.rotation);
                 break;
             case 2:
@@ -151,7 +151,7 @@ public class SpawnManager : MonoBehaviour
                             )
                         ),
                         Quaternion.Euler(0f, Random.Range(0f, 360f), 0f));
-                    goEnemy.GetComponent<EnemyController>().goWallTimed = GameObject.Find(sListLevel3WallTimed[i]);
+                    goEnemy.GetComponent<EnemyController>().goListWallTimed.Add(GameObject.Find(sListLevel3WallTimed[i]));
                 }
                 goPowerUp = Instantiate(goPrefabPowerUp, new Vector3(0f, goPrefabPowerUp.transform.position.y, 0f), goPrefabPowerUp.transform.rotation);
                 goPowerUp.GetComponent<PowerUpController>().iNumProjectile = 50;
@@ -172,7 +172,57 @@ public class SpawnManager : MonoBehaviour
                 // goPlayer = Instantiate(goPrefabPlayer, new Vector3(0f, goPrefabPlayer.transform.position.y, -20f), goPrefabPlayer.transform.rotation);
                 // goSafeZonePlayer = Instantiate(goPrefabSafeZonePlayer, new Vector3(0f, goPrefabSafeZonePlayer.transform.position.y, 20f), goPrefabSafeZonePlayer.transform.rotation);
                 // Level 5
-                goPlayer = Instantiate(goPrefabPlayer, new Vector3(0f, goPrefabPlayer.transform.position.y, -20f), goPrefabPlayer.transform.rotation);
+                goPlayer = Instantiate(goPrefabPlayer, new Vector3(0f, goPrefabPlayer.transform.position.y, -21.5f), goPrefabPlayer.transform.rotation);
+                goTarget = Instantiate(goPrefabTarget, new Vector3(0f, goPrefabTarget.transform.position.y, 0f), goPrefabTarget.transform.rotation);
+                goEnemy = Instantiate(goPrefabEnemy, new Vector3(-21.5f, goPrefabEnemy.transform.position.y, -10f), goPrefabEnemy.transform.rotation);
+                goEnemy.GetComponent<EnemyController>().goListWallTimed.Add(GameObject.Find("Wall Vertical (4) (6)"));
+                goEnemy.GetComponent<EnemyController>().goListWallTimed.Add(GameObject.Find("Wall Vertical (6) (5)"));
+                goEnemy = Instantiate(goPrefabEnemy, new Vector3(21.5f, goPrefabEnemy.transform.position.y, -10f), goPrefabEnemy.transform.rotation);
+                goEnemy.GetComponent<EnemyController>().goListWallTimed.Add(GameObject.Find("Wall Horizontal (3) (6)"));
+                goEnemy.GetComponent<EnemyController>().goListWallTimed.Add(GameObject.Find("Wall Horizontal (7) (5)"));
+                goEnemy = Instantiate(goPrefabEnemy, new Vector3(0f, goPrefabEnemy.transform.position.y, 21.5f), goPrefabEnemy.transform.rotation);
+                goEnemy.GetComponent<EnemyController>().goListWallTimed.Add(GameObject.Find("Wall Horizontal (5) (3)"));
+                goEnemy.GetComponent<EnemyController>().goListWallTimed.Add(GameObject.Find("Wall Horizontal (5) (8)"));
+                goEnemy = Instantiate(goPrefabEnemy, new Vector3(-15f, goPrefabEnemy.transform.position.y, -5f), goPrefabEnemy.transform.rotation);
+                goEnemy.GetComponent<EnemyController>().goListWallTimed.Add(GameObject.Find("Wall Vertical (5) (2)"));
+                goEnemy.GetComponent<EnemyController>().goListWallTimed.Add(GameObject.Find("Wall Vertical (5) (9)"));
+                goEnemy = Instantiate(goPrefabEnemy, new Vector3(15f, goPrefabEnemy.transform.position.y, -5f), goPrefabEnemy.transform.rotation);
+                goEnemy.GetComponent<EnemyController>().goListWallTimed.Add(GameObject.Find("Wall Corner (1) (2)"));
+                goEnemy.GetComponent<EnemyController>().goListWallTimed.Add(GameObject.Find("Wall Corner (1) (3)"));
+                goEnemy.GetComponent<EnemyController>().goListWallTimed.Add(GameObject.Find("Wall Corner (1) (4)"));
+                goEnemy.GetComponent<EnemyController>().goListWallTimed.Add(GameObject.Find("Wall Corner (1) (5)"));
+                goEnemy.GetComponent<EnemyController>().goListWallTimed.Add(GameObject.Find("Wall Corner (1) (6)"));
+                goEnemy.GetComponent<EnemyController>().goListWallTimed.Add(GameObject.Find("Wall Corner (1) (7)"));
+                goEnemy.GetComponent<EnemyController>().goListWallTimed.Add(GameObject.Find("Wall Corner (1) (8)"));
+                goEnemy.GetComponent<EnemyController>().goListWallTimed.Add(GameObject.Find("Wall Corner (1) (9)"));
+                goEnemy.GetComponent<EnemyController>().goListWallTimed.Add(GameObject.Find("Wall Corner (10) (2)"));
+                goEnemy.GetComponent<EnemyController>().goListWallTimed.Add(GameObject.Find("Wall Corner (10) (3)"));
+                goEnemy.GetComponent<EnemyController>().goListWallTimed.Add(GameObject.Find("Wall Corner (10) (4)"));
+                goEnemy.GetComponent<EnemyController>().goListWallTimed.Add(GameObject.Find("Wall Corner (10) (5)"));
+                goEnemy.GetComponent<EnemyController>().goListWallTimed.Add(GameObject.Find("Wall Corner (10) (6)"));
+                goEnemy.GetComponent<EnemyController>().goListWallTimed.Add(GameObject.Find("Wall Corner (10) (7)"));
+                goEnemy.GetComponent<EnemyController>().goListWallTimed.Add(GameObject.Find("Wall Corner (10) (8)"));
+                goEnemy.GetComponent<EnemyController>().goListWallTimed.Add(GameObject.Find("Wall Corner (10) (9)"));
+                goEnemy.GetComponent<EnemyController>().goListWallTimed.Add(GameObject.Find("Wall Corner (2) (1)"));
+                goEnemy.GetComponent<EnemyController>().goListWallTimed.Add(GameObject.Find("Wall Corner (3) (1)"));
+                goEnemy.GetComponent<EnemyController>().goListWallTimed.Add(GameObject.Find("Wall Corner (4) (1)"));
+                goEnemy.GetComponent<EnemyController>().goListWallTimed.Add(GameObject.Find("Wall Corner (5) (1)"));
+                goEnemy.GetComponent<EnemyController>().goListWallTimed.Add(GameObject.Find("Wall Corner (6) (1)"));
+                goEnemy.GetComponent<EnemyController>().goListWallTimed.Add(GameObject.Find("Wall Corner (7) (1)"));
+                goEnemy.GetComponent<EnemyController>().goListWallTimed.Add(GameObject.Find("Wall Corner (8) (1)"));
+                goEnemy.GetComponent<EnemyController>().goListWallTimed.Add(GameObject.Find("Wall Corner (9) (1)"));
+                goEnemy.GetComponent<EnemyController>().goListWallTimed.Add(GameObject.Find("Wall Corner (2) (10)"));
+                goEnemy.GetComponent<EnemyController>().goListWallTimed.Add(GameObject.Find("Wall Corner (3) (10)"));
+                goEnemy.GetComponent<EnemyController>().goListWallTimed.Add(GameObject.Find("Wall Corner (4) (10)"));
+                goEnemy.GetComponent<EnemyController>().goListWallTimed.Add(GameObject.Find("Wall Corner (5) (10)"));
+                goEnemy.GetComponent<EnemyController>().goListWallTimed.Add(GameObject.Find("Wall Corner (6) (10)"));
+                goEnemy.GetComponent<EnemyController>().goListWallTimed.Add(GameObject.Find("Wall Corner (7) (10)"));
+                goEnemy.GetComponent<EnemyController>().goListWallTimed.Add(GameObject.Find("Wall Corner (8) (10)"));
+                goEnemy.GetComponent<EnemyController>().goListWallTimed.Add(GameObject.Find("Wall Corner (9) (10)"));
+                goPowerUp = Instantiate(goPrefabPowerUp, new Vector3(-21f, goPrefabPowerUp.transform.position.y, 10f), goPrefabPowerUp.transform.rotation);
+                goPowerUp.GetComponent<PowerUpController>().iNumProjectile = 15;
+                goPowerUp = Instantiate(goPrefabPowerUp, new Vector3(21f, goPrefabPowerUp.transform.position.y, 10f), goPrefabPowerUp.transform.rotation);
+                goPowerUp.GetComponent<PowerUpController>().iNumProjectile = 15;
                 break;
         }
     }

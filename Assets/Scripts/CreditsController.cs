@@ -7,7 +7,7 @@ public class CreditsController : MonoBehaviour
     private GameManager gameManager;
 
     private float fSpeed = 2.5f;
-    private float fPositionYStop = 52f; // World-space value
+    private float fPositionYStop = 60f; // World-space value
 
     // ------------------------------------------------------------------------------------------------
 

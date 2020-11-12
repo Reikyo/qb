@@ -19,7 +19,7 @@ public class EnemyController : MonoBehaviour
     private GameObject goTarget;
     private List<string> sListLeaveTargetObjective = new List<string>() {"Random", "SafeZoneTarget"};
     private GameObject goPlayer;
-    public GameObject goWallTimed;
+    public List<GameObject> goListWallTimed;
     public string sObjective;
     // public ParticleSystem psInactive;
     private GameObject goInactive;
@@ -121,10 +121,13 @@ public class EnemyController : MonoBehaviour
         gameManager.SfxclpPlay("sfxclpEnemySleep");
         // psInactive.Play();
         goInactive.SetActive(true);
-        if (goWallTimed)
+        if (goListWallTimed.Count > 0)
         {
-            goWallTimed.SetActive(false);
-            gameManager.VfxclpPlay("vfxclpWallTimed", goWallTimed.transform.position);
+            foreach (GameObject goWallTimed in goListWallTimed)
+            {
+                goWallTimed.SetActive(false);
+                gameManager.VfxclpPlay("vfxclpWallTimed", goWallTimed.transform.position);
+            }
             gameManager.SfxclpPlay("sfxclpWallTimed");
         }
         yield return new WaitForSeconds(fWaitTime);
@@ -134,10 +137,13 @@ public class EnemyController : MonoBehaviour
         goInactive.SetActive(false);
         bActive = true;
         navEnemy.enabled = true;
-        if (goWallTimed)
+        if (goListWallTimed.Count > 0)
         {
-            goWallTimed.SetActive(true);
-            gameManager.VfxclpPlay("vfxclpWallTimed", goWallTimed.transform.position);
+            foreach (GameObject goWallTimed in goListWallTimed)
+            {
+                goWallTimed.SetActive(true);
+                gameManager.VfxclpPlay("vfxclpWallTimed", goWallTimed.transform.position);
+            }
             gameManager.SfxclpPlay("sfxclpWallTimed");
         }
     }

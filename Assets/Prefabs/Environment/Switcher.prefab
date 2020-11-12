@@ -72,7 +72,7 @@ GameObject:
   - component: {fileID: 496950364867697898}
   m_Layer: 0
   m_Name: Body
-  m_TagString: Untagged
+  m_TagString: Switcher
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -215,7 +215,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   switcherType: 2
   goArrDevice: []
-  slistOkayTriggerCharacters:
+  sListOkayTriggerCharacters:
   - Player
   - Target
   sTriggerCharacter: 
@@ -231,7 +231,7 @@ GameObject:
   - component: {fileID: 2634535089802818228}
   m_Layer: 0
   m_Name: Barrier
-  m_TagString: Untagged
+  m_TagString: Switcher
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

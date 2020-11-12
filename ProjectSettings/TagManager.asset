@@ -39,6 +39,7 @@ TagManager:
   - Rotator
   - RotatorTriggerOn
   - Level
+  - Barrier
   layers:
   - Default
   - TransparentFX

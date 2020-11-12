@@ -243,7 +243,11 @@ public class PlayerController : MonoBehaviour
         if (bActive)
         {
             if (    Input.GetKeyDown(KeyCode.LeftShift)
-                &&  !bLaunch )
+                &&  !bLaunch
+                &&  (transform.position.x >= -25f)
+                &&  (transform.position.x <= 25f)
+                &&  (transform.position.z >= -25f)
+                &&  (transform.position.z <= 25f) )
             {
                 StartCoroutine(StartBoost());
             }
@@ -263,7 +267,7 @@ public class PlayerController : MonoBehaviour
     {
         bBoost = true;
         goPlayerTrail.SetActive(true);
-        transform.Translate(1.0f * -Vector3.forward);
+        transform.Translate(-Vector3.forward);
         rbPlayer.AddForce(fForceBoost * transform.forward, ForceMode.Impulse);
         gameManager.SfxclpPlay("sfxclpBoost");
         yield return new WaitForSeconds(fTimeDeltaBoost);
@@ -491,6 +495,12 @@ public class PlayerController : MonoBehaviour
                 gameManager.VfxclpPlay("vfxclpWallDestructible", collision.gameObject.transform.position);
                 gameManager.SfxclpPlay("sfxclpWallDestructible");
             }
+            else if (   (   collision.gameObject.CompareTag("Launcher")
+                        ||  collision.gameObject.CompareTag("Switcher") )
+                    &&  bBoost )
+            {
+                FinishBoost();
+            }
             else if (   collision.gameObject.CompareTag("Translator")
                     &&  (transform.position.x >= (collision.gameObject.transform.position.x - 2.5f))
                     &&  (transform.position.x <= (collision.gameObject.transform.position.x + 2.5f))
@@ -565,6 +575,10 @@ public class PlayerController : MonoBehaviour
         {
             if (other.gameObject.GetComponent<WarpController>().goWarpPartner)
             {
+                if (bBoost)
+                {
+                    FinishBoost();
+                }
                 v3PositionWarpFrom = other.gameObject.transform.position;
                 v3PositionWarpTo = other.gameObject.GetComponent<WarpController>().goWarpPartner.transform.position;
                 bWarp = true;
@@ -589,7 +603,24 @@ public class PlayerController : MonoBehaviour
                 &&  !other.gameObject.GetComponent<PlayerBuddySwitchController>().bEngagedByTarget
                 &&  !bPlayerBuddySwitch
                 &&  goTarget )
+                // &&  !goTarget.GetComponent<TargetController>().bSafe )
         {
+            if (bBoost)
+            {
+                FinishBoost();
+            }
+            if (goTarget.GetComponent<TargetController>().bSafe)
+            {
+                goTarget.GetComponent<TargetController>().bSafe = false;
+                goTarget.GetComponent<TargetController>().sObjective = "None";
+                foreach (GameObject goEnemy in goArrEnemy)
+                {
+                    if (goEnemy)
+                    {
+                        goEnemy.GetComponent<EnemyController>().sObjective = "Target";
+                    }
+                }
+            }
             // From first player-buddy switch attempt:
             // other.gameObject.GetComponent<PlayerBuddySwitchController>().sTriggeredBy = gameObject.tag;
             goTarget.GetComponent<TargetController>().FinishObjective();
@@ -609,6 +640,10 @@ public class PlayerController : MonoBehaviour
                 &&  (!goTarget || goTarget.GetComponent<TargetController>().bSafe)
                 &&  !bSafe )
         {
+            if (bBoost)
+            {
+                FinishBoost();
+            }
             bSafe = true;
             bActive = false;
             bInMotionThisFrame = true;

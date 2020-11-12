@@ -226,7 +226,6 @@ MonoBehaviour:
   bInPlay: 1
   bActive: 1
   bSafe: 0
-  fSpeed: 12
   anPlayerChildren: []
   goProjectile: {fileID: 3262308912846389460, guid: 7ef6ed067bb4141f99938800b9352366,
     type: 3}
