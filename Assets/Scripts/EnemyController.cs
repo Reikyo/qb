@@ -16,9 +16,10 @@ public class EnemyController : MonoBehaviour
     private Rigidbody rbEnemy;
     // private Animator anEnemy;
     private NavMeshAgent navEnemy;
-    private GameObject goTarget;
-    private List<string> sListLeaveTargetObjective = new List<string>() {"Random", "SafeZoneTarget"};
     private GameObject goPlayer;
+    private GameObject goTarget;
+    private GameObject[] goArrEnemy;
+    private List<string> sListLeaveTargetObjective = new List<string>() {"Random", "SafeZoneTarget"};
     public List<GameObject> goListWallTimed;
     public string sObjective;
     // public ParticleSystem psInactive;
@@ -34,8 +35,9 @@ public class EnemyController : MonoBehaviour
         rbEnemy = GetComponent<Rigidbody>();
         // anEnemy = GetComponent<Animator>();
         navEnemy = GetComponent<NavMeshAgent>();
-        goTarget = GameObject.FindWithTag("Target");
         goPlayer = GameObject.FindWithTag("Player");
+        goTarget = GameObject.FindWithTag("Target");
+        goArrEnemy = GameObject.FindGameObjectsWithTag("Enemy");
         goInactive = transform.Find("FX_Dust_Prefab_01 1").gameObject;
 
         if (goTarget)
@@ -167,13 +169,20 @@ public class EnemyController : MonoBehaviour
     {
         if (    bActive
             &&  collision.gameObject.CompareTag("Target")
-            &&  !sListLeaveTargetObjective.Contains(goTarget.GetComponent<TargetController>().sObjective) )
+            &&  !sListLeaveTargetObjective.Contains(goTarget.GetComponent<TargetController>().sObjective)
+            &&  !goPlayer.GetComponent<PlayerController>().bPlayerBuddySwitch )
         {
             // anEnemy.SetTrigger("tAttack1");
             gameManager.SfxclpPlay("sfxclpEnemyAttack1");
             gameManager.SfxclpPlay("sfxclpTargetObjectiveRandom");
             goTarget.GetComponent<TargetController>().StartObjectiveRandom();
-            sObjective = "Player";
+            foreach (GameObject goEnemy in goArrEnemy)
+            {
+                if (goEnemy)
+                {
+                    goEnemy.GetComponent<EnemyController>().sObjective = "Player";
+                }
+            }
         }
         else if (   bActive
                 &&  collision.gameObject.CompareTag("Player") )

@@ -6,6 +6,7 @@ public class ProjectileController : MonoBehaviour
 {
     private bool bTriggered = false;
     private float fMetresPerSec = 50f;
+    private List<string> sListProjectileBypass = new List<string>() {"Player", "Warper", "Exchanger", "SwitcherTriggerOff", "SafeZonePlayer", "SafeZoneTarget"};
 
     private GameManager gameManager;
     private CubeController cubeController;
@@ -46,9 +47,10 @@ public class ProjectileController : MonoBehaviour
     // on the player though for this effect to occur).
     private void OnTriggerEnter(Collider other)
     {
+        Debug.Log(other.gameObject.tag);
         if (!bTriggered)
         {
-            if (!other.gameObject.CompareTag("Player"))
+            if (!sListProjectileBypass.Contains(other.gameObject.tag))
             {
                 // We set this flag immediately as otherwise the projectile could be triggered by something else
                 // before it is destroyed

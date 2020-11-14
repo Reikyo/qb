@@ -25,7 +25,7 @@ public class PlayerController : MonoBehaviour
     private float fWarpBoundary = 1.1f;
     private Vector3 v3PositionWarpFrom;
     private Vector3 v3PositionWarpTo;
-    private bool bPlayerBuddySwitch = false;
+    public bool bPlayerBuddySwitch = false;
     private bool bPlayerBuddySwitched = false;
     private string sNameExchangerEngagedByTarget;
     private string sNameTranslatorEngagedByPlayer = "";
@@ -442,11 +442,15 @@ public class PlayerController : MonoBehaviour
         {
             GetComponent<Renderer>().material.SetColor("_Color", colTarget);
             goTarget.GetComponent<Renderer>().material.SetColor("_Color", colPlayer);
+            goTarget.transform.Find("Trail").transform.Find("Trail (1)").gameObject.SetActive(false);
+            goTarget.transform.Find("Trail").transform.Find("Trail (2)").gameObject.SetActive(true);
         }
         else
         {
             GetComponent<Renderer>().material.SetColor("_Color", colPlayer);
             goTarget.GetComponent<Renderer>().material.SetColor("_Color", colTarget);
+            goTarget.transform.Find("Trail").transform.Find("Trail (1)").gameObject.SetActive(true);
+            goTarget.transform.Find("Trail").transform.Find("Trail (2)").gameObject.SetActive(false);
         }
 
         if (    goSafeZonePlayer
@@ -609,21 +613,8 @@ public class PlayerController : MonoBehaviour
             {
                 FinishBoost();
             }
-            if (goTarget.GetComponent<TargetController>().bSafe)
-            {
-                goTarget.GetComponent<TargetController>().bSafe = false;
-                goTarget.GetComponent<TargetController>().sObjective = "None";
-                foreach (GameObject goEnemy in goArrEnemy)
-                {
-                    if (goEnemy)
-                    {
-                        goEnemy.GetComponent<EnemyController>().sObjective = "Target";
-                    }
-                }
-            }
             // From first player-buddy switch attempt:
             // other.gameObject.GetComponent<PlayerBuddySwitchController>().sTriggeredBy = gameObject.tag;
-            goTarget.GetComponent<TargetController>().FinishObjective();
             v3PositionWarpFrom = other.gameObject.transform.position;
             bPlayerBuddySwitch = true;
             bActive = false;
@@ -635,6 +626,15 @@ public class PlayerController : MonoBehaviour
             //     transform.position.y,
             //     other.gameObject.transform.position.z
             // );
+            goTarget.GetComponent<TargetController>().bSafe = false;
+            goTarget.GetComponent<TargetController>().FinishObjective();
+            foreach (GameObject goEnemy in goArrEnemy)
+            {
+                if (goEnemy)
+                {
+                    goEnemy.GetComponent<EnemyController>().sObjective = "Target";
+                }
+            }
         }
         else if (   other.gameObject.CompareTag("SafeZonePlayer")
                 &&  (!goTarget || goTarget.GetComponent<TargetController>().bSafe)
