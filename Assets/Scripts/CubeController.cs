@@ -175,7 +175,14 @@ public class CubeController : MonoBehaviour
         if (iLevel % 2 == 0)
         {
             bChangeStateEulerAngleZ = true;
-            if (iLevel > 0)
+            if (iLevel == 0)
+            {
+                // These two lines are redundant for the first play-through, but useful for subsequent
+                // play-throughs in order to just reset the count:
+                v3EulerAngles = new Vector3(0f, 0f, 0f);
+                v3EulerAnglesNextLevel = new Vector3(0f, 0f, 90f);
+            }
+            else
             {
                 v3EulerAnglesNextLevel.z += 90f;
                 v3EulerAnglesNextLevel.z = Mathf.Round(v3EulerAnglesNextLevel.z);
@@ -195,8 +202,6 @@ public class CubeController : MonoBehaviour
         else
         {
             iLevel = 0;
-            v3EulerAngles = new Vector3(0f, 0f, 0f);
-            v3EulerAnglesNextLevel = new Vector3(0f, 0f, 90f);
         }
 
         levelController.FinishLevel();
