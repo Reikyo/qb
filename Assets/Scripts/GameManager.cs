@@ -18,7 +18,7 @@ public class GameManager : MonoBehaviour
     public GameObject goScreenCredits;
     public GameObject goScreenRestart;
     public GameObject goScreenHUD;
-    public TextMeshProUGUI guiNumProjectile;
+    public TextMeshProUGUI[] guiArrNumProjectileFlash;
     public TextMeshProUGUI guiLevelFailedHelp;
     // public Button butStart;
     // public Button butNextLevel;
@@ -137,7 +137,10 @@ public class GameManager : MonoBehaviour
         if (bNumProjectileFlash)
         {
             colNumProjectileFlashVertexColorNow.a = 0.6f + 0.4f * Mathf.Cos(fNumProjectileFlashAngFreq * (Time.time - fNumProjectileFlashTimeStart));
-            guiNumProjectile.color = colNumProjectileFlashVertexColorNow;
+            foreach (TextMeshProUGUI gui in guiArrNumProjectileFlash)
+            {
+                gui.color = colNumProjectileFlashVertexColorNow;
+            }
         }
 
         // ------------------------------------------------------------------------------------------------
@@ -173,6 +176,10 @@ public class GameManager : MonoBehaviour
         }
         else if (goScreenHUD.activeSelf)
         {
+            if (bNumProjectileFlash)
+            {
+                EndNumProjectileFlash();
+            }
             cubeController.RestartThisLevel();
         }
         else if (goScreenRestart.activeSelf)
@@ -264,7 +271,10 @@ public class GameManager : MonoBehaviour
     {
         bNumProjectileFlash = false;
         colNumProjectileFlashVertexColorNow.a = 1f;
-        guiNumProjectile.color = colNumProjectileFlashVertexColorNow;
+        foreach (TextMeshProUGUI gui in guiArrNumProjectileFlash)
+        {
+            gui.color = colNumProjectileFlashVertexColorNow;
+        }
     }
 
     // ------------------------------------------------------------------------------------------------
