@@ -17,7 +17,9 @@ public class CreditsController : MonoBehaviour
     // For screen-space overlay:
     private float fMetresPerSec = 50f;
     private float fMetresPerFrame;
-    private float fMetresPositionDeltaCurrent;
+    // private float fMetresPositionDeltaCurrent;
+
+    private bool bTranslate = false;
 
     // ------------------------------------------------------------------------------------------------
 
@@ -36,22 +38,37 @@ public class CreditsController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        fMetresPerFrame = fMetresPerSec * Time.deltaTime;
-        fMetresPositionDeltaCurrent = camMainCamera.pixelHeight - goEndcap.transform.position.y;
+        // fMetresPerFrame = fMetresPerSec * Time.deltaTime;
+        // fMetresPositionDeltaCurrent = camMainCamera.pixelHeight - goEndcap.transform.position.y;
+        //
+        // if (Math.Abs(fMetresPositionDeltaCurrent) > fMetresPerFrame)
+        // {
+        //     transform.Translate(fMetresPerFrame * Vector3.up);
+        // }
+        // else
+        // {
+        //     // These lines were used when the credits screen was in world-space and incorporated the restart
+        //     // button. This method was abandoned in favour of using screen-space overlay for the credits, as
+        //     // previously we were seeing certain entities appear brightly through the transparent panel,
+        //     // unknown reason.
+        //         // transform.parent.Find("Button : Restart").gameObject.SetActive(true);
+        //         // gameManager.bActiveScreenButton = true;
+        //     transform.Translate(fMetresPositionDeltaCurrent * Vector3.up);
+        //     gameManager.goScreenRestart.transform.Find("Button : Restart").gameObject.SetActive(true);
+        //     gameManager.bActiveScreenButton = true;
+        //     gameManager.bCompleted = true;
+        //     gameManager.goScreenCredits.SetActive(false);
+        // }
 
-        if (Math.Abs(fMetresPositionDeltaCurrent) > fMetresPerFrame)
+        fMetresPerFrame = fMetresPerSec * Time.deltaTime;
+        bTranslate = MyFunctions.Move.Translate(
+            gameObject,
+            "y",
+            fMetresPerFrame,
+            camMainCamera.pixelHeight - goEndcap.transform.position.y
+        );
+        if (!bTranslate)
         {
-            transform.Translate(fMetresPerFrame * Vector3.up);
-        }
-        else
-        {
-            // These lines were used when the credits screen was in world-space and incorporated the restart
-            // button. This method was abandoned in favour of using screen-space overlay for the credits, as
-            // previously we were seeing certain entities appear brightly through the transparent panel,
-            // unknown reason.
-                // transform.parent.Find("Button : Restart").gameObject.SetActive(true);
-                // gameManager.bActiveScreenButton = true;
-            transform.Translate(fMetresPositionDeltaCurrent * Vector3.up);
             gameManager.goScreenRestart.transform.Find("Button : Restart").gameObject.SetActive(true);
             gameManager.bActiveScreenButton = true;
             gameManager.bCompleted = true;

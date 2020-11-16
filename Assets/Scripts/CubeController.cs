@@ -76,7 +76,7 @@ public class CubeController : MonoBehaviour
                     gameObject,
                     "y",
                     fMetresPerFrameYFirstLevel,
-                    v3PositionFirstLevel.y
+                    v3PositionFirstLevel.y - gameObject.transform.position.y
                 );
             }
             if (bChangeStatePositionZ)
@@ -86,7 +86,7 @@ public class CubeController : MonoBehaviour
                     gameObject,
                     "z",
                     fMetresPerFrameZFirstLevel,
-                    v3PositionFirstLevel.z
+                    v3PositionFirstLevel.z - gameObject.transform.position.z
                 );
             }
             if (bChangeStateEulerAngleX)

@@ -47,7 +47,6 @@ public class ProjectileController : MonoBehaviour
     // on the player though for this effect to occur).
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log(other.gameObject.tag);
         if (!bTriggered)
         {
             if (!sListProjectileBypass.Contains(other.gameObject.tag))

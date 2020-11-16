@@ -17,7 +17,6 @@ public class TranslatorController : MonoBehaviour
 
     public enum axis {x, y, z};
     public axis axisType;
-    private string sAxis;
 
     public enum position {lower, upper};
     public position posPositionStart;
@@ -57,19 +56,6 @@ public class TranslatorController : MonoBehaviour
         }
 
         fMetresPerSec = (fMetresPositionUpper - fMetresPositionLower) / fTransitionTime;
-
-        switch (axisType)
-        {
-            case axis.x:
-                sAxis = "x";
-                break;
-            case axis.y:
-                sAxis = "y";
-                break;
-            case axis.z:
-                sAxis = "z";
-                break;
-        }
     }
 
     // ------------------------------------------------------------------------------------------------
@@ -80,12 +66,33 @@ public class TranslatorController : MonoBehaviour
         if (bChangeState)
         {
             fMetresPerFrame = fMetresPerSec * Time.deltaTime;
-            bChangeState = MyFunctions.Move.Translate(
-                gameObject,
-                sAxis,
-                fMetresPerFrame,
-                fMetresPositionTarget
-            );
+            switch (axisType)
+            {
+                case axis.x:
+                    bChangeState = MyFunctions.Move.Translate(
+                        gameObject,
+                        "x",
+                        fMetresPerFrame,
+                        fMetresPositionTarget - gameObject.transform.position.x
+                    );
+                    break;
+                case axis.y:
+                    bChangeState = MyFunctions.Move.Translate(
+                        gameObject,
+                        "y",
+                        fMetresPerFrame,
+                        fMetresPositionTarget - gameObject.transform.position.y
+                    );
+                    break;
+                case axis.z:
+                    bChangeState = MyFunctions.Move.Translate(
+                        gameObject,
+                        "z",
+                        fMetresPerFrame,
+                        fMetresPositionTarget - gameObject.transform.position.z
+                    );
+                    break;
+            }
             if (!bChangeState)
             {
                 // We need to build the navmesh when a translator moves if it has a surface which is supposed to be

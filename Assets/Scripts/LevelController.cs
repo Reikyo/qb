@@ -92,7 +92,7 @@ public class LevelController : MonoBehaviour
                     gameObject,
                     "y",
                     fMetresPerFrameY,
-                    v3PositionPlay.y
+                    v3PositionPlay.y - gameObject.transform.position.y
                 );
             }
             if (bChangeStatePositionZ)
@@ -102,7 +102,7 @@ public class LevelController : MonoBehaviour
                     gameObject,
                     "z",
                     fMetresPerFrameZ,
-                    v3PositionPlay.z
+                    v3PositionPlay.z - gameObject.transform.position.z
                 );
             }
             if (    !bChangeStatePositionY
@@ -127,7 +127,7 @@ public class LevelController : MonoBehaviour
                     gameObject,
                     "y",
                     fMetresPerFrameY,
-                    v3PositionInstantiate.y
+                    v3PositionInstantiate.y - gameObject.transform.position.y
                 );
             }
             if (bChangeStatePositionZ)
@@ -137,7 +137,7 @@ public class LevelController : MonoBehaviour
                     gameObject,
                     "z",
                     fMetresPerFrameZ,
-                    v3PositionInstantiate.z
+                    v3PositionInstantiate.z - gameObject.transform.position.z
                 );
             }
             if (    !bChangeStatePositionY

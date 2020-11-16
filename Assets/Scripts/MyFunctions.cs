@@ -10,30 +10,96 @@ namespace MyFunctions
 
         // ------------------------------------------------------------------------------------------------
 
+        // public static bool Translate(
+        //     string sAxis,
+        //     float fMetresPerFrame,
+        //     float fMetresPositionTarget,
+        //     GameObject goMove,
+        //     GameObject goMeasure = null
+        // )
+        // {
+        //     if (!goMeasure)
+        //     {
+        //         goMeasure = goMove;
+        //     }
+        //
+        //     // ------------------------------------------------------------------------------------------------
+        //
+        //     int iDirection;
+        //     float fMetresPositionDeltaCurrent = 0f;
+        //
+        //     // ------------------------------------------------------------------------------------------------
+        //
+        //     switch(sAxis)
+        //     {
+        //         case "x":
+        //             fMetresPositionDeltaCurrent = fMetresPositionTarget - goMeasure.transform.position.x;
+        //             break;
+        //         case "y":
+        //             fMetresPositionDeltaCurrent = fMetresPositionTarget - goMeasure.transform.position.y;
+        //             break;
+        //         case "z":
+        //             fMetresPositionDeltaCurrent = fMetresPositionTarget - goMeasure.transform.position.z;
+        //             break;
+        //     }
+        //
+        //     // ------------------------------------------------------------------------------------------------
+        //
+        //     if (Math.Abs(fMetresPositionDeltaCurrent) > fMetresPerFrame)
+        //     {
+        //         if (fMetresPositionDeltaCurrent > 0f)
+        //         {
+        //             iDirection = 1;
+        //         }
+        //         else
+        //         {
+        //             iDirection = -1;
+        //         }
+        //         switch(sAxis)
+        //         {
+        //             case "x":
+        //                 goMove.transform.Translate(iDirection * fMetresPerFrame, 0f, 0f, Space.World);
+        //                 break;
+        //             case "y":
+        //                 goMove.transform.Translate(0f, iDirection * fMetresPerFrame, 0f, Space.World);
+        //                 break;
+        //             case "z":
+        //                 goMove.transform.Translate(0f, 0f, iDirection * fMetresPerFrame, Space.World);
+        //                 break;
+        //         }
+        //         return(true);
+        //     }
+        //     else
+        //     {
+        //         switch(sAxis)
+        //         {
+        //             case "x":
+        //                 goMove.transform.Translate(fMetresPositionDeltaCurrent, 0f, 0f, Space.World);
+        //                 break;
+        //             case "y":
+        //                 goMove.transform.Translate(0f, fMetresPositionDeltaCurrent, 0f, Space.World);
+        //                 break;
+        //             case "z":
+        //                 goMove.transform.Translate(0f, 0f, fMetresPositionDeltaCurrent, Space.World);
+        //                 break;
+        //         }
+        //         return(false);
+        //     }
+        //
+        //     // ------------------------------------------------------------------------------------------------
+        //
+        // }
+        //
+        // // ------------------------------------------------------------------------------------------------
+
         public static bool Translate(
-            GameObject go,
+            GameObject goMove,
             string sAxis,
             float fMetresPerFrame,
-            float fMetresPositionTarget
+            float fMetresPositionDeltaCurrent
         )
         {
             int iDirection;
-            float fMetresPositionDeltaCurrent = 0f;
-
-            // ------------------------------------------------------------------------------------------------
-
-            switch(sAxis)
-            {
-                case "x":
-                    fMetresPositionDeltaCurrent = fMetresPositionTarget - go.transform.position.x;
-                    break;
-                case "y":
-                    fMetresPositionDeltaCurrent = fMetresPositionTarget - go.transform.position.y;
-                    break;
-                case "z":
-                    fMetresPositionDeltaCurrent = fMetresPositionTarget - go.transform.position.z;
-                    break;
-            }
 
             // ------------------------------------------------------------------------------------------------
 
@@ -50,13 +116,13 @@ namespace MyFunctions
                 switch(sAxis)
                 {
                     case "x":
-                        go.transform.Translate(iDirection * fMetresPerFrame, 0f, 0f, Space.World);
+                        goMove.transform.Translate(iDirection * fMetresPerFrame, 0f, 0f, Space.World);
                         break;
                     case "y":
-                        go.transform.Translate(0f, iDirection * fMetresPerFrame, 0f, Space.World);
+                        goMove.transform.Translate(0f, iDirection * fMetresPerFrame, 0f, Space.World);
                         break;
                     case "z":
-                        go.transform.Translate(0f, 0f, iDirection * fMetresPerFrame, Space.World);
+                        goMove.transform.Translate(0f, 0f, iDirection * fMetresPerFrame, Space.World);
                         break;
                 }
                 return(true);
@@ -66,13 +132,13 @@ namespace MyFunctions
                 switch(sAxis)
                 {
                     case "x":
-                        go.transform.Translate(fMetresPositionDeltaCurrent, 0f, 0f, Space.World);
+                        goMove.transform.Translate(fMetresPositionDeltaCurrent, 0f, 0f, Space.World);
                         break;
                     case "y":
-                        go.transform.Translate(0f, fMetresPositionDeltaCurrent, 0f, Space.World);
+                        goMove.transform.Translate(0f, fMetresPositionDeltaCurrent, 0f, Space.World);
                         break;
                     case "z":
-                        go.transform.Translate(0f, 0f, fMetresPositionDeltaCurrent, Space.World);
+                        goMove.transform.Translate(0f, 0f, fMetresPositionDeltaCurrent, Space.World);
                         break;
                 }
                 return(false);
