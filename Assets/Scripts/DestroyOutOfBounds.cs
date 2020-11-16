@@ -31,7 +31,7 @@ public class DestroyOutOfBounds : MonoBehaviour
                     ||  gameObject.CompareTag("Target") )
                 &&  gameManager.bActive )
             {
-                gameManager.LevelFailed("That's a long way down ...");
+                gameManager.LevelFailed("that's a long way down ...");
             }
             else if (gameObject.CompareTag("Enemy"))
             {

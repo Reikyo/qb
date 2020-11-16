@@ -216,7 +216,7 @@ public class TargetController : MonoBehaviour
         {
             bInPlay = false;
             navTarget.enabled = false;
-            gameManager.LevelFailed("Look after your buddy!");
+            gameManager.LevelFailed("look after your buddy!");
         }
         else if (other.gameObject.CompareTag("Exchanger"))
         {

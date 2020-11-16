@@ -10,11 +10,13 @@ public class GameManager : MonoBehaviour
     public bool bActive = false;
     public bool bActiveScreenButton = false;
     public bool bProjectilePathDependentLevel = false;
+    public bool bCompleted = false;
 
     public GameObject goScreenTitle;
     public GameObject goScreenLevelCleared;
     public GameObject goScreenLevelFailed;
     public GameObject goScreenCredits;
+    public GameObject goScreenRestart;
     public GameObject goScreenHUD;
     public TextMeshProUGUI guiNumProjectile;
     public TextMeshProUGUI guiLevelFailedHelp;
@@ -122,11 +124,12 @@ public class GameManager : MonoBehaviour
                 LevelCleared();
             }
 
+            // This is no longer needed now that we have a reset button in the HUD
             // Temporarily allow level to be failed for testing purposes:
-            if (Input.GetKeyDown(KeyCode.F))
-            {
-                LevelFailed();
-            }
+            // if (Input.GetKeyDown(KeyCode.F))
+            // {
+            //     LevelFailed();
+            // }
         }
 
         // ------------------------------------------------------------------------------------------------
@@ -168,9 +171,14 @@ public class GameManager : MonoBehaviour
             // goSpawnManager.GetComponent<SpawnManager>().Destroy();
             // goSpawnManager.GetComponent<SpawnManager>().Instantiate();
         }
-        else if (goScreenCredits.activeSelf)
+        else if (goScreenHUD.activeSelf)
         {
-            goScreenCredits.SetActive(false);
+            cubeController.RestartThisLevel();
+        }
+        else if (goScreenRestart.activeSelf)
+        {
+            sfxsrcGameManager.Stop();
+            goScreenRestart.SetActive(false);
             cubeController.StartNextLevel();
         }
         bActive = true;
@@ -194,8 +202,16 @@ public class GameManager : MonoBehaviour
             }
             else
             {
-                goScreenCredits.SetActive(true);
-                // bActiveScreenButton = true; // This is now set in the credits controller itself when the button actually appears
+                sfxsrcGameManager.Play();
+                goScreenRestart.SetActive(true);
+                if (!bCompleted)
+                {
+                    goScreenCredits.SetActive(true);
+                }
+                else
+                {
+                    bActiveScreenButton = true;
+                }
             }
             // sfxsrcGameManager.PlayOneShot(sfxclpNames["sfxclpLevelCleared"]);
             sfxsrcGameManager.PlayOneShot(sfxclpLevelCleared);

@@ -207,12 +207,14 @@ public class PlayerController : MonoBehaviour
                         // door. May possibly need to consider having multiple navmeshes. Also checking this condition only
                         // when the projectile is fired is not good e.g. when we have timed walls, we may have a path at
                         // projectile time, but then not at some later time but before the player has traversed that path.
+                        // Also further issues if we can warp or exchange with the target, as we may be able to get more
+                        // ammo. Just disabling the fail for now, as this clearly needs sorting properly.
                         navPlayer.enabled = true;
                         navPlayer.CalculatePath(goSafeZonePlayer.transform.position, navPlayerPath);
                         navPlayer.enabled = false;
                         if (navPlayerPath.status == NavMeshPathStatus.PathPartial)
                         {
-                            gameManager.LevelFailed("Watch that ammo!");
+                            // gameManager.LevelFailed("watch that ammo!");
                         }
                     }
                 }
@@ -552,7 +554,7 @@ public class PlayerController : MonoBehaviour
             &&  !bWarp )
         {
             bInPlay = false;
-            gameManager.LevelFailed("That's a long way down ...");
+            gameManager.LevelFailed("that's a long way down ...");
         }
         else if (other.gameObject.CompareTag("PowerUp"))
         {
