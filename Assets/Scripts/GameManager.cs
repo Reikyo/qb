@@ -119,10 +119,10 @@ public class GameManager : MonoBehaviour
         else
         {
             // Temporarily allow level to be cleared for testing purposes:
-            if (Input.GetKeyDown(KeyCode.C))
-            {
-                LevelCleared();
-            }
+            // if (Input.GetKeyDown(KeyCode.C))
+            // {
+            //     LevelCleared();
+            // }
 
             // This is no longer needed now that we have a reset button in the HUD
             // Temporarily allow level to be failed for testing purposes:
