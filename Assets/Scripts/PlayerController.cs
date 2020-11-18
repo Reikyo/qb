@@ -577,29 +577,27 @@ public class PlayerController : MonoBehaviour
             rbPlayer.AddForce(fForceLaunch * other.gameObject.transform.right, ForceMode.Impulse);
         }
         else if (   other.gameObject.CompareTag("Warper")
+                &&  other.gameObject.GetComponent<WarpController>().goWarpPartner
                 &&  !bWarp )
         {
-            if (other.gameObject.GetComponent<WarpController>().goWarpPartner)
+            if (bBoost)
             {
-                if (bBoost)
-                {
-                    FinishBoost();
-                }
-                v3PositionWarpFrom = other.gameObject.transform.position;
-                v3PositionWarpTo = other.gameObject.GetComponent<WarpController>().goWarpPartner.transform.position;
-                bWarp = true;
-                bWarpDown = true;
-                bWarpStageStart = true;
-                bActive = false;
-                bInMotionThisFrame = true;
-                bMoveAuto = true;
-                // navPlayer.enabled = true;
-                // navPlayer.destination = new Vector3(
-                //     v3PositionWarpFrom.x,
-                //     transform.position.y,
-                //     v3PositionWarpFrom.z
-                // );
+                FinishBoost();
             }
+            v3PositionWarpFrom = other.gameObject.transform.position;
+            v3PositionWarpTo = other.gameObject.GetComponent<WarpController>().goWarpPartner.transform.position;
+            bWarp = true;
+            bWarpDown = true;
+            bWarpStageStart = true;
+            bActive = false;
+            bInMotionThisFrame = true;
+            bMoveAuto = true;
+            // navPlayer.enabled = true;
+            // navPlayer.destination = new Vector3(
+            //     v3PositionWarpFrom.x,
+            //     transform.position.y,
+            //     v3PositionWarpFrom.z
+            // );
         }
         // From first player-buddy switch attempt:
         // else if (   other.gameObject.CompareTag("Exchanger")
