@@ -110,8 +110,8 @@ public class GameManager : MonoBehaviour
 
         if (bActiveScreenButton)
         {
-            if (    Input.GetKeyDown(KeyCode.Return)
-                ||  Input.GetKeyDown(KeyCode.Space) )
+            if (    Input.GetKeyUp(KeyCode.Return)
+                ||  Input.GetKeyUp(KeyCode.Space) )
             {
                 GameStart();
             }
