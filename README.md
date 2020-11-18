@@ -1,13 +1,13 @@
 # qb
 Welcome to `qb` ("cube"), a short and sweet puzzle game written in C# with Unity v2018.4. Thanks to the Unity ["Create With Code" team](https://learn.unity.com/course/create-with-code) for helping to kick-start this project. The game has been built to play in a web browser via WebGL, and a standard keyboard and mouse are required. Can you beat the cube? Enjoy!
 
-<img src="Images/qb_start_screen.png" alt="Start screen" width="300"/><br/><br/>
-<img src="Images/qb_level_1.png" alt="Level 1" width="300"/>
-<img src="Images/qb_level_2.png" alt="Level 2" width="300"/>
-<img src="Images/qb_level_3.png" alt="Level 3" width="300"/><br/><br/>
-<img src="Images/qb_level_4.png" alt="Level 4" width="300"/>
-<img src="Images/qb_level_5.png" alt="Level 5" width="300"/>
-<img src="Images/qb_level_6.png" alt="Level 6" width="300"/>
+<img src="Images/qb_start_screen.png" alt="Start screen" width="250"/><br/><br/>
+<img src="Images/qb_level_1.png" alt="Level 1" width="250"/>
+<img src="Images/qb_level_2.png" alt="Level 2" width="250"/>
+<img src="Images/qb_level_3.png" alt="Level 3" width="250"/><br/><br/>
+<img src="Images/qb_level_4.png" alt="Level 4" width="250"/>
+<img src="Images/qb_level_5.png" alt="Level 5" width="250"/>
+<img src="Images/qb_level_6.png" alt="Level 6" width="250"/>
 
 ## Running live
 A live version of this game can be found [here](https://play.unity.com/mg/other/qb-neayhk). You only need an up-to-date web browser in order to play, no special software is needed.
