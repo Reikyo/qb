@@ -10,7 +10,7 @@ Welcome to `qb` ("cube"), a short and sweet 6-level puzzle game written in C# wi
 <img src="Images/qb_level_6.png" alt="Level 6" width="250"/>
 
 ## Running live
-A live version of this game can be found [here](https://play.unity.com/mg/other/qb-neayhk). You only need an up-to-date web browser in order to play, no special software is needed.
+A live version of this game can be found [here](https://play.unity.com/mg/other/qb-9grmxy). You only need an up-to-date web browser in order to play, no special software is needed.
 
 ## Running locally
 - Download the `Build/qb.zip` file, and unzip it
