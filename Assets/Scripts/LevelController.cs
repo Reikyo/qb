@@ -19,6 +19,7 @@ public class LevelController : MonoBehaviour
     private GameObject[] goArrWallTimed;
     private GameObject[] goArrTranslator;
     private GameObject[] goArrRotator;
+    private GameObject[] goArrSwitcher;
     private GameObject[] goArrExchanger;
     private GameObject goSafeZonePlayer;
     private GameObject goSafeZoneTarget;
@@ -56,6 +57,7 @@ public class LevelController : MonoBehaviour
         goArrWallTimed = GameObject.FindGameObjectsWithTag("WallTimed");
         goArrTranslator = GameObject.FindGameObjectsWithTag("Translator");
         goArrRotator = GameObject.FindGameObjectsWithTag("Rotator");
+        goArrSwitcher = GameObject.FindGameObjectsWithTag("Switcher");
         goArrExchanger = GameObject.FindGameObjectsWithTag("Exchanger");
         goSafeZonePlayer = GameObject.FindWithTag("SafeZonePlayer");
         goSafeZoneTarget = GameObject.FindWithTag("SafeZoneTarget");
@@ -243,6 +245,10 @@ public class LevelController : MonoBehaviour
             foreach (GameObject goRotator in goArrRotator)
             {
                 goRotator.GetComponent<RotatorController>().Reset();
+            }
+            foreach (GameObject goSwitcher in goArrSwitcher)
+            {
+                goSwitcher.GetComponent<SwitchController>().Reset();
             }
             foreach (GameObject goExchanger in goArrExchanger)
             {

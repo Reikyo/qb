@@ -18,7 +18,6 @@ public class PowerUpController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        fDegreesPerFrame = fDegreesPerSecond * Time.deltaTime;
         guiLabel1.text = iNumProjectile.ToString() + "\n*";
         guiLabel2.text = iNumProjectile.ToString() + "\n*";
         guiLabel3.text = iNumProjectile.ToString() + "\n*";
@@ -29,6 +28,7 @@ public class PowerUpController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        fDegreesPerFrame = fDegreesPerSecond * Time.deltaTime;
         transform.Rotate(0f, fDegreesPerFrame, 0f, Space.World);
     }
 

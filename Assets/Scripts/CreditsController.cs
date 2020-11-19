@@ -17,7 +17,7 @@ public class CreditsController : MonoBehaviour
     // For screen-space overlay:
     private float fMetresPositionYStartReference = -500f;
     private float fMetresPositionYStart;
-    private float fMetresPositionYFinishReference = 2600f;
+    private float fMetresPositionYFinishReference = 2500f;
     private float fMetresPositionYFinish;
     private float fMetresPositionYTargetNow;
     private float fMetresPerSecReference = 50f;

@@ -72,7 +72,7 @@ GameObject:
   - component: {fileID: 496950364867697898}
   m_Layer: 0
   m_Name: Body
-  m_TagString: Switcher
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -145,7 +145,7 @@ BoxCollider:
   m_GameObject: {fileID: 2725136715409454711}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
@@ -158,6 +158,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2295410055661345721}
+  - component: {fileID: 5607176532607486686}
   - component: {fileID: 5631688171607010512}
   - component: {fileID: 2446854763136525111}
   m_Layer: 0
@@ -185,6 +186,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 30}
+--- !u!65 &5607176532607486686
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3937369968994973623}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 5, y: 3, z: 3}
+  m_Center: {x: 1.5, y: -1, z: 0}
 --- !u!208 &5631688171607010512
 NavMeshObstacle:
   m_ObjectHideFlags: 0
@@ -231,7 +245,7 @@ GameObject:
   - component: {fileID: 2634535089802818228}
   m_Layer: 0
   m_Name: Barrier
-  m_TagString: Switcher
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

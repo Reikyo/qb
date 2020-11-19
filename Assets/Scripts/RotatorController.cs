@@ -17,20 +17,23 @@ public class RotatorController : MonoBehaviour
     public enum switcherTrigger {both, state1to2, state2to1};
     public switcherTrigger switcherTriggerType;
 
-    private float fDegreesRotationY = 0f;
+    public enum direction {clockwise, anticlockwise};
+    public direction directionTypeStart;
+    private int iDirection;
+    // private int iDirectionSum;
+
+    private Quaternion quatRotationStart;
+    private float fDegreesRotationY;
+    private float fDegreesRotationYTarget;
     private float fDegreesRotationYLower = 0f;
     private float fDegreesRotationYUpper = 90f;
-    private float fDegreesRotationYTarget = 0f;
 
     private float fDegreesPerSecY;
     private float fDegreesPerFrameY;
 
     public float fTransitionTime = 0.5f;
 
-    public int iDirection = -1;
-    private int iDirectionSum = 0;
-
-    private bool bChangeState = false;
+    private bool bChangeState;
 
     // ------------------------------------------------------------------------------------------------
 
@@ -40,8 +43,38 @@ public class RotatorController : MonoBehaviour
         gameManager = GameObject.Find("Game Manager").GetComponent<GameManager>();
 
         fDegreesPerSecY = (fDegreesRotationYUpper - fDegreesRotationYLower) / fTransitionTime;
+        quatRotationStart = transform.rotation;
 
         Reset();
+    }
+
+    // ------------------------------------------------------------------------------------------------
+
+    public void Reset()
+    {
+        if (directionTypeStart == direction.clockwise)
+        {
+            iDirection = -1;
+        }
+        else
+        {
+            iDirection = 1;
+        }
+        transform.rotation = quatRotationStart;
+        fDegreesRotationY = 0f;
+        fDegreesRotationYTarget = 0f;
+        bChangeState = false;
+
+        // if (rotRotationYCurrent != rotRotationYStart)
+        // {
+        //     Trigger(0, false);
+        // }
+        // if (iDirectionSum != 0)
+        // {
+        //     bChangeState = true;
+        //     iDirectionSum = 0;
+        //     fDegreesRotationYTarget = -iDirectionSum * fDegreesRotationYUpper;
+        // }
     }
 
     // ------------------------------------------------------------------------------------------------
@@ -89,10 +122,10 @@ public class RotatorController : MonoBehaviour
                 // iDirectionSum = 0;
                 fDegreesRotationY = 0f;
                 fDegreesRotationYTarget = 0f;
-                if (iDirectionSum % 4 == 0)
-                {
-                    iDirectionSum = 0;
-                }
+                // if (iDirectionSum % 4 == 0)
+                // {
+                //     iDirectionSum = 0;
+                // }
             }
         }
     }
@@ -131,25 +164,9 @@ public class RotatorController : MonoBehaviour
                 {
                     iDirection = iDirectionGiven;
                 }
-                iDirectionSum += iDirection;
+                // iDirectionSum += iDirection;
                 fDegreesRotationYTarget += iDirection * fDegreesRotationYUpper;
             }
-        }
-    }
-
-    // ------------------------------------------------------------------------------------------------
-
-    public void Reset()
-    {
-        // if (rotRotationYCurrent != rotRotationYStart)
-        // {
-        //     Trigger(0, false);
-        // }
-        if (iDirectionSum != 0)
-        {
-            bChangeState = true;
-            iDirectionSum = 0;
-            fDegreesRotationYTarget = -iDirectionSum * fDegreesRotationYUpper;
         }
     }
 

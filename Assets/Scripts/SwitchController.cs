@@ -11,25 +11,27 @@ public class SwitchController : MonoBehaviour
 
     public GameObject[] goArrDevice;
     public List<string> sListOkayTriggerCharacters = new List<string>() {"Player", "Target"};
-    public string sTriggerCharacter = "";
+    public string sTriggerCharacter;
 
+    // TODO
     // private float fMetresToTranslate = XXXf;
     // private float fMetresTranslated = XXXf;
     // private float fMetresPerSec = XXXf;
     // private float fMetresPerFrame;
 
+    private Vector3 v3RotationAxis = Vector3.forward;
+    private int iDirection;
+
+    private Quaternion quatRotationStart;
     private float fDegreesToRotate = 30f;
-    private float fDegreesRotated = 0f;
+    private float fDegreesRotated;
     private float fDegreesPerSec = 360f;
     private float fDegreesPerFrame;
 
-    private int iDirection = -1;
-    private Vector3 v3RotationAxis = Vector3.forward;
-
-    private bool bState1 = true;
-    private bool bState2 = false;
-    private bool bChangeState1to2 = false;
-    private bool bChangeState2to1 = false;
+    private bool bState1;
+    private bool bState2;
+    private bool bChangeState1to2;
+    private bool bChangeState2to1;
 
     // ------------------------------------------------------------------------------------------------
 
@@ -37,6 +39,24 @@ public class SwitchController : MonoBehaviour
     void Start()
     {
         gameManager = GameObject.Find("Game Manager").GetComponent<GameManager>();
+
+        quatRotationStart = transform.rotation;
+
+        Reset();
+    }
+
+    // ------------------------------------------------------------------------------------------------
+
+    public void Reset()
+    {
+        sTriggerCharacter = "";
+        iDirection = -1;
+        transform.rotation = quatRotationStart;
+        fDegreesRotated = 0f;
+        bState1 = true;
+        bState2 = false;
+        bChangeState1to2 = false;
+        bChangeState2to1 = false;
     }
 
     // ------------------------------------------------------------------------------------------------
@@ -66,6 +86,7 @@ public class SwitchController : MonoBehaviour
 
                 if (switcherType == switcher.translate)
                 {
+                    // TODO
                     // bChangeState1to2 = Translate(bChangeState1to2);
                 }
                 else if (switcherType == switcher.rotate)
@@ -110,6 +131,7 @@ public class SwitchController : MonoBehaviour
 
                 if (switcherType == switcher.translate)
                 {
+                    // TODO
                     // bChangeState2to1 = Translate(bChangeState2to1);
                 }
                 else if (switcherType == switcher.rotate)
@@ -166,6 +188,7 @@ public class SwitchController : MonoBehaviour
 
     // ------------------------------------------------------------------------------------------------
 
+    // TODO
     // private bool Translate(bool bChangeState)
     // {
     //     <CODE HERE, SHOULD BE SIMILAR TO ROTATE CODE BELOW>

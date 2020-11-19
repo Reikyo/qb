@@ -1,5 +1,5 @@
 # qb
-Welcome to `qb` ("cube"), a short and sweet puzzle game written in C# with Unity v2018.4. Thanks to the Unity ["Create With Code" team](https://learn.unity.com/course/create-with-code) for helping to kick-start this project. The game has been built to play in a web browser via WebGL, and a standard keyboard and mouse are required. Can you beat the cube? Enjoy!
+Welcome to `qb` ("cube"), a short and sweet 6-level puzzle game written in C# with Unity v2018.4. Thanks to the Unity ["Create With Code" team](https://learn.unity.com/course/create-with-code) for helping to kick-start this project. The game has been built to play in a web browser via WebGL, and a standard keyboard and mouse are required. Can you beat the cube? Enjoy!
 
 <img src="Images/qb_start_screen.png" alt="Start screen" width="250"/><br/><br/>
 <img src="Images/qb_level_1.png" alt="Level 1" width="250"/>
@@ -27,7 +27,7 @@ A live version of this game can be found [here](https://play.unity.com/mg/other/
 Design & Code &#169; 2020 [Darren Temple](https://github.com/Reikyo)<br/>
 All other assets are the property of their respective creators, and are used with thanks.
 
-### Materials:
+### Shader & Materials:
 - Scrollbie Studio
     - https://assetstore.unity.com/packages/vfx/shaders/minimalist-free-lowpoly-flat-gradient-shader-96148
         - License: Unspecified
