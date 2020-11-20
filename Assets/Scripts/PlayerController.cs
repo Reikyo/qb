@@ -16,6 +16,7 @@ public class PlayerController : MonoBehaviour
     private bool bWait = false;
     private bool bInMotionLastFrame = false;
     private bool bInMotionThisFrame = false;
+    private RaycastHit rayHitSurface;
     private bool bBoost = false;
     private bool bLaunch = false;
     private bool bWarp = false;
@@ -245,11 +246,12 @@ public class PlayerController : MonoBehaviour
         if (bActive)
         {
             if (    Input.GetKeyDown(KeyCode.LeftShift)
-                &&  !bLaunch
-                &&  (transform.position.x >= -25f)
-                &&  (transform.position.x <= 25f)
-                &&  (transform.position.z >= -25f)
-                &&  (transform.position.z <= 25f) )
+                &&  Physics.Raycast(transform.position, -Vector3.up, out rayHitSurface, 1.1f) )
+                // &&  !bLaunch
+                // &&  (transform.position.x >= -25f)
+                // &&  (transform.position.x <= 25f)
+                // &&  (transform.position.z >= -25f)
+                // &&  (transform.position.z <= 25f) )
             {
                 StartCoroutine(StartBoost());
             }
@@ -486,47 +488,44 @@ public class PlayerController : MonoBehaviour
     // Also, a RigidBody component must be on at least this object, the other doesn't matter.
     private void OnCollisionEnter(Collision collision)
     {
-        if (bActive)
+        if (    collision.gameObject.CompareTag("Surface")
+            &&  bLaunch )
         {
-            if (    collision.gameObject.CompareTag("Cube")
-                &&  bLaunch )
+            bLaunch = false;
+            goPlayerTrail.SetActive(false);
+        }
+        else if (   collision.gameObject.CompareTag("WallDestructible")
+                &&  bBoost )
+        {
+            collision.gameObject.SetActive(false);
+            gameManager.VfxclpPlay("vfxclpWallDestructible", collision.gameObject.transform.position);
+            gameManager.SfxclpPlay("sfxclpWallDestructible");
+        }
+        else if (   (   collision.gameObject.CompareTag("Launcher")
+                    ||  collision.gameObject.CompareTag("Switcher") )
+                &&  bBoost )
+        {
+            FinishBoost();
+        }
+        else if (   collision.gameObject.CompareTag("Translator")
+                &&  (transform.position.x >= (collision.gameObject.transform.position.x - 2.5f))
+                &&  (transform.position.x <= (collision.gameObject.transform.position.x + 2.5f))
+                &&  (transform.position.z >= (collision.gameObject.transform.position.z - 2.5f))
+                &&  (transform.position.z <= (collision.gameObject.transform.position.z + 2.5f)) )
+        {
+            transform.parent = collision.gameObject.transform;
+            sNameTranslatorEngagedByPlayer = collision.gameObject.name; // We keep track of this as otherwise timing means we could exit from one translator and enter another, but have the exit trigger fulfilled second, so no parent then assigned
+        }
+        else if (   collision.gameObject.CompareTag("Target")
+                &&  !sListTargetObjectiveLeave.Contains(goTarget.GetComponent<TargetController>().sObjective) )
+        {
+            gameManager.SfxclpPlay("sfxclpTargetObjectivePlayer");
+            goTarget.GetComponent<TargetController>().StartObjectivePlayer();
+            foreach (GameObject goEnemy in goArrEnemy)
             {
-                bLaunch = false;
-                goPlayerTrail.SetActive(false);
-            }
-            else if (   collision.gameObject.CompareTag("WallDestructible")
-                    &&  bBoost )
-            {
-                collision.gameObject.SetActive(false);
-                gameManager.VfxclpPlay("vfxclpWallDestructible", collision.gameObject.transform.position);
-                gameManager.SfxclpPlay("sfxclpWallDestructible");
-            }
-            else if (   (   collision.gameObject.CompareTag("Launcher")
-                        ||  collision.gameObject.CompareTag("Switcher") )
-                    &&  bBoost )
-            {
-                FinishBoost();
-            }
-            else if (   collision.gameObject.CompareTag("Translator")
-                    &&  (transform.position.x >= (collision.gameObject.transform.position.x - 2.5f))
-                    &&  (transform.position.x <= (collision.gameObject.transform.position.x + 2.5f))
-                    &&  (transform.position.z >= (collision.gameObject.transform.position.z - 2.5f))
-                    &&  (transform.position.z <= (collision.gameObject.transform.position.z + 2.5f)) )
-            {
-                transform.parent = collision.gameObject.transform;
-                sNameTranslatorEngagedByPlayer = collision.gameObject.name; // We keep track of this as otherwise timing means we could exit from one translator and enter another, but have the exit trigger fulfilled second, so no parent then assigned
-            }
-            else if (   collision.gameObject.CompareTag("Target")
-                    &&  !sListTargetObjectiveLeave.Contains(goTarget.GetComponent<TargetController>().sObjective) )
-            {
-                gameManager.SfxclpPlay("sfxclpTargetObjectivePlayer");
-                goTarget.GetComponent<TargetController>().StartObjectivePlayer();
-                foreach (GameObject goEnemy in goArrEnemy)
+                if (goEnemy)
                 {
-                    if (goEnemy)
-                    {
-                        goEnemy.GetComponent<EnemyController>().sObjective = "Target";
-                    }
+                    goEnemy.GetComponent<EnemyController>().sObjective = "Target";
                 }
             }
         }
