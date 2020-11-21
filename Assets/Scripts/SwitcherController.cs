@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SwitchController : MonoBehaviour
+public class SwitcherController : MonoBehaviour
 {
     private GameManager gameManager;
 
@@ -70,7 +70,7 @@ public class SwitchController : MonoBehaviour
             {
                 bChangeState1to2 = false;
                 sTriggerCharacter = "";
-                gameManager.SfxclpPlay("sfxclpSwitch");
+                gameManager.SfxclpPlay("sfxclpSwitcher");
                 if (goArrDevice.Length > 0)
                 {
                     DeviceTrigger(goArrDevice, "state1to2");
@@ -81,7 +81,7 @@ public class SwitchController : MonoBehaviour
                 if (bState1)
                 {
                     bState1 = false;
-                    gameManager.SfxclpPlay("sfxclpSwitch");
+                    gameManager.SfxclpPlay("sfxclpSwitcher");
                 }
 
                 if (switcherType == switcher.translate)
@@ -111,7 +111,7 @@ public class SwitchController : MonoBehaviour
             {
                 bChangeState2to1 = false;
                 sTriggerCharacter = "";
-                gameManager.SfxclpPlay("sfxclpSwitch");
+                gameManager.SfxclpPlay("sfxclpSwitcher");
                 if (goArrDevice.Length > 0)
                 {
                     DeviceTrigger(goArrDevice, "state2to1");
@@ -122,7 +122,7 @@ public class SwitchController : MonoBehaviour
                 if (bState2)
                 {
                     bState2 = false;
-                    gameManager.SfxclpPlay("sfxclpSwitch");
+                    gameManager.SfxclpPlay("sfxclpSwitcher");
                     if (goArrDevice.Length > 0)
                     {
                         DeviceTrigger(goArrDevice, "state2to1");

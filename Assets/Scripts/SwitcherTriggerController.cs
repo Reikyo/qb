@@ -2,18 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SwitchTriggerController : MonoBehaviour
+public class SwitcherTriggerController : MonoBehaviour
 {
     public enum trigger {state1to2, state2to1};
     public trigger triggerType;
-    private SwitchController switchController;
+    private SwitcherController switcherController;
 
     // ------------------------------------------------------------------------------------------------
 
     // Start is called before the first frame update
     void Start()
     {
-        switchController = transform.parent.GetComponent<SwitchController>();
+        switcherController = transform.parent.GetComponent<SwitcherController>();
     }
 
     // ------------------------------------------------------------------------------------------------
@@ -30,7 +30,7 @@ public class SwitchTriggerController : MonoBehaviour
     {
         if (triggerType == trigger.state1to2)
         {
-            switchController.Trigger("state1to2", other.gameObject.tag);
+            switcherController.Trigger("state1to2", other.gameObject.tag);
         }
     }
 
@@ -40,7 +40,7 @@ public class SwitchTriggerController : MonoBehaviour
     {
         if (triggerType == trigger.state2to1)
         {
-            switchController.Trigger("state2to1", other.gameObject.tag);
+            switcherController.Trigger("state2to1", other.gameObject.tag);
         }
     }
 

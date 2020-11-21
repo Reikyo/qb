@@ -248,7 +248,7 @@ public class LevelController : MonoBehaviour
             }
             foreach (GameObject goSwitcher in goArrSwitcher)
             {
-                goSwitcher.GetComponent<SwitchController>().Reset();
+                goSwitcher.GetComponent<SwitcherController>().Reset();
             }
             foreach (GameObject goExchanger in goArrExchanger)
             {

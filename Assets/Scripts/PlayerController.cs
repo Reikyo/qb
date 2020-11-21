@@ -245,15 +245,19 @@ public class PlayerController : MonoBehaviour
 
         if (bActive)
         {
-            if (    Input.GetKeyDown(KeyCode.LeftShift)
-                &&  Physics.Raycast(transform.position, -Vector3.up, out rayHitSurface, 1.1f) )
+            if (Input.GetKeyDown(KeyCode.LeftShift))
                 // &&  !bLaunch
                 // &&  (transform.position.x >= -25f)
                 // &&  (transform.position.x <= 25f)
                 // &&  (transform.position.z >= -25f)
                 // &&  (transform.position.z <= 25f) )
             {
-                StartCoroutine(StartBoost());
+                // We put the raycast here as a separate condition after checking for key press, so as not to do it
+                // every frame
+                if (Physics.Raycast(transform.position, -Vector3.up, out rayHitSurface, 1.1f))
+                {
+                    StartCoroutine(StartBoost());
+                }
             }
             else if (   Input.GetKeyUp(KeyCode.LeftShift)
                     &&  bBoost )

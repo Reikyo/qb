@@ -50,7 +50,7 @@ public class GameManager : MonoBehaviour
     public AudioClip sfxclpWallTimed; // DM-CGS-32
     public AudioClip sfxclpTranslator; // DM-CGS-38
     public AudioClip sfxclpRotator; // DM-CGS-37
-    public AudioClip sfxclpSwitch; // DM-CGS-19
+    public AudioClip sfxclpSwitcher; // DM-CGS-19
     public AudioClip sfxclpTargetObjectivePlayer; // DM-CGS-24
     public AudioClip sfxclpTargetObjectiveRandom; // DM-CGS-25
     public AudioClip sfxclpEnemyAttack1; // DM-CGS-47
@@ -84,7 +84,7 @@ public class GameManager : MonoBehaviour
         // sfxclpNames.Add("sfxclpWallDestructible", sfxclpWallDestructible);
         // sfxclpNames.Add("sfxclpTranslator", sfxclpTranslator);
         // sfxclpNames.Add("sfxclpRotator", sfxclpRotator);
-        // sfxclpNames.Add("sfxclpSwitch", sfxclpSwitch);
+        // sfxclpNames.Add("sfxclpSwitcher", sfxclpSwitcher);
         // sfxclpNames.Add("sfxclpTargetObjectivePlayer", sfxclpTargetObjectivePlayer);
         // sfxclpNames.Add("sfxclpTargetObjectiveRandom", sfxclpTargetObjectiveRandom);
         // sfxclpNames.Add("sfxclpEnemyAttack1", sfxclpEnemyAttack1);
@@ -312,7 +312,7 @@ public class GameManager : MonoBehaviour
             case "sfxclpWallTimed": sfxclpName = sfxclpWallTimed; break;
             case "sfxclpTranslator": sfxclpName = sfxclpTranslator; break;
             case "sfxclpRotator": sfxclpName = sfxclpRotator; break;
-            case "sfxclpSwitch": sfxclpName = sfxclpSwitch; break;
+            case "sfxclpSwitcher": sfxclpName = sfxclpSwitcher; break;
             case "sfxclpTargetObjectivePlayer": sfxclpName = sfxclpTargetObjectivePlayer; break;
             case "sfxclpTargetObjectiveRandom": sfxclpName = sfxclpTargetObjectiveRandom; break;
             case "sfxclpEnemyAttack1": sfxclpName = sfxclpEnemyAttack1; break;
