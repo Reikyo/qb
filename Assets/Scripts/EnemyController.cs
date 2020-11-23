@@ -169,8 +169,7 @@ public class EnemyController : MonoBehaviour
     {
         if (    bActive
             &&  collision.gameObject.CompareTag("Target")
-            &&  !sListLeaveTargetObjective.Contains(goTarget.GetComponent<TargetController>().sObjective)
-            &&  !goPlayer.GetComponent<PlayerController>().bPlayerBuddySwitch )
+            &&  !sListLeaveTargetObjective.Contains(goTarget.GetComponent<TargetController>().sObjective) )
         {
             // anEnemy.SetTrigger("tAttack1");
             gameManager.SfxclpPlay("sfxclpEnemyAttack1");

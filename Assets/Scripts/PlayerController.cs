@@ -16,6 +16,8 @@ public class PlayerController : MonoBehaviour
     private bool bWait = false;
     private bool bInMotionLastFrame = false;
     private bool bInMotionThisFrame = false;
+    private bool bCollidingWithTarget = false;
+    private bool bCollidingWithEnemy = false;
     private RaycastHit rayHitSurface;
     private bool bBoost = false;
     private bool bLaunch = false;
@@ -295,7 +297,15 @@ public class PlayerController : MonoBehaviour
 
     private void MoveAuto()
     {
-        if (Math.Pow(Math.Pow(transform.position.x - v3PositionWarpFrom.x, 2f) + Math.Pow(transform.position.z - v3PositionWarpFrom.z, 2f), 0.5f) > (fSpeed * Time.deltaTime))
+        // We check for collisions with other characters as otherwise they could be positioned in such a
+        // way that makes the auto-move target position all but impossible to achieve, in which case the
+        // auto-move attempt will never end and we don't get character control back. This could happen, for
+        // example, with an exchange point close to a wall, as another character could get stuck between
+        // the player and the wall and inhibit the player from getting to the centre of the exchange point.
+        // In such cases we just allow the player control flow to progress wherever they happen to be.
+        if (    !bCollidingWithTarget
+            &&  !bCollidingWithEnemy
+            &&  (Math.Pow(Math.Pow(transform.position.x - v3PositionWarpFrom.x, 2f) + Math.Pow(transform.position.z - v3PositionWarpFrom.z, 2f), 0.5f) > (fSpeed * Time.deltaTime)) )
         {
             Move(new Vector3(v3PositionWarpFrom.x, transform.position.y, v3PositionWarpFrom.z));
         }
@@ -446,6 +456,16 @@ public class PlayerController : MonoBehaviour
         goTarget.transform.eulerAngles = v3RotationPlayerOrig;
         rbPlayer.velocity = new Vector3(0f, 0f, 0f);
 
+        goTarget.GetComponent<TargetController>().bSafe = false;
+        goTarget.GetComponent<TargetController>().FinishObjective();
+        foreach (GameObject goEnemy in goArrEnemy)
+        {
+            if (goEnemy)
+            {
+                goEnemy.GetComponent<EnemyController>().sObjective = "Target";
+            }
+        }
+
         if (!bPlayerBuddySwitched)
         {
             GetComponent<Renderer>().material.SetColor("_Color", colTarget);
@@ -492,6 +512,17 @@ public class PlayerController : MonoBehaviour
     // Also, a RigidBody component must be on at least this object, the other doesn't matter.
     private void OnCollisionEnter(Collision collision)
     {
+        if (collision.gameObject.CompareTag("Target"))
+        {
+            bCollidingWithTarget = true;
+        }
+        if (collision.gameObject.CompareTag("Enemy"))
+        {
+            bCollidingWithEnemy = true;
+        }
+
+        // ------------------------------------------------------------------------------------------------
+
         if (    collision.gameObject.CompareTag("Surface")
             &&  bLaunch )
         {
@@ -539,6 +570,17 @@ public class PlayerController : MonoBehaviour
 
     private void OnCollisionExit(Collision collision)
     {
+        if (collision.gameObject.CompareTag("Target"))
+        {
+            bCollidingWithTarget = false;
+        }
+        if (collision.gameObject.CompareTag("Enemy"))
+        {
+            bCollidingWithEnemy = false;
+        }
+
+        // ------------------------------------------------------------------------------------------------
+
         if (    collision.gameObject.CompareTag("Translator")
             &&  collision.gameObject.name == sNameTranslatorEngagedByPlayer )
         {
@@ -629,15 +671,6 @@ public class PlayerController : MonoBehaviour
             //     transform.position.y,
             //     other.gameObject.transform.position.z
             // );
-            goTarget.GetComponent<TargetController>().bSafe = false;
-            goTarget.GetComponent<TargetController>().FinishObjective();
-            foreach (GameObject goEnemy in goArrEnemy)
-            {
-                if (goEnemy)
-                {
-                    goEnemy.GetComponent<EnemyController>().sObjective = "Target";
-                }
-            }
         }
         else if (   other.gameObject.CompareTag("SafeZonePlayer")
                 &&  (!goTarget || goTarget.GetComponent<TargetController>().bSafe)
@@ -681,7 +714,7 @@ public class PlayerController : MonoBehaviour
             bWarp = false;
         }
         else if (   other.gameObject.CompareTag("Exchanger")
-                &&  (other.gameObject.name == sNameExchangerEngagedByTarget)
+                // &&  (other.gameObject.name == sNameExchangerEngagedByTarget) // This was causing issues, as the timing of rapid multiple exchanges can cause the two sides of this condition to be thrown out of sync
                 &&  bActive
                 &&  bPlayerBuddySwitch )
         {
