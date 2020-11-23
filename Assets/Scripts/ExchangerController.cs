@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerBuddySwitchController : MonoBehaviour
+public class ExchangerController : MonoBehaviour
 {
     public bool bEngagedByTarget = false;
 }

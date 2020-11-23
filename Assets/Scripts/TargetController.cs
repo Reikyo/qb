@@ -220,7 +220,7 @@ public class TargetController : MonoBehaviour
         }
         else if (other.gameObject.CompareTag("Exchanger"))
         {
-            other.gameObject.GetComponent<PlayerBuddySwitchController>().bEngagedByTarget = true;
+            other.gameObject.GetComponent<ExchangerController>().bEngagedByTarget = true;
             sNameExchangerEngagedByTarget = other.gameObject.name;
         }
         else if (   other.gameObject.CompareTag("SafeZoneTarget")
@@ -253,7 +253,7 @@ public class TargetController : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Exchanger"))
         {
-            other.gameObject.GetComponent<PlayerBuddySwitchController>().bEngagedByTarget = false;
+            other.gameObject.GetComponent<ExchangerController>().bEngagedByTarget = false;
             sNameExchangerEngagedByTarget = "";
         }
     }

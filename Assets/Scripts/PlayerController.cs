@@ -28,8 +28,8 @@ public class PlayerController : MonoBehaviour
     private float fWarpBoundary = 1.1f;
     private Vector3 v3PositionWarpFrom;
     private Vector3 v3PositionWarpTo;
-    public bool bPlayerBuddySwitch = false;
-    private bool bPlayerBuddySwitched = false;
+    public bool bExchange = false;
+    private bool bExchanged = false;
     private string sNameExchangerEngagedByTarget;
     private string sNameTranslatorEngagedByPlayer = "";
     // private float fForce = 1000f;
@@ -138,9 +138,9 @@ public class PlayerController : MonoBehaviour
             Warp();
         }
         else if (   !bWait
-                &&  bPlayerBuddySwitch )
+                &&  bExchange )
         {
-            PlayerBuddySwitch();
+            Exchange();
         }
         else
         {
@@ -335,7 +335,7 @@ public class PlayerController : MonoBehaviour
                 navPlayer.enabled = false;
                 rbPlayer.isKinematic = true;
             }
-            else if (bPlayerBuddySwitch)
+            else if (bExchange)
             {
                 navPlayer.enabled = false;
             }
@@ -401,13 +401,13 @@ public class PlayerController : MonoBehaviour
 
     // ------------------------------------------------------------------------------------------------
 
-    private void PlayerBuddySwitch()
+    private void Exchange()
     {
 
-        // From first player-buddy switch attempt:
+        // From first exchange attempt:
 
-        // This first attempt at the player-buddy switch required both a PlayerController and a
-        // TargetController on both the player and the target (buddy). But as the player retained the
+        // This first attempt at the player target exchange required both a PlayerController and a
+        // TargetController on both the player and the target. But as the player retained the
         // "Player" tag and the target retained the "Target" tag, various other features of the game still
         // didn't work quite right. I was about to start solving these issues when I realised the
         // alternative approach of physically switching the player and target locations as well as their
@@ -466,7 +466,7 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        if (!bPlayerBuddySwitched)
+        if (!bExchanged)
         {
             GetComponent<Renderer>().material.SetColor("_Color", colTarget);
             goTarget.GetComponent<Renderer>().material.SetColor("_Color", colPlayer);
@@ -488,7 +488,7 @@ public class PlayerController : MonoBehaviour
             goSafeZonePlayer.transform.position = goSafeZoneTarget.transform.position;
             goSafeZoneTarget.transform.position = v3PositionSafeZonePlayerOrig;
 
-            if (!bPlayerBuddySwitched)
+            if (!bExchanged)
             {
                 goSafeZonePlayer.GetComponent<SpriteRenderer>().color = colSafeZoneTarget;
                 goSafeZoneTarget.GetComponent<SpriteRenderer>().color = colSafeZonePlayer;
@@ -500,8 +500,8 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        bPlayerBuddySwitch = (sNameExchangerEngagedByTarget != "");
-        bPlayerBuddySwitched = !bPlayerBuddySwitched;
+        bExchange = (sNameExchangerEngagedByTarget != "");
+        bExchanged = !bExchanged;
 
         StartCoroutine(Wait());
     }
@@ -644,13 +644,13 @@ public class PlayerController : MonoBehaviour
             //     v3PositionWarpFrom.z
             // );
         }
-        // From first player-buddy switch attempt:
+        // From first exchange attempt:
         // else if (   other.gameObject.CompareTag("Exchanger")
-        //         && (!other.gameObject.GetComponent<PlayerBuddySwitchController>().sTriggeredBy == "")
+        //         && (!other.gameObject.GetComponent<ExchangerController>().sTriggeredBy == "")
         //         &&  goTarget )
         else if (   other.gameObject.CompareTag("Exchanger")
-                &&  !other.gameObject.GetComponent<PlayerBuddySwitchController>().bEngagedByTarget
-                &&  !bPlayerBuddySwitch
+                &&  !other.gameObject.GetComponent<ExchangerController>().bEngagedByTarget
+                &&  !bExchange
                 &&  goTarget )
                 // &&  !goTarget.GetComponent<TargetController>().bSafe )
         {
@@ -658,10 +658,10 @@ public class PlayerController : MonoBehaviour
             {
                 FinishBoost();
             }
-            // From first player-buddy switch attempt:
-            // other.gameObject.GetComponent<PlayerBuddySwitchController>().sTriggeredBy = gameObject.tag;
+            // From first exchange attempt:
+            // other.gameObject.GetComponent<ExchangerController>().sTriggeredBy = gameObject.tag;
             v3PositionWarpFrom = other.gameObject.transform.position;
-            bPlayerBuddySwitch = true;
+            bExchange = true;
             bActive = false;
             bInMotionThisFrame = true;
             bMoveAuto = true;
@@ -697,14 +697,14 @@ public class PlayerController : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        // From first player-buddy switch attempt:
+        // From first exchange attempt:
 
         // if (    (other.gameObject.CompareTag("Exchanger"))
-        //     &&  (other.gameObject.GetComponent<PlayerBuddySwitchController>().sTriggeredBy == gameObject.tag)
+        //     &&  (other.gameObject.GetComponent<ExchangerController>().sTriggeredBy == gameObject.tag)
         //     &&  (   (GetComponent<PlayerController>().enabled && GetComponent<PlayerController>().bActive)
         //         ||  (GetComponent<TargetController>().enabled && GetComponent<TargetController>().bActive) ) )
         // {
-        //     other.gameObject.GetComponent<PlayerBuddySwitchController>().sTriggeredBy = "";
+        //     other.gameObject.GetComponent<ExchangerController>().sTriggeredBy = "";
         // }
 
         if (    other.gameObject.CompareTag("Warper")
@@ -716,9 +716,9 @@ public class PlayerController : MonoBehaviour
         else if (   other.gameObject.CompareTag("Exchanger")
                 // &&  (other.gameObject.name == sNameExchangerEngagedByTarget) // This was causing issues, as the timing of rapid multiple exchanges can cause the two sides of this condition to be thrown out of sync
                 &&  bActive
-                &&  bPlayerBuddySwitch )
+                &&  bExchange )
         {
-            bPlayerBuddySwitch = false;
+            bExchange = false;
         }
     }
 

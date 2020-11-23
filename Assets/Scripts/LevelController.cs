@@ -252,7 +252,7 @@ public class LevelController : MonoBehaviour
             }
             foreach (GameObject goExchanger in goArrExchanger)
             {
-                goExchanger.GetComponent<PlayerBuddySwitchController>().bEngagedByTarget = false;
+                goExchanger.GetComponent<ExchangerController>().bEngagedByTarget = false;
             }
             if (    goSafeZonePlayer
                 &&  goSafeZoneTarget )
