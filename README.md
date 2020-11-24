@@ -1,4 +1,4 @@
-# qb
+<img src="Images/qb_logo.png" alt="Start screen" width="100"/><br/><br/>
 Welcome to `qb` ("cube"), a short and sweet 6-level puzzle game written in C# with Unity v2018.4. Thanks to the Unity ["Create With Code" team](https://learn.unity.com/course/create-with-code) for helping to kick-start this project. The game has been built to play in a web browser via WebGL, and a standard keyboard and mouse are required. Can you beat the cube? Enjoy!
 
 <img src="Images/qb_start_screen.png" alt="Start screen" width="250"/><br/><br/>
@@ -10,7 +10,7 @@ Welcome to `qb` ("cube"), a short and sweet 6-level puzzle game written in C# wi
 <img src="Images/qb_level_6.png" alt="Level 6" width="250"/>
 
 ## Running live
-A live version of this game can be found [here](https://play.unity.com/mg/other/qb-9grmxy). You only need an up-to-date web browser in order to play, no special software is needed.
+A live version of this game can be found [here](https://play.unity.com/mg/other/qb-srnpls). You only need an up-to-date web browser in order to play, no special software is needed.
 
 ## Running locally
 - Download the `Build/qb.zip` file, and unzip it
