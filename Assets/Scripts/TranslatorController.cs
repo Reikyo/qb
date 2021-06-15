@@ -36,7 +36,6 @@ public class TranslatorController : MonoBehaviour
 
     // ------------------------------------------------------------------------------------------------
 
-    // Start is called before the first frame update
     void Start()
     {
         gameManager = GameObject.Find("Game Manager").GetComponent<GameManager>();
@@ -96,7 +95,6 @@ public class TranslatorController : MonoBehaviour
 
     // ------------------------------------------------------------------------------------------------
 
-    // FixedUpdate is called once per frame
     void FixedUpdate()
     {
         if (bChangeState)

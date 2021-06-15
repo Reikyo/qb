@@ -35,7 +35,6 @@ public class CreditsController : MonoBehaviour
 
     // ------------------------------------------------------------------------------------------------
 
-    // Start is called before the first frame update
     void Start()
     {
         gameManager = GameObject.Find("Game Manager").GetComponent<GameManager>();
@@ -64,7 +63,6 @@ public class CreditsController : MonoBehaviour
 
     // ------------------------------------------------------------------------------------------------
 
-    // Update is called once per frame
     void Update()
     {
         // fMetresPerFrame = fMetresPerSec * Time.deltaTime;

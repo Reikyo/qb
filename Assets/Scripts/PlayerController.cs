@@ -62,7 +62,6 @@ public class PlayerController : MonoBehaviour
 
     // ------------------------------------------------------------------------------------------------
 
-    // Start is called before the first frame update
     void Start()
     {
         gameManager = GameObject.Find("Game Manager").GetComponent<GameManager>();
@@ -99,9 +98,6 @@ public class PlayerController : MonoBehaviour
 
     // ------------------------------------------------------------------------------------------------
 
-    // FixedUpdate is called once per frame
-    // Using FixedUpdate() rather than Update() is good for motion, as it restricts such things as
-    // different objects clipping into each other, and generally makes motion smoother.
     void FixedUpdate()
     {
 
@@ -177,7 +173,6 @@ public class PlayerController : MonoBehaviour
 
     // ------------------------------------------------------------------------------------------------
 
-    // Update is called once per frame
     void Update()
     {
         if (    bInPlay

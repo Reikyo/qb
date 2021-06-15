@@ -44,7 +44,6 @@ public class SpawnManager : MonoBehaviour
 
     // ------------------------------------------------------------------------------------------------
 
-    // Start is called before the first frame update
     void Start()
     {
         for (int i=-20; i<21; i+=2)
@@ -52,14 +51,6 @@ public class SpawnManager : MonoBehaviour
             iListLevel3SpawnPositionX.Add(i);
         }
         iNumLevel3Enemy = sListLevel3WallTimed.Count;
-    }
-
-    // ------------------------------------------------------------------------------------------------
-
-    // Update is called once per frame
-    void Update()
-    {
-
     }
 
     // ------------------------------------------------------------------------------------------------

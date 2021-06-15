@@ -12,7 +12,6 @@ public class DestroyOutOfBounds : MonoBehaviour
 
     // ------------------------------------------------------------------------------------------------
 
-    // Start is called before the first frame update
     void Start()
     {
         gameManager = GameObject.Find("Game Manager").GetComponent<GameManager>();
@@ -20,7 +19,6 @@ public class DestroyOutOfBounds : MonoBehaviour
 
     // ------------------------------------------------------------------------------------------------
 
-    // Update is called once per frame
     void Update()
     {
         if (    (Math.Abs(transform.position.x) >= fXZLimitExist)

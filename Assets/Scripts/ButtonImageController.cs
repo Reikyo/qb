@@ -14,7 +14,6 @@ public class ButtonImageController : MonoBehaviour
 
     // ------------------------------------------------------------------------------------------------
 
-    // Start is called before the first frame update
     void Start()
     {
         imgBackground = GetComponent<Image>();
@@ -23,7 +22,6 @@ public class ButtonImageController : MonoBehaviour
 
     // ------------------------------------------------------------------------------------------------
 
-    // Update is called once per frame
     void Update()
     {
         if (    (Input.GetKeyDown(keyCode1) && !Input.GetKey(keyCode2))

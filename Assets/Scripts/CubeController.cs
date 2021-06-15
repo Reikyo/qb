@@ -45,7 +45,6 @@ public class CubeController : MonoBehaviour
 
     // ------------------------------------------------------------------------------------------------
 
-    // Start is called before the first frame update
     void Start()
     {
         transform.position = v3PositionInstantiate;
@@ -61,7 +60,6 @@ public class CubeController : MonoBehaviour
 
     // ------------------------------------------------------------------------------------------------
 
-    // Update is called once per frame
     void Update()
     {
 

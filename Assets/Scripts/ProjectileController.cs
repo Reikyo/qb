@@ -13,7 +13,6 @@ public class ProjectileController : MonoBehaviour
 
     // ------------------------------------------------------------------------------------------------
 
-    // Start is called before the first frame update
     void Start()
     {
         gameManager = GameObject.Find("Game Manager").GetComponent<GameManager>();
@@ -24,7 +23,6 @@ public class ProjectileController : MonoBehaviour
 
     // ------------------------------------------------------------------------------------------------
 
-    // FixedUpdate is called once per frame
     void FixedUpdate()
     {
         transform.Translate(fMetresPerSec * Time.deltaTime * Vector3.forward);

@@ -10,18 +10,9 @@ public class SwitcherTriggerController : MonoBehaviour
 
     // ------------------------------------------------------------------------------------------------
 
-    // Start is called before the first frame update
     void Start()
     {
         switcherController = transform.parent.GetComponent<SwitcherController>();
-    }
-
-    // ------------------------------------------------------------------------------------------------
-
-    // Update is called once per frame
-    void Update()
-    {
-
     }
 
     // ------------------------------------------------------------------------------------------------

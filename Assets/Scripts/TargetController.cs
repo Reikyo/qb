@@ -37,7 +37,6 @@ public class TargetController : MonoBehaviour
 
     // ------------------------------------------------------------------------------------------------
 
-    // Start is called before the first frame update
     void Start()
     {
         gameManager = GameObject.Find("Game Manager").GetComponent<GameManager>();
@@ -57,7 +56,6 @@ public class TargetController : MonoBehaviour
 
     // ------------------------------------------------------------------------------------------------
 
-    // FixedUpdate is called once per frame
     void FixedUpdate()
     {
         // Game Manager bInPlay check intentionally left out here, so that target can still move further

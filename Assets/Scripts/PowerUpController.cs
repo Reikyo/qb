@@ -15,7 +15,6 @@ public class PowerUpController : MonoBehaviour
 
     // ------------------------------------------------------------------------------------------------
 
-    // Start is called before the first frame update
     void Start()
     {
         guiLabel1.text = iNumProjectile.ToString() + "\n*";
@@ -25,7 +24,6 @@ public class PowerUpController : MonoBehaviour
 
     // ------------------------------------------------------------------------------------------------
 
-    // Update is called once per frame
     void Update()
     {
         fDegreesPerFrame = fDegreesPerSecond * Time.deltaTime;
