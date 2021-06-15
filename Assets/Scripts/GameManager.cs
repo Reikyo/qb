@@ -7,10 +7,10 @@ using TMPro;
 
 public class GameManager : MonoBehaviour
 {
-    public bool bActive = false;
+    public bool bInPlay = false;
     public bool bActiveScreenButton = false;
     public bool bProjectilePathDependentLevel = false;
-    public bool bCompleted = false;
+    public bool bCompletedGameAtLeastOnce = false;
 
     public GameObject goScreenTitle;
     public GameObject goScreenLevelCleared;
@@ -31,7 +31,7 @@ public class GameManager : MonoBehaviour
     // private Dictionary<string, GameObject> vfxclpNames = new Dictionary<string, GameObject>();
     public GameObject vfxclpWarp; // CFX3_MagicAura_B_Runic 1
     public GameObject vfxclpWallDestructible; // FX_Fireworks_Yellow_Large 1
-    public GameObject vfxclpWallTimed; // FX_Fireworks_Yellow_Large 1
+    public GameObject vfxclpWallTimed; // FX_Fireworks_Green_Large 1
 
     private AudioSource sfxsrcGameManager;
     private AudioClip sfxclpName;
@@ -108,6 +108,11 @@ public class GameManager : MonoBehaviour
 
         // ------------------------------------------------------------------------------------------------
 
+        // The GameStart function is currently the only function to be triggered by clicking on an active
+        // overlay screen button. In addition to mouse clicks on the button (default), we also accept
+        // "return" or "space" to activate the button. Note bActiveScreenButton is only affected by an
+        // overlay screen button, not the HUD reset button, otherwise "return" and "space" could always
+        // trigger the GameStart function during play, which is not desired:
         if (bActiveScreenButton)
         {
             if (    Input.GetKeyUp(KeyCode.Return)
@@ -118,14 +123,14 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            // Temporarily allow level to be cleared for testing purposes:
+            // Temporarily allow the level to be cleared for testing purposes:
             // if (Input.GetKeyDown(KeyCode.C))
             // {
             //     LevelCleared();
             // }
 
-            // This is no longer needed now that we have a reset button in the HUD
-            // Temporarily allow level to be failed for testing purposes:
+            // This is no longer needed now that we have a reset button in the HUD:
+            // Temporarily allow the level to be failed for testing purposes:
             // if (Input.GetKeyDown(KeyCode.F))
             // {
             //     LevelFailed();
@@ -149,6 +154,8 @@ public class GameManager : MonoBehaviour
 
     // ------------------------------------------------------------------------------------------------
 
+    // This function starts the game from an overlay screen button click, either at the very beginning
+    // or end of the game, or between levels or lives, or on manual reset:
     public void GameStart()
     {
         sfxsrcGameManager.PlayOneShot(sfxclpButton);
@@ -188,7 +195,7 @@ public class GameManager : MonoBehaviour
             goScreenRestart.SetActive(false);
             cubeController.StartNextLevel();
         }
-        bActive = true;
+        bInPlay = true;
         bActiveScreenButton = false;
         goScreenHUD.SetActive(true);
         bProjectilePathDependentLevel = cubeController.GetbProjectilePathDependentLevel();
@@ -198,9 +205,9 @@ public class GameManager : MonoBehaviour
 
     public void LevelCleared()
     {
-        if (bActive)
+        if (bInPlay)
         {
-            bActive = false;
+            bInPlay = false;
             goScreenHUD.SetActive(false);
             if (cubeController.GetiLevel() < 5)
             {
@@ -211,7 +218,10 @@ public class GameManager : MonoBehaviour
             {
                 sfxsrcGameManager.Play();
                 goScreenRestart.SetActive(true);
-                if (!bCompleted)
+                // Only play the credits if the game is being completed for the first time, otherwise it could be a
+                // bit tedious seeing them again (not that anyone would actually be playing over and over again,
+                // but still):
+                if (!bCompletedGameAtLeastOnce)
                 {
                     goScreenCredits.SetActive(true);
                 }
@@ -233,9 +243,9 @@ public class GameManager : MonoBehaviour
 
     public void LevelFailed(string sGuiLevelFailedHelpText="")
     {
-        if (bActive)
+        if (bInPlay)
         {
-            bActive = false;
+            bInPlay = false;
             guiLevelFailedHelp.text = sGuiLevelFailedHelpText;
             goScreenHUD.SetActive(false);
             goScreenLevelFailed.SetActive(true);
@@ -279,24 +289,24 @@ public class GameManager : MonoBehaviour
 
     // ------------------------------------------------------------------------------------------------
 
-    public void VfxclpPlay(string strVfxclpName, Vector3 v3Position)
+    public void VfxclpPlay(string sVfxclpName, Vector3 v3Position)
     {
-        switch(strVfxclpName)
+        switch(sVfxclpName)
         {
             case "vfxclpWallDestructible": vfxclpName = vfxclpWallDestructible; break;
             case "vfxclpWallTimed": vfxclpName = vfxclpWallTimed; break;
             case "vfxclpWarp": vfxclpName = vfxclpWarp; break;
         }
-        // GameObject go = Instantiate(vfxclpNames[strVfxclpName], v3Position, vfxclpNames[strVfxclpName].transform.rotation);
+        // GameObject go = Instantiate(vfxclpNames[sVfxclpName], v3Position, vfxclpNames[sVfxclpName].transform.rotation);
         GameObject go = Instantiate(vfxclpName, v3Position, vfxclpName.transform.rotation);
         StartCoroutine(WaitUntilDestroy(go, 10f));
     }
 
     // ------------------------------------------------------------------------------------------------
 
-    public void SfxclpPlay(string strSfxclpName)
+    public void SfxclpPlay(string sSfxclpName)
     {
-        switch(strSfxclpName)
+        switch(sSfxclpName)
         {
             case "sfxclpButton": sfxclpName = sfxclpButton; break;
             case "sfxclpLevelClearedPartial": sfxclpName = sfxclpLevelClearedPartial; break;
@@ -320,7 +330,7 @@ public class GameManager : MonoBehaviour
             case "sfxclpEnemySleep": sfxclpName = sfxclpEnemySleep; break;
         }
         sfxsrcGameManager.PlayOneShot(sfxclpName);
-        // sfxsrcGameManager.PlayOneShot(sfxclpNames[strSfxclpName]);
+        // sfxsrcGameManager.PlayOneShot(sfxclpNames[sSfxclpName]);
     }
 
     // ------------------------------------------------------------------------------------------------

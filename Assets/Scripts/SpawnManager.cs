@@ -150,7 +150,8 @@ public class SpawnManager : MonoBehaviour
                                 fLevel3SpawnPositionZUpper
                             )
                         ),
-                        Quaternion.Euler(0f, Random.Range(0f, 360f), 0f));
+                        Quaternion.Euler(0f, Random.Range(0f, 360f), 0f)
+                    );
                     goEnemy.GetComponent<EnemyController>().goListWallTimed.Add(GameObject.Find(sListLevel3WallTimed[i]));
                 }
                 goPowerUp = Instantiate(goPrefabPowerUp, new Vector3(0f, goPrefabPowerUp.transform.position.y, 0f), goPrefabPowerUp.transform.rotation);

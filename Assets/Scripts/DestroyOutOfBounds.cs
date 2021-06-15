@@ -1,5 +1,5 @@
 using System;
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -29,7 +29,7 @@ public class DestroyOutOfBounds : MonoBehaviour
         {
             if (    (   gameObject.CompareTag("Player")
                     ||  gameObject.CompareTag("Target") )
-                &&  gameManager.bActive )
+                &&  gameManager.bInPlay )
             {
                 gameManager.LevelFailed("that's a long way down ...");
             }

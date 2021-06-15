@@ -1,5 +1,5 @@
 // using System;
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 // using MyFunctions;
@@ -85,7 +85,7 @@ public class CreditsController : MonoBehaviour
         //     transform.Translate(fMetresPositionDeltaCurrent * Vector3.up);
         //     gameManager.goScreenRestart.transform.Find("Button : Restart").gameObject.SetActive(true);
         //     gameManager.bActiveScreenButton = true;
-        //     gameManager.bCompleted = true;
+        //     gameManager.bCompletedGame = true;
         //     gameManager.goScreenCredits.SetActive(false);
         // }
 
@@ -118,7 +118,7 @@ public class CreditsController : MonoBehaviour
         {
             gameManager.goScreenRestart.transform.Find("Button : Restart").gameObject.SetActive(true);
             gameManager.bActiveScreenButton = true;
-            gameManager.bCompleted = true;
+            gameManager.bCompletedGameAtLeastOnce = true;
             gameManager.goScreenCredits.SetActive(false);
         }
     }

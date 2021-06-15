@@ -1,5 +1,5 @@
 using System;
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
@@ -10,7 +10,7 @@ public class PlayerController : MonoBehaviour
     private GameManager gameManager;
 
     public bool bInPlay = true;
-    public bool bActive = true;
+    public bool bUnderPlayerControl = true;
     public bool bSafe;
     private bool bMoveAuto = false;
     private bool bWait = false;
@@ -108,8 +108,8 @@ public class PlayerController : MonoBehaviour
         // ------------------------------------------------------------------------------------------------
 
         if (    bInPlay
-            &&  bActive
-            &&  gameManager.bActive )
+            &&  bUnderPlayerControl
+            &&  gameManager.bInPlay )
         {
             float inputHorz = Input.GetAxis("Horizontal");
             float inputVert = Input.GetAxis("Vertical");
@@ -181,8 +181,8 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         if (    bInPlay
-            &&  bActive
-            &&  gameManager.bActive )
+            &&  bUnderPlayerControl
+            &&  gameManager.bInPlay )
         {
             // For some reason, if projectiles are instantiated via FixedUpdate(), then typically more than one
             // appear at any time, usually two or three. If instantiated via Update() then we get only one, as
@@ -245,7 +245,7 @@ public class PlayerController : MonoBehaviour
         transform.position = Vector3.MoveTowards(transform.position, transform.position + v3DirectionMove, fSpeed * Time.deltaTime);
         transform.rotation = Quaternion.LookRotation(v3DirectionLook);
 
-        if (bActive)
+        if (bUnderPlayerControl)
         {
             if (Input.GetKeyDown(KeyCode.LeftShift))
                 // &&  !bLaunch
@@ -277,6 +277,8 @@ public class PlayerController : MonoBehaviour
     {
         bBoost = true;
         goPlayerTrail.SetActive(true);
+        // Jump back a little bit otherwise entering collision won't be detected if we are right up against
+        // something. This is important for destroying destructible walls:
         transform.Translate(-Vector3.forward);
         rbPlayer.AddForce(fForceBoost * transform.forward, ForceMode.Impulse);
         gameManager.SfxclpPlay("sfxclpBoost");
@@ -346,10 +348,10 @@ public class PlayerController : MonoBehaviour
 
     IEnumerator Wait()
     {
-        bActive = false;
+        bUnderPlayerControl = false;
         bWait = true;
         yield return new WaitForSeconds(fTimeDeltaWait);
-        bActive = true;
+        bUnderPlayerControl = true;
         bWait = false;
     }
 
@@ -393,7 +395,7 @@ public class PlayerController : MonoBehaviour
             {
                 rbPlayer.isKinematic = false;
                 bWarpUp = false;
-                bActive = true;
+                bUnderPlayerControl = true;
                 StartCoroutine(Wait());
             }
         }
@@ -619,7 +621,7 @@ public class PlayerController : MonoBehaviour
             bLaunch = true;
             gameManager.SfxclpPlay("sfxclpLaunch");
             goPlayerTrail.SetActive(true);
-            rbPlayer.AddForce(fForceLaunch * other.gameObject.transform.right, ForceMode.Impulse);
+            rbPlayer.AddForce(fForceLaunch * other.gameObject.transform.right, ForceMode.Impulse); // This uses "other.gameObject.transform.right" as the local right direction of the launch trigger faces along the ramp
         }
         else if (   other.gameObject.CompareTag("Warper")
                 &&  other.gameObject.GetComponent<WarpController>().goWarpPartner
@@ -634,7 +636,7 @@ public class PlayerController : MonoBehaviour
             bWarp = true;
             bWarpDown = true;
             bWarpStageStart = true;
-            bActive = false;
+            bUnderPlayerControl = false;
             bInMotionThisFrame = true;
             bMoveAuto = true;
             // navPlayer.enabled = true;
@@ -662,7 +664,7 @@ public class PlayerController : MonoBehaviour
             // other.gameObject.GetComponent<ExchangerController>().sTriggeredBy = gameObject.tag;
             v3PositionWarpFrom = other.gameObject.transform.position;
             bExchange = true;
-            bActive = false;
+            bUnderPlayerControl = false;
             bInMotionThisFrame = true;
             bMoveAuto = true;
             // navPlayer.enabled = true;
@@ -681,7 +683,7 @@ public class PlayerController : MonoBehaviour
                 FinishBoost();
             }
             bSafe = true;
-            bActive = false;
+            bUnderPlayerControl = false;
             bInMotionThisFrame = true;
             navPlayer.enabled = true;
             navPlayer.destination = new Vector3(
@@ -708,14 +710,14 @@ public class PlayerController : MonoBehaviour
         // }
 
         if (    other.gameObject.CompareTag("Warper")
-            &&  bActive
+            &&  bUnderPlayerControl
             &&  bWarp )
         {
             bWarp = false;
         }
         else if (   other.gameObject.CompareTag("Exchanger")
                 // &&  (other.gameObject.name == sNameExchangerEngagedByTarget) // This was causing issues, as the timing of rapid multiple exchanges can cause the two sides of this condition to be thrown out of sync
-                &&  bActive
+                &&  bUnderPlayerControl
                 &&  bExchange )
         {
             bExchange = false;

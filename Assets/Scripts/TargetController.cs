@@ -1,5 +1,5 @@
 using System;
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
@@ -60,7 +60,7 @@ public class TargetController : MonoBehaviour
     // FixedUpdate is called once per frame
     void FixedUpdate()
     {
-        // Game Manager bActive check intentionally left out here, so that target can still move further
+        // Game Manager bInPlay check intentionally left out here, so that target can still move further
         // into the safe zone even after that action triggers the level clearing
         if (    bInPlay
             &&  bActive )

@@ -61,7 +61,7 @@ public class EnemyController : MonoBehaviour
     {
         if (    bInPlay
             &&  bActive
-            &&  gameManager.bActive )
+            &&  gameManager.bInPlay )
         {
             if (    (sObjective == "Target")
                 &&  goTarget
@@ -91,7 +91,7 @@ public class EnemyController : MonoBehaviour
             }
         }
         // else if (anEnemy.GetBool("bWalkForward") && (!bInPlay || !gameManager.bActive))
-        else if (!gameManager.bActive)
+        else if (!gameManager.bInPlay)
         {
             bActive = false;
             navEnemy.enabled = false;
