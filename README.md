@@ -30,7 +30,7 @@ All other assets are the property of their respective creators, and are used wit
 ### Shader & Materials:
 - Scrollbie Studio
     - https://assetstore.unity.com/packages/vfx/shaders/minimalist-free-lowpoly-flat-gradient-shader-96148
-        - License: Unspecified
+        - License: [Unity EULA](https://unity3d.com/legal/as_terms)
     - https://assetstore.unity.com/publishers/29536
     - https://www.scrollbie.com
     - support@scrollbie.com
@@ -38,7 +38,7 @@ All other assets are the property of their respective creators, and are used wit
 ### Visual Effects:
 - JMO Assets
     - https://assetstore.unity.com/packages/vfx/particles/cartoon-fx-free-109565
-        - License: Unspecified
+        - License: [Unity EULA](https://unity3d.com/legal/as_terms)
     - https://assetstore.unity.com/publishers/1669
     - http://jeanmoreno.com
     - jean.moreno.public+unity@gmail.com
