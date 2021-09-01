@@ -11,8 +11,6 @@ obj
 Packages
 Temp
 Videos
-Assembly-CSharp-Editor.csproj
-Assembly-CSharp.csproj
-NavMeshComponents.csproj
-NavMeshComponentsEditor.csproj
-Project.sln
+*.DS_Store
+*.csproj
+*.sln
